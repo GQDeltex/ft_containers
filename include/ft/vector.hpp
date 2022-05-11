@@ -38,7 +38,14 @@ namespace ft {
 										size_type n,
 										const value_type& val = value_type(),
 										const allocator_type& alloc = allocator_type()
-									);
+									) {
+										this->_size = n;
+										this->_alloc = alloc;
+										this->_data = this->_alloc.allocate(this->_size);
+										for(size_type i = 0;i < this->_size;i++) {
+											this->_alloc.construct(&(this->_data[i]), val);
+										}
+									}
 			template <
 				class InputIterator
 			>						vector(
