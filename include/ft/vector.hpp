@@ -104,19 +104,35 @@ namespace ft {
 									}
 			const_reference			operator[](
 										size_type n
-									) const;
+									) const {
+										return this->_data[n];
+									}
 			reference				at(
 										size_type n
-									);
+									) {
+										return this->_data[n];
+									}
 			const_reference			at(
 										size_type n
-									) const;
+									) const {
+										return this->_data[n];
+									}
 			reference				front(void) {
-				return this->_data[0];
-			}
-			const_reference			front(void) const;
-			reference				back(void);
-			const_reference			back(void) const;
+										return this->_data[0];
+									}
+			const_reference			front(void) const {
+										return this->_data[0];
+									}
+			reference				back(void) {
+										if (this->size > 0)
+											return this->_data[0];
+										return this->_data[this->_size - 1];
+									}
+			const_reference			back(void) const {
+										if (this->size > 0)
+											return this->_data[0];
+										return this->_data[this->_size - 1];
+									}
 
 			// Modifiers
 			template <
