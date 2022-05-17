@@ -6,7 +6,7 @@
 #    By: ebeiline <ebeiline@42wolfsburg.de>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/30 17:16:39 by pstengl           #+#    #+#              #
-#    Updated: 2022/05/11 14:27:33 by pstengl          ###   ########.fr        #
+#    Updated: 2022/05/17 13:23:00 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ ifeq ($(TYPE),library)
 	NAME:= $(NAME).a
 endif
 
-.PHONY: all clean fclean re bonus norm test memtest
+.PHONY: all clean fclean re bonus norm test
 
 # Catch Rules
 all: $(BINARIES)/$(NAME)
@@ -135,13 +135,7 @@ else
 endif
 
 # Run the test script
-test: norm all
-ifeq ($(wildcard $(TESTS)/test.sh),)
-	$(error "Test Script test.sh not found in $(TESTS)")
-endif
-	@./tests/test.sh --no-memcheck
-
-memtest: norm all
+test: norm re
 ifeq ($(wildcard $(TESTS)/test.sh),)
 	$(error "Test Script test.sh not found in $(TESTS)")
 endif
