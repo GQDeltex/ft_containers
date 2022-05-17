@@ -6,12 +6,11 @@
 
 namespace ft {
 	template <
-		class T,
-		class Alloc=std::allocator<T>
+		class T
 	> class vector {
 		private:
 			typedef T											value_type;
-			typedef Alloc										allocator_type;
+			typedef std::allocator<T>							allocator_type;
 			typedef typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer			pointer;
@@ -192,36 +191,50 @@ namespace ft {
 			allocator_type			get_allocator(void) const;
 
 			// Non-member operators
-			friend bool				operator==(
-										const vector& lhs,
-										const vector& rhs
-									);
-			friend bool				operator!=(
-										const vector& lhs,
-										const vector& rhs
-									);
-			friend bool				operator< (
-										const vector& lhs,
-										const vector& rhs
-									);
-			friend bool				operator<=(
-										const vector& lhs,
-										const vector& rhs
-									);
-			friend bool				operator> (
-										const vector& lhs,
-										const vector& rhs
-									);
-			friend bool				operator>=(
-										const vector& lhs,
-										const vector& rhs
-									);
-			friend void				swap(
-										vector& lhs,
-										vector& rhs
-									);
 	};
 }
 
+template<
+	class T
+> bool	operator==(
+			const ft::vector<T>& lhs,
+			const ft::vector<T>& rhs
+		);
+template<
+	class T
+>bool	operator!=(
+			const ft::vector<T>& lhs,
+			const ft::vector<T>& rhs
+		);
+template<
+	class T
+>bool	operator< (
+			const ft::vector<T>& lhs,
+			const ft::vector<T>& rhs
+		);
+template<
+	class T
+>bool	operator<=(
+			const ft::vector<T>& lhs,
+			const ft::vector<T>& rhs
+		);
+template<
+	class T
+>bool	operator> (
+			const ft::vector<T>& lhs,
+			const ft::vector<T>& rhs
+		);
+template<
+	class T
+>bool	operator>=(
+			const ft::vector<T>& lhs,
+			const ft::vector<T>& rhs
+		);
+template<
+	class T
+>void	swap(
+			ft::vector<T>& lhs,
+			ft::vector<T>& rhs
+		);
 
 #endif
