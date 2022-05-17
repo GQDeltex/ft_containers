@@ -63,7 +63,7 @@ namespace ft {
 
 			// Operator =
 			vector&					operator=(
-									const vector& vec
+										const vector& vec
 									);
 
 			// Iterator
@@ -188,12 +188,13 @@ namespace ft {
 			void					clear(void);
 
 			// Allocator
-			allocator_type			get_allocator(void) const;
-
-			// Non-member operators
+			allocator_type			get_allocator(void) const {
+				return (this->_alloc);
+			}
 	};
 }
 
+// Non-member operators
 template<
 	class T
 > bool	operator==(
