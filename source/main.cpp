@@ -12,12 +12,12 @@ int main(void) {
 	{
 		Test test("Constructor Fill: Fill the list with an item");
 		ft::vector<std::string> lst(3, "Works though");
-		test.notnull(lst[0]);
-		test.notnull(lst[1]);
-		test.notnull(lst[2]);
-		test.equal(lst[0], std::string("Works though"));
-		test.equal(lst[1], std::string("Works though"));
-		test.equal(lst[2], std::string("Works though"));
+		test.notnull(lst[0], "is lst[0] NULL");
+		test.notnull(lst[1], "is lst[1] NULL");
+		test.notnull(lst[2], "is lst[2] NULL");;
+		test.equal(lst[0], std::string("Works though"), "is lst[0] right content");
+		test.equal(lst[1], std::string("Works though"), "is lst[1] right content");
+		test.equal(lst[2], std::string("Works though"), "is lst[1] right content");
 	}
 	{
 		Test test("push_back(): add element to end");
@@ -54,6 +54,11 @@ int main(void) {
 		lst.push_back("Hello World!");
 		lst.push_back("Hi there!");
 		test.equal(lst.front(), std::string("Hello World!"));
+	}
+	{
+		Test test("get_allocator(): get the allocator");
+		ft::vector<std::string> lst;
+		test.equal(lst.get_allocator(), std::allocator<std::string>());
 	}
 	Test test;
 	test.summary();

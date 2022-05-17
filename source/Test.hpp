@@ -21,20 +21,20 @@ class Test {
 		}
 		template<
 			class T
-		> bool equal(T lhs, T rhs) {
+		> bool equal(T lhs, T rhs, std::string desc="is lhs equal to rhs") {
 			if (lhs == rhs)
 				return true;
 			this->_failed++;
-			std::cout << lhs << " is not equal to " << rhs << std::endl;
+			std::cout << desc << " -> NO!" << std::endl;
 			return false;
 		}
 		template<
 			class T
-		> bool notnull(T trgt) {
+		> bool notnull(T trgt, std::string desc="OBJECT is NULL") {
 			if (!trgt.empty())
 				return true;
 			this->_failed++;
-			std::cout << "OBJECT is NULL" << std::endl;
+			std::cout << desc << " -> NO!" << std::endl;
 			return false;
 		}
 		void summary(void) {
