@@ -1,6 +1,7 @@
 #include "../include/ft/vector.hpp"
 #include <vector>
 #include "Test.hpp"
+#include "Dummy.hpp"
 
 int main(void) {
 	{
@@ -100,6 +101,11 @@ int main(void) {
 		test.equal(lst1.size(), (size_t)1, "Has first list still 1 item");
 		test.equal(lst2.size(), (size_t)2, "Has second list now 2 items");
 		test.equal(lst2[1], (std::string)"Oh hi there", "Is second element correct");
+	}
+	{
+		Test test("Leak test with dummy class");
+		ft::vector<Dummy> lst;
+		lst.push_back(Dummy());
 	}
 	Test test;
 	test.summary();

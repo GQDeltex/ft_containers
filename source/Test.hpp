@@ -13,7 +13,7 @@ class Test {
 		Test(void) {
 			this->_sum = true;
 		}
-		Test(std::string topic) {
+		Test(const std::string& topic) {
 			this->_sum = false;
 			this->_failed = 0;
 			this->_total_cases++;
