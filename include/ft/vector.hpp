@@ -2,6 +2,7 @@
 # define FT_VECTOR_H
 
 # include <cstddef>
+#include <iterator>
 # include <memory>
 
 # include <iostream>
@@ -17,11 +18,11 @@ namespace ft {
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef typename value_type::iterator				iterator;
-			typedef typename value_type::const_iterator			const_iterator;
-			typedef typename value_type::reverse_iterator		reverse_iterator;
-			typedef typename value_type::const_reverse_iterator	const_reverse_iterator;
-			typedef typename iterator::difference_type			difference_type;
+			typedef typename std::random_access_iterator_tag	iterator;
+			typedef const iterator								const_iterator;
+			typedef typename std::reverse_iterator<iterator>	reverse_iterator;
+			typedef const reverse_iterator						const_reverse_iterator;
+			typedef std::iterator_traits<iterator>				difference_type;
 			typedef size_t										size_type;
 
 			value_type*											_space;
