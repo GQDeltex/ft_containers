@@ -69,6 +69,7 @@ namespace ft {
 
 			// Destructor
 									~vector(void) {
+										this->__debug("Destructing Vector");
 										for(size_type i=0;i<this->_data_size;i++) {
 											this->_alloc.destroy(this->_space + i);
 										}
