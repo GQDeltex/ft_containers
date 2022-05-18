@@ -4,6 +4,8 @@
 # include <cstddef>
 # include <memory>
 
+# include <iostream>
+
 namespace ft {
 	template <
 		class T
@@ -21,28 +23,31 @@ namespace ft {
 			typedef typename value_type::const_reverse_iterator	const_reverse_iterator;
 			typedef typename iterator::difference_type			difference_type;
 			typedef size_t										size_type;
-			value_type*											_data;
-			size_type											_size;
+
+			value_type*											_space;
+			value_type*											_end_data;
+			value_type*											_end_space;
+			size_type											_data_size;
+			size_type											_space_size;
 			allocator_type										_alloc;
 		public:
 			// Constructor
 									vector(
 										const allocator_type& alloc = allocator_type()
 									) {
-										this->_size = 0;
-										this->_data = NULL;
-										this->_alloc = alloc;
+										this->__debug("Default Constructor");
+										this->__init(alloc);
 									}
 									vector(
 										size_type n,
 										const value_type& val = value_type(),
 										const allocator_type& alloc = allocator_type()
 									) {
-										this->_size = n;
-										this->_alloc = alloc;
-										this->_data = this->_alloc.allocate(this->_size);
-										for(size_type i = 0;i < this->_size;i++) {
-											this->_alloc.construct(&(this->_data[i]), val);
+										this->__debug("Fill Constructor");
+										this->__init(alloc);
+										this->reserve(n);
+										for(size_type i = 0;i < n;i++) {
+											this->push_back(val);
 										}
 									}
 			template <
@@ -58,7 +63,7 @@ namespace ft {
 
 			// Destructor
 									~vector(void) {
-										this->_alloc.deallocate(this->_data, this->_size);
+										this->_alloc.deallocate(this->_space, this->_space_size);
 									}
 
 			// Operator =
@@ -78,10 +83,10 @@ namespace ft {
 
 			// Capacity
 			size_type				size(void) const {
-										return this->_size;
+										return this->_data_size;
 									}
-			size_type				max_size(void) const {
-										return this->_alloc.max_size();
+			size_type				max_data_size(void) const {
+										return this->_alloc.max_data_size();
 									}
 			void					resize(
 										size_type n,
@@ -89,48 +94,63 @@ namespace ft {
 									);
 			size_type				capacity(void) const;
 			bool					empty(void) const {
-										return (this->_size == 0);
+										return (this->_data_size == 0);
 									}
 			void					reserve(
 										size_type n
-									);
+									) {
+										this->__debug("Request for " + std::to_string(n) + " elements of space");
+										if (n <= this->_space_size)
+											return;
+
+										this->__debug("More space needed");
+										value_type *new_space = this->_alloc.allocate(n);
+										new_space = this->__copy(new_space, this->_space, this->_data_size);
+										this->_alloc.deallocate(this->_space, this->_space_size);
+										this->_space = new_space;
+
+										this->_end_data = this->_space+this->_data_size;
+										this->_end_space = this->_space+n;
+										this->_space_size = n;
+										this->__debug("Allocation success");
+									}
 
 			// Element access
 			reference				operator[](
 										size_type n
 									) {
-										return this->_data[n];
+										return this->_space[n];
 									}
 			const_reference			operator[](
 										size_type n
 									) const {
-										return this->_data[n];
+										return this->_space[n];
 									}
 			reference				at(
 										size_type n
 									) {
-										return this->_data[n];
+										return this->_space[n];
 									}
 			const_reference			at(
 										size_type n
 									) const {
-										return this->_data[n];
+										return this->_space[n];
 									}
 			reference				front(void) {
-										return this->_data[0];
+										return this->_space[0];
 									}
 			const_reference			front(void) const {
-										return this->_data[0];
+										return this->_space[0];
 									}
 			reference				back(void) {
 										if (this->size > 0)
-											return this->_data[0];
-										return this->_data[this->_size - 1];
+											return this->_space[0];
+										return this->_space[this->_data_size - 1];
 									}
 			const_reference			back(void) const {
 										if (this->size > 0)
-											return this->_data[0];
-										return this->_data[this->_size - 1];
+											return this->_space[0];
+										return this->_space[this->_data_size - 1];
 									}
 
 			// Modifiers
@@ -147,18 +167,16 @@ namespace ft {
 			void					push_back(
 										const value_type& val
 									) {
-										value_type*	new_data;
-										new_data = this->_alloc.allocate(this->_size + 1);
-										size_type i = 0;
-										if (this->_data) {
-											for (;i<this->_size;i++) {
-												this->_alloc.construct(&(new_data[i]), this->_data[i]);
-											}
-											this->_alloc.deallocate(this->_data, this->_size);
+										if (this->_data_size + 1 > this->_space_size) {
+											if (this->_space_size == 0)
+												this->_space_size++;
+											this->reserve(this->_space_size * 2);
 										}
-										this->_alloc.construct(&(new_data[i]), val);
-										this->_data = new_data;
-										this->_size++;
+										this->__debug("Construct new element at end");
+										this->_alloc.construct(this->_end_data, val);
+										this->__debug("Constructed. Updating meta");
+										this->_end_data++;
+										this->_data_size++;
 									}
 			void					pop_back(void);
 			iterator				insert(
@@ -191,6 +209,29 @@ namespace ft {
 			allocator_type			get_allocator(void) const {
 				return (this->_alloc);
 			}
+		private:
+			void					__init(const allocator_type& alloc) {
+										this->_data_size = 0;
+										this->_space_size = 0;
+										this->_alloc = alloc;
+										this->_space = NULL;
+										this->_end_data = NULL;
+										this->_end_space = NULL;
+										this->__debug("--> INIT <--");
+									}
+			void					__debug(const std::string& msg) {
+										std::cout << "\e[31m" << msg << "\e[0m" << std::endl;
+									}
+			value_type				*__copy(value_type *dest, value_type *src, size_type len) {
+										if (len > 0) {
+											this->__debug("Already have elements, copying");
+											for(size_type i=0;i<len;i++) {
+												this->_alloc.construct(dest+i, src[i]);
+											}
+											this->__debug("Freeing old memory");
+										}
+										return (dest);
+									}
 	};
 }
 
