@@ -25,12 +25,13 @@ namespace ft {
 			typedef std::iterator_traits<iterator>				difference_type;
 			typedef size_t										size_type;
 
+		protected:
 			value_type*											_space;
 			value_type*											_end_data;
-			value_type*											_end_space;
 			size_type											_data_size;
 			size_type											_space_size;
 			allocator_type										_alloc;
+
 		public:
 			// Constructor
 									vector(
@@ -70,7 +71,20 @@ namespace ft {
 			// Operator =
 			vector&					operator=(
 										const vector& vec
-									);
+									) {
+										this->__debug("Assignment operator called");
+										// Free existing space
+										this->_alloc.deallocate(this->_space, this->_space_size);
+										// Start with new
+										this->_alloc = vec._alloc;
+										this->_space = this->_alloc.allocate(vec._space_size);
+										this->_space = this->__copy(this->_space, vec._space, vec._data_size);
+										this->_data_size = vec._data_size;
+										this->_space_size = vec._space_size;
+										this->_end_data = this->_space + this->_data_size;
+										this->__debug("Assingment success");
+										return (*this);
+									}
 
 			// Iterator
 			iterator				begin(void);
@@ -111,7 +125,6 @@ namespace ft {
 										this->_space = new_space;
 
 										this->_end_data = this->_space+this->_data_size;
-										this->_end_space = this->_space+n;
 										this->_space_size = n;
 										this->__debug("Allocation success");
 									}
@@ -168,6 +181,7 @@ namespace ft {
 			void					push_back(
 										const value_type& val
 									) {
+										this->__debug("push_back called");
 										if (this->_data_size + 1 > this->_space_size) {
 											if (this->_space_size == 0)
 												this->_space_size++;
@@ -217,7 +231,6 @@ namespace ft {
 										this->_alloc = alloc;
 										this->_space = NULL;
 										this->_end_data = NULL;
-										this->_end_space = NULL;
 										this->__debug("--> INIT <--");
 									}
 			void					__debug(const std::string& msg) {
@@ -229,7 +242,6 @@ namespace ft {
 											for(size_type i=0;i<len;i++) {
 												this->_alloc.construct(dest+i, src[i]);
 											}
-											this->__debug("Freeing old memory");
 										}
 										return (dest);
 									}
