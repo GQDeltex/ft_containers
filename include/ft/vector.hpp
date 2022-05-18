@@ -61,7 +61,11 @@ namespace ft {
 									);
 									vector(
 										const vector& vec
-									);
+										) {
+										this->__debug("Copy Constructor");
+										this->__init(vec._alloc);
+										(*this) = vec;
+									}
 
 			// Destructor
 									~vector(void) {
@@ -73,8 +77,10 @@ namespace ft {
 										const vector& vec
 									) {
 										this->__debug("Assignment operator called");
-										// Free existing space
-										this->_alloc.deallocate(this->_space, this->_space_size);
+										if (this->_space_size > 0) {
+											this->__debug("Freeing old existing space");
+											this->_alloc.deallocate(this->_space, this->_space_size);
+										}
 										// Start with new
 										this->_alloc = vec._alloc;
 										this->_space = this->_alloc.allocate(vec._space_size);
