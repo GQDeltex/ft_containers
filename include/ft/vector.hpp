@@ -243,7 +243,7 @@ namespace ft {
 										this->__debug("--> INIT <--");
 									}
 			void					__debug(const std::string& msg) {
-										std::cout << "\e[31m" << msg << "\e[0m" << std::endl;
+										std::cout << "\e[1;33m" << msg << "\e[0m" << std::endl;
 									}
 			value_type				*__copy(value_type *dest, value_type *src, size_type len) {
 										if (len > 0) {

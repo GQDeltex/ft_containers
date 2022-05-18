@@ -7,21 +7,21 @@ class Dummy {
 		int	*numbers;
 	public:
 		Dummy(void) {
-			std::cout << "------- DUMMY CONSTRUCTOR ----------" << std::endl;
+			std::cout << "\e[1;34m------- DUMMY CONSTRUCTOR ----------\e[0m" << std::endl;
 			numbers = new int[4];
 		}
 		Dummy(const Dummy& dum) {
-			std::cout << "------- DUMMY COPY CONSTRUCTOR ----------" << std::endl;
+			std::cout << "\e[1;34m------- DUMMY COPY CONSTRUCTOR ----------\e[0m" << std::endl;
 			numbers = new int[4];
 			(*this) = dum;
 		}
 		Dummy& operator=(const Dummy& dum) {
-			std::cout << "------- DUMMY ASSIGNMENT OPERATOR ----------" << std::endl;
+			std::cout << "\e[1;34m------- DUMMY ASSIGNMENT OPERATOR ----------\e[0m" << std::endl;
 			(void)&dum;
 			return (*this);
 		}
 		~Dummy(void) {
-			std::cout << "------- DUMMY DESTRUCTOR ----------" << std::endl;
+			std::cout << "\e[1;34m------- DUMMY DESTRUCTOR ----------\e[0m" << std::endl;
 			delete[] numbers;
 		}
 };

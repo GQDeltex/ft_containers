@@ -38,14 +38,14 @@ class Test {
 			return false;
 		}
 		void summary(void) {
-			std::cout << std::endl;
+			std::cout << "--------------------" << std::endl;
 			std::cout << "Test Summary:" << std::endl;
 			std::cout << this->_total_cases << " tests ran" << std::endl;
 			std::cout << this->_failed_cases << " tests failed" << std::endl;
 			if (this->_failed_cases > 0)
-				std::cout << "== FAIL ==" << std::endl;
+				std::cout << "\e[1;41m== FAIL ==\e[0m" << std::endl;
 			else
-				std::cout << "== PASS ==" << std::endl;
+				std::cout << "\e[1;42m== PASS ==\e[0m" << std::endl;
 
 		}
 		~Test(void) {
@@ -53,10 +53,11 @@ class Test {
 				return;
 			if (this->_failed > 0) {
 				this->_failed_cases++;
-				std::cout << "== FAIL ==" << std::endl;
+				std::cout << "\e[1;41m== FAIL ==\e[0m" << std::endl;
 				return;
 			}
-			std::cout << "== PASS ==" << std::endl;
+			std::cout << "\e[1;42m== PASS ==\e[0m" << std::endl;
+			std::cout << std::endl;
 		}
 };
 
