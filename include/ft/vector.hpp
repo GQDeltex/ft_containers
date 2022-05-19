@@ -124,7 +124,7 @@ namespace ft {
 			void					reserve(
 										size_type n
 									) {
-										this->__debug("Request for " + std::to_string(n) + " elements of space");
+										this->__debug("Request for space");
 										if (n <= this->_space_size)
 											return;
 
