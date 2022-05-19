@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ebeiline <ebeiline@42wolfsburg.de>         +#+  +:+       +#+         #
+#    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/30 17:16:39 by pstengl           #+#    #+#              #
-#    Updated: 2022/05/17 13:23:00 by pstengl          ###   ########.fr        #
+#    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
+#    Updated: 2022/05/19 16:57:40 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
