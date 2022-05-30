@@ -21,6 +21,15 @@ int main(void) {
 		test.equal(lst[2], std::string("Works though"), "is lst[1] right content");
 	}
 	{
+		Test test("Constructor Range: Construct vector from an iterator");
+		std::string test_str("Hello World");
+		ft::vector<char> lst(test_str.begin(), test_str.end());
+		test.equal(lst.empty(), false);
+		test.equal(lst.size(), (size_t)11);
+		test.equal(lst[0], 'H');
+		test.equal(lst[1], 'e');
+	}
+	{
 		Test test("push_back(): add element to end");
 		ft::vector<std::string> lst;
 		lst.push_back("Hello World!");

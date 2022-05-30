@@ -58,7 +58,14 @@ namespace ft {
 										InputIterator first,
 										InputIterator last,
 										const allocator_type& alloc = allocator_type()
-									);
+									) {
+										this->__debug("Range Constructor");
+										this->__init(alloc);
+										while(first != last) {
+											this->push_back(*first);
+											first++;
+										}
+									}
 									vector(
 										const vector& vec
 										) {
