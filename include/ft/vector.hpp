@@ -2,23 +2,25 @@
 # define FT_VECTOR_H
 
 # include <cstddef>
-#include <iterator>
+# include <iterator>
 # include <memory>
 
 # include <iostream>
+
+# include "iterator.hpp"
 
 namespace ft {
 	template <
 		class T
 	> class vector {
-		private:
+		public:
 			typedef T											value_type;
 			typedef std::allocator<T>							allocator_type;
 			typedef typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef typename std::random_access_iterator_tag	iterator;
+			typedef ft::iterator<T>								iterator;
 			typedef const iterator								const_iterator;
 			typedef typename std::reverse_iterator<iterator>	reverse_iterator;
 			typedef const reverse_iterator						const_reverse_iterator;
@@ -104,7 +106,9 @@ namespace ft {
 									}
 
 			// Iterator
-			iterator				begin(void);
+			iterator				begin(void) {
+										return iterator(this->_space);
+									}
 			const_iterator			begin(void) const;
 			iterator				end(void);
 			const_iterator			end(void) const;
