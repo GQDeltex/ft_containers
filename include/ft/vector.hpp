@@ -131,6 +131,9 @@ namespace ft {
 										this->__debug("More space needed");
 										value_type *new_space = this->_alloc.allocate(n);
 										new_space = this->__copy(new_space, this->_space, this->_data_size);
+										for (size_type i = 0;i<this->_data_size;i++) {
+											this->_alloc.destroy(&(this->_space[i]));
+										}
 										this->_alloc.deallocate(this->_space, this->_space_size);
 										this->_space = new_space;
 

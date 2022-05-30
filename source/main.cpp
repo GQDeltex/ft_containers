@@ -106,6 +106,8 @@ int main(void) {
 		Test test("Leak test with dummy class");
 		ft::vector<Dummy> lst;
 		lst.push_back(Dummy());
+		lst.push_back(Dummy());
+		lst.push_back(Dummy());
 	}
 	Test test;
 	test.summary();
