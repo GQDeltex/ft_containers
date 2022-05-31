@@ -51,4 +51,21 @@ void TestIterator() {
 		ft::iterator<char> it2(&str2[0]);
 		test.unequal(it1, it2);
 	}
+	{
+		Test test("Comparison smaller/greater/equal operator");
+		std::string str1 = "Hello World";
+		ft::iterator<char> it1(&str1[0]);
+		ft::iterator<char> it2 = it1;
+		test.equal(it1 == it2, true);
+		test.equal(it1 <= it2, true);
+		test.equal(it1 >= it2, true);
+		it2++;
+		test.equal(it1 != it2, true);
+		test.equal(it1 >= it2, false);
+		test.equal(it1 <= it2, true);
+		test.equal(it1 < it2, true);
+		test.equal(it1 > it2, false);
+		it2--;
+		test.equal(it1, it2);
+	}
 }
