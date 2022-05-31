@@ -67,6 +67,18 @@ namespace ft {
 			friend bool			operator!=(const iterator<T>& lhs, const iterator<T>& rhs) {
 									return !(lhs == rhs);
 								}
+			friend bool			operator<(const iterator<T>& lhs, const iterator<T>& rhs) {
+									return (lhs._ptr < rhs._ptr);
+								}
+			friend bool			operator>(const iterator<T>& lhs, const iterator<T>& rhs) {
+									return (rhs < lhs);
+								}
+			friend bool			operator<=(const iterator<T>& lhs, const iterator<T>& rhs) {
+									return !(rhs < lhs);
+								}
+			friend bool			operator>=(const iterator<T>& lhs, const iterator<T>& rhs) {
+									return !(lhs < rhs);
+								}
 	};
 };
 
