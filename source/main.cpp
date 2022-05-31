@@ -30,6 +30,16 @@ int main(void) {
 		test.equal(lst[1], 'e');
 	}
 	{
+		Test test("Iterators: begin() get the beginning of the iterator");
+		std::string test_str("Hello World");
+		ft::vector<char> lst(test_str.begin(), test_str.end());
+		test.equal(lst.empty(), false);
+		ft::vector<char>::iterator start = lst.begin();
+		test.equal(*start, 'H');
+		start++;
+		test.equal(*start, 'e');
+	}
+	{
 		Test test("push_back(): add element to end");
 		ft::vector<std::string> lst;
 		lst.push_back("Hello World!");
