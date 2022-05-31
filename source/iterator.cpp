@@ -14,4 +14,26 @@ void TestIterator() {
 			test.equal(msg, std::string("Cannot dereference NULL Pointer"));
 		}
 	}
+	{
+		Test test("Constructor Value");
+		std::string str = "Hello World";
+		ft::iterator<char> it(&str[0]);
+		test.equal(*it, 'H');
+	}
+	{
+		Test test("Constructor Copy");
+		std::string str = "Hello World";
+		ft::iterator<char> it(&str[0]);
+		ft::iterator<char> it2(it);
+		test.equal(*it, 'H');
+		test.equal(*it2, 'H');
+	}
+	{
+		Test test("Assignment Operator");
+		std::string str = "Hello World";
+		ft::iterator<char> it(&str[0]);
+		ft::iterator<char> it2 = it;
+		test.equal(*it, 'H');
+		test.equal(*it2, 'H');
+	}
 }
