@@ -16,6 +16,9 @@ namespace ft {
 		private:
 			value_type *_ptr;
 		public:
+			iterator() {
+				_ptr = NULL;
+			}
 			iterator(value_type *in) {
 				_ptr = in;
 			}
