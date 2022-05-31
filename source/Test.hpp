@@ -30,6 +30,15 @@ class Test {
 		}
 		template<
 			class T
+		> bool unequal(T lhs, T rhs, std::string desc="is lhs unequal to rhs") {
+			if (lhs != rhs)
+				return true;
+			this->_failed++;
+			std::cout << desc << " -> NO!" << std::endl;
+			return false;
+		}
+		template<
+			class T
 		> bool notnull(T trgt, std::string desc="OBJECT is NULL") {
 			if (!trgt.empty())
 				return true;

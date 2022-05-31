@@ -36,4 +36,19 @@ void TestIterator() {
 		test.equal(*it, 'H');
 		test.equal(*it2, 'H');
 	}
+	{
+		Test test("Comparison equal operator");
+		std::string str1 = "Hello World";
+		ft::iterator<char> it1(&str1[0]);
+		ft::iterator<char> it2(&str1[0]);
+		test.equal(it1, it2);
+	}
+	{
+		Test test("Comparison unequal operator");
+		std::string str1 = "Hello World";
+		std::string str2 = "Nice Day";
+		ft::iterator<char> it1(&str1[0]);
+		ft::iterator<char> it2(&str2[0]);
+		test.unequal(it1, it2);
+	}
 }
