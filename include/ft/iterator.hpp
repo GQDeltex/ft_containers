@@ -1,7 +1,8 @@
 #ifndef FT_ITERATOR_H
 # define FT_ITERATOR_H
 
-#include <iterator>
+# include <iterator>
+# include <exception>
 
 namespace ft {
 	template <
@@ -16,17 +17,26 @@ namespace ft {
 		private:
 			value_type *_ptr;
 		public:
+			iterator() {
+				_ptr = NULL;
+			}
 			iterator(value_type *in) {
 				_ptr = in;
 			}
 			const value_type&	operator*() const {
+				if (_ptr == NULL)
+					throw std::runtime_error("Cannot dereference NULL Pointer");
 				return *_ptr;
 			}
 			iterator	operator++() {
+				if (_ptr == NULL)
+					throw std::runtime_error("Cannot dereference NULL Pointer");
 				_ptr++;
 				return *this;
 			}
 			iterator	operator++(int) {
+				if (_ptr == NULL)
+					throw std::runtime_error("Cannot dereference NULL Pointer");
 				ft::iterator<T> temp = *this;
 				_ptr++;
 				return temp;

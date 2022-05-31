@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/05/19 16:57:40 by pstengl          ###   ########.fr        #
+#    Updated: 2022/05/31 15:12:41 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,9 @@ NORMFLAGS:=
 
 # Source Files:
 SRCFILES:=\
-	main.cpp
+	main.cpp\
+	vector.cpp\
+	iterator.cpp
 
 # ------------------------------------------
 # Do not change anything beyond this point!
