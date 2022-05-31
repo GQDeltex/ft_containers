@@ -37,15 +37,28 @@ namespace ft {
 								}
 			iterator			operator++() {
 									if (_ptr == NULL)
-										throw std::runtime_error("Cannot dereference NULL Pointer");
+										throw std::runtime_error("Cannot increment NULL Pointer");
 									_ptr++;
 									return *this;
 								}
 			iterator			operator++(int) {
 									if (_ptr == NULL)
-										throw std::runtime_error("Cannot dereference NULL Pointer");
+										throw std::runtime_error("Cannot increment NULL Pointer");
 									ft::iterator<T> temp = *this;
 									_ptr++;
+									return temp;
+								}
+			iterator			operator--() {
+									if (_ptr == NULL)
+										throw std::runtime_error("Cannot decrement NULL Pointer");
+									_ptr--;
+									return *this;
+								}
+			iterator			operator--(int) {
+									if (_ptr == NULL)
+										throw std::runtime_error("Cannot decrement NULL Pointer");
+									ft::iterator<T> temp = *this;
+									_ptr--;
 									return temp;
 								}
 			friend bool			operator==(const iterator<T>& lhs, const iterator<T>& rhs) {
