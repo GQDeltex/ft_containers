@@ -61,7 +61,4 @@ class Test {
 		}
 };
 
-int Test::_total_cases = 0;
-int Test::_failed_cases = 0;
-
 #endif
