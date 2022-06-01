@@ -40,6 +40,21 @@ void TestVector() {
 		test.equal(*start, 'e');
 	}
 	{
+		Test test("Iterators: end() get the end of the iterator");
+		std::string test_str("Hello World");
+		ft::vector<char> lst(test_str.begin(), test_str.end());
+		test.equal(lst.empty(), false);
+		ft::vector<char>::iterator it = lst.begin();
+		std::string::iterator ref = test_str.begin();
+		while (it != lst.end() || ref != test_str.end()) {
+			test.equal(*it, *ref);
+			ref++;
+			it++;
+		}
+		test.equal(it == lst.end(), true);
+		test.equal(ref == test_str.end(), true);
+	}
+	{
 		Test test("push_back(): add element to end");
 		ft::vector<std::string> lst;
 		lst.push_back("Hello World!");

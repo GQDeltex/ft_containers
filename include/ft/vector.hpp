@@ -107,11 +107,21 @@ namespace ft {
 
 			// Iterator
 			iterator				begin(void) {
+										this->__debug("Getting begin iterator");
 										return iterator(this->_space);
 									}
-			const_iterator			begin(void) const;
-			iterator				end(void);
-			const_iterator			end(void) const;
+			const_iterator			begin(void) const {
+										this->__debug("Getting const begin iterator");
+										return iterator(this->_space);
+									}
+			iterator				end(void) {
+										this->__debug("Getting end iterator");
+										return iterator(this->_space + this->_data_size);
+									}
+			const_iterator			end(void) const {
+										this->__debug("Getting const end iterator");
+										return iterator(this->_space + this->_data_size);
+									}
 			reverse_iterator		rbegin(void);
 			const_reverse_iterator	rbegin(void) const;
 			reverse_iterator		rend(void);
