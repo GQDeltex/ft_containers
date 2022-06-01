@@ -3,6 +3,7 @@
 
 # include <iterator>
 # include <exception>
+#include <stdexcept>
 
 namespace ft {
 	template <
@@ -60,6 +61,11 @@ namespace ft {
 									ft::iterator<T> temp = *this;
 									_ptr--;
 									return temp;
+								}
+			value_type			operator[](difference_type n) {
+									if (_ptr == NULL)
+										throw std::runtime_error("Cannot dereference NULL Pointer");
+									return *(_ptr + n);
 								}
 			friend bool			operator==(const iterator<T>& lhs, const iterator<T>& rhs) {
 									return (lhs._ptr == rhs._ptr);

@@ -68,4 +68,11 @@ void TestIterator() {
 		it2--;
 		test.equal(it1, it2);
 	}
+	{
+		Test test("Offset Dereference Operator");
+		std::string str1 = "Hello World";
+		ft::iterator<char> it1(&str1[0]);
+		test.equal(it1[3], 'l');
+		test.equal(it1[0], 'H');
+	}
 }
