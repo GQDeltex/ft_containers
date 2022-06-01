@@ -85,4 +85,15 @@ void TestIterator() {
 		test.equal(*it2, ' ');
 		test.equal(it2 - it1, 2);
 	}
+	{
+		Test test("Compound Operators");
+		std::string str = "Hello World";
+		ft::iterator<char> it(&str[0]);
+		it += 3;
+		test.equal(*it, 'l');
+		it -= 3;
+		test.equal(*it, 'H');
+		it += 5;
+		test.equal(*it, ' ');
+	}
 }

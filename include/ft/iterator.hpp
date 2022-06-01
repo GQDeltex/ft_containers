@@ -67,6 +67,14 @@ namespace ft {
 										throw std::runtime_error("Cannot dereference NULL Pointer");
 									return *(_ptr + n);
 								}
+			iterator			operator+=(int n) {
+									this->_ptr += n;
+									return *this;
+								}
+			iterator			operator-=(int n) {
+									this->_ptr -= n;
+									return *this;
+								}
 			friend iterator		operator+(const iterator<T>&it, const int&n) {
 									iterator temp(it);
 									temp._ptr += n;
