@@ -70,9 +70,19 @@ void TestIterator() {
 	}
 	{
 		Test test("Offset Dereference Operator");
-		std::string str1 = "Hello World";
-		ft::iterator<char> it1(&str1[0]);
-		test.equal(it1[3], 'l');
-		test.equal(it1[0], 'H');
+		std::string str = "Hello World";
+		ft::iterator<char> it(&str[0]);
+		test.equal(it[3], 'l');
+		test.equal(it[0], 'H');
+	}
+	{
+		Test test("Arithmetic Operators");
+		std::string str = "Hello World";
+		ft::iterator<char> it(&str[0]);
+		ft::iterator<char> it1 = it + 3;
+		ft::iterator<char> it2 = 5 + it;
+		test.equal(*it1, 'l');
+		test.equal(*it2, ' ');
+		test.equal(it2 - it1, 2);
 	}
 }
