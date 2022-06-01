@@ -67,6 +67,29 @@ namespace ft {
 										throw std::runtime_error("Cannot dereference NULL Pointer");
 									return *(_ptr + n);
 								}
+			friend iterator		operator+(const iterator<T>&it, const int&n) {
+									iterator temp(it);
+									temp._ptr += n;
+									return temp;
+								}
+			friend iterator		operator+(const int&n, const iterator<T>&it) {
+									iterator temp(it);
+									temp._ptr += n;
+									return temp;
+								}
+			friend iterator		operator-(const iterator<T>&it, const int&n) {
+									iterator temp(it);
+									temp._ptr -= n;
+									return temp;
+								}
+			friend iterator		operator-(const int&n, const iterator<T>&it) {
+									iterator temp(it);
+									temp._ptr -= n;
+									return temp;
+								}
+			friend int			operator-(const iterator<T>&lhs, const iterator<T>&rhs) {
+									return lhs._ptr - rhs._ptr;
+								}
 			friend bool			operator==(const iterator<T>& lhs, const iterator<T>& rhs) {
 									return (lhs._ptr == rhs._ptr);
 								}
