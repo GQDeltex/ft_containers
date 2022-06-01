@@ -138,7 +138,9 @@ namespace ft {
 										size_type n,
 										value_type val = value_type()
 									);
-			size_type				capacity(void) const;
+			size_type				capacity(void) const {
+										return this->_space_size;
+									}
 			bool					empty(void) const {
 										return (this->_data_size == 0);
 									}

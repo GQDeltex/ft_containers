@@ -143,4 +143,11 @@ void TestVector() {
 		lst.push_back(Dummy());
 		lst.push_back(Dummy());
 	}
+	{
+		Test test("Check Allocated Space with capacity");
+		ft::vector<std::string> lst;
+		test.equal(lst.capacity(), (size_t)0);
+		lst.reserve(10);
+		test.equal(lst.capacity(), (size_t)10);
+	}
 }
