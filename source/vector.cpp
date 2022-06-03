@@ -150,4 +150,20 @@ void TestVector() {
 		lst.reserve(10);
 		test.equal(lst.capacity(), (size_t)10);
 	}
+	{
+		Test test("Resize the vector and truncate/extend");
+		std::string str("Hello World!");
+		ft::vector<char> lst(str.begin(), str.end());
+		test.equal(lst.size(), (size_t)12);
+		lst.resize(5);
+		test.equal(lst.size(), (size_t)5);
+		lst.resize(8, 'X');
+		test.equal(lst.size(), (size_t)8, "Is size the size we requested");
+		test.equal(lst[6], 'X', "Is extended element equal to 'X'");
+		std::cout << lst[4] << std::endl;
+		std::cout << lst[5] << std::endl;
+		std::cout << lst[6] << std::endl;
+		std::cout << lst[7] << std::endl;
+		std::cout << lst[8] << std::endl;
+	}
 }
