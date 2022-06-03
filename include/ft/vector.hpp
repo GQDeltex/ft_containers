@@ -29,7 +29,6 @@ namespace ft {
 
 		protected:
 			value_type*											_space;
-			value_type*											_end_data;
 			size_type											_data_size;
 			size_type											_space_size;
 			allocator_type										_alloc;
@@ -100,7 +99,6 @@ namespace ft {
 										this->_space = this->__copy(this->_space, vec._space, vec._data_size);
 										this->_data_size = vec._data_size;
 										this->_space_size = vec._space_size;
-										this->_end_data = this->_space + this->_data_size;
 										this->__debug("Assingment success");
 										return (*this);
 									}
@@ -137,7 +135,22 @@ namespace ft {
 			void					resize(
 										size_type n,
 										value_type val = value_type()
-									);
+									) {
+										this->__debug("Resizing Vector");
+										if (this->_data_size > n) {
+											this->__debug("Truncating vector, deleting other elements");
+											for (size_type i = n;i < this->_data_size; i++) {
+												this->_alloc.destroy(&(this->_space[i]));
+											}
+											this->_data_size = n;
+										} else if (this->_data_size < n) {
+											this->__debug("Extending vector with val");
+											reserve(n);
+											for(size_type i = this->_data_size; i < n; i++) {
+												push_back(val);
+											}
+										}
+									}
 			size_type				capacity(void) const {
 										return this->_space_size;
 									}
@@ -160,7 +173,6 @@ namespace ft {
 										this->_alloc.deallocate(this->_space, this->_space_size);
 										this->_space = new_space;
 
-										this->_end_data = this->_space+this->_data_size;
 										this->_space_size = n;
 										this->__debug("Allocation success");
 									}
@@ -224,9 +236,8 @@ namespace ft {
 											this->reserve(this->_space_size * 2);
 										}
 										this->__debug("Construct new element at end");
-										this->_alloc.construct(this->_end_data, val);
+										this->_alloc.construct(this->_space + this->_data_size, val);
 										this->__debug("Constructed. Updating meta");
-										this->_end_data++;
 										this->_data_size++;
 									}
 			void					pop_back(void);
@@ -266,7 +277,6 @@ namespace ft {
 										this->_space_size = 0;
 										this->_alloc = alloc;
 										this->_space = NULL;
-										this->_end_data = NULL;
 										this->__debug("--> INIT <--");
 									}
 			void					__debug(const std::string& msg) {
