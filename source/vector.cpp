@@ -251,4 +251,26 @@ void TestVector() {
 		test.equal(lst[2], 'X', "Is 'X' at front");
 		test.equal(lst[3], 'H', "Is beginning still 'H'");
 	}
+	{
+		Test test("Inserting from iterator");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12);
+		test.equal(lst[11], '!');
+		std::string str2("BURN!");
+		lst.insert(lst.end(), str2.begin(), str2.end());
+		test.equal(lst.size(), (size_t)17, "Is size correctly updated");
+		test.equal(lst[11], '!', "Is end still '!'");
+		test.equal(lst[12], 'B', "Is concatenated string there");
+		test.equal(lst[16], '!', "Is end of second string there");
+		test.equal(lst[0], 'H', "Is 'H' in beginning");
+		std::string str3("NOW");
+		lst.insert(lst.begin(), str3.begin(), str3.end());
+		test.equal(lst.size(), (size_t)20, "Is length correct");
+		test.equal(lst[14], '!', "Is end still '!'");
+		test.equal(lst[19], '!', "Is added '!' at end");
+		test.equal(lst[0], 'N');
+		test.equal(lst[2], 'W');
+		test.equal(lst[3], 'H', "Is beginning still 'H'");
+	}
 }

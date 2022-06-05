@@ -310,7 +310,13 @@ namespace ft {
 										iterator position,
 										InputIterator first,
 										InputIterator last
-									);
+									) {
+										this->__debug("Inserting from Iterator");
+										for (; first != last; first++) {
+											position = this->insert(position, *first);
+											position++;
+										}
+									}
 			iterator				erase(
 										iterator position
 									);
