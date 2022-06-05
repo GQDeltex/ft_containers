@@ -166,4 +166,12 @@ void TestVector() {
 		std::cout << lst[7] << std::endl;
 		std::cout << lst[8] << std::endl;
 	}
+	{
+		Test test("Clear Vector");
+		std::string str("Hello World!");
+		ft::vector<char> lst(str.begin(), str.end());
+		test.equal(lst.size(), (size_t)12);
+		lst.clear();
+		test.equal(lst.size(), (size_t)0);
+	}
 }
