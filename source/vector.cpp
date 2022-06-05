@@ -231,4 +231,24 @@ void TestVector() {
 		test.equal(lst[0], 'X', "Is 'X' at front");
 		test.equal(lst[1], 'H', "Is beginning still 'H'");
 	}
+	{
+		Test test("Inserting multiple elements");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12);
+		test.equal(lst[11], '!');
+		lst.insert(lst.end(), 3, 'X');
+		test.equal(lst.size(), (size_t)15, "Is size now 15");
+		test.equal(lst[11], '!', "Is end still '!'");
+		test.equal(lst[12], 'X', "Is last 3 'X'");
+		test.equal(lst[14], 'X', "Is last element 'X'");
+		test.equal(lst[0], 'H', "Is 'H' in beginning");
+		lst.insert(lst.begin(), 3, 'X');
+		test.equal(lst.size(), (size_t)18, "Is length correct");
+		test.equal(lst[14], '!', "Is end still '!'");
+		test.equal(lst[17], 'X', "Is added 'X' at end");
+		test.equal(lst[0], 'X', "Is 'X' at front");
+		test.equal(lst[2], 'X', "Is 'X' at front");
+		test.equal(lst[3], 'H', "Is beginning still 'H'");
+	}
 }

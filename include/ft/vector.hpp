@@ -264,6 +264,7 @@ namespace ft {
 										this->__debug("Inserting single element");
 										if (position == this->end()) {
 											this->push_back(val);
+											return iterator(this->_space + this->_data_size - 1);
 										} else {
 											vector<value_type> backup = *this;
 											size_type pos = 0;
@@ -281,19 +282,28 @@ namespace ft {
 											for(size_type i = pos; i < backup._data_size; i++) {
 												this->_alloc.destroy(this->_space + i);
 											}
+											// Update the _data_size to the last 'stable' element
 											this->_data_size = pos;
+											// Add the new element
 											this->push_back(val);
+											// Add back all the 'old' elements after that
 											for(size_type i = pos; i < backup._data_size; i++) {
 												this->push_back(backup[i]);
 											}
+											return iterator(this->_space + pos);
 										}
-										return iterator(this->_space + this->_data_size - 1);
 									}
 			void					insert(
 										iterator position,
 										size_type n,
 										const value_type& val
-									);
+									) {
+										this->__debug("Inserting multipe elements");
+										for (size_type i=0; i < n; i++) {
+											position = this->insert(position, val);
+											position++;
+										}
+									}
 			template <
 				class InputIterator
 			> void					insert(
