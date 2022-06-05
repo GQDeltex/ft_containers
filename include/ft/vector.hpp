@@ -252,7 +252,11 @@ namespace ft {
 										this->__debug("Constructed. Updating meta");
 										this->_data_size++;
 									}
-			void					pop_back(void);
+			void					pop_back(void) {
+										this->__debug("Deleting last element");
+										this->_alloc.destroy(this->_space + this->_data_size);
+										this->_data_size--;
+									}
 			iterator				insert(
 										iterator position,
 										const value_type& val

@@ -202,4 +202,15 @@ void TestVector() {
 		test.equal(lst[0], 'X');
 		test.equal(lst[3], 'X');
 	}
+	{
+		Test test("Assing from value/type (place content)");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12);
+		test.equal(lst[10], 'd');
+		test.equal(lst[11], '!');
+		lst.pop_back();
+		test.equal(lst.size(), (size_t)11);
+		test.equal(lst[10], 'd');
+	}
 }
