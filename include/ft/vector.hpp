@@ -221,7 +221,13 @@ namespace ft {
 			> void					assign(
 										InputIterator first,
 										InputIterator last
-									);
+									) {
+										this->__debug("Assigning from Iterator");
+										this->clear();
+										for(;first != last; first++) {
+											this->push_back(*first);
+										}
+									}
 			void					assign(
 										size_type n,
 										const value_type& val
