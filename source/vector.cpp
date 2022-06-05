@@ -213,4 +213,22 @@ void TestVector() {
 		test.equal(lst.size(), (size_t)11);
 		test.equal(lst[10], 'd');
 	}
+	{
+		Test test("Inserting single element");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12);
+		test.equal(lst[11], '!');
+		lst.insert(lst.end(), 'X');
+		test.equal(lst.size(), (size_t)13);
+		test.equal(lst[11], '!');
+		test.equal(lst[12], 'X');
+		test.equal(lst[0], 'H');
+		lst.insert(lst.begin(), 'X');
+		test.equal(lst.size(), (size_t)14, "Is length correct");
+		test.equal(lst[12], '!', "Is end still '!'");
+		test.equal(lst[13], 'X', "Is added 'X' at end");
+		test.equal(lst[0], 'X', "Is 'X' at front");
+		test.equal(lst[1], 'H', "Is beginning still 'H'");
+	}
 }

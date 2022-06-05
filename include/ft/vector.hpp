@@ -260,7 +260,35 @@ namespace ft {
 			iterator				insert(
 										iterator position,
 										const value_type& val
-									);
+									) {
+										this->__debug("Inserting single element");
+										if (position == this->end()) {
+											this->push_back(val);
+										} else {
+											vector<value_type> backup = *this;
+											size_type pos = 0;
+											iterator it = this->begin();
+											// Where are we actually?
+											while(it != position && pos < this->_data_size) {
+												it++;
+												pos++;
+											}
+											// Oh pointer not in vector? Well, here comes the exception!
+											if (pos == this->_data_size) {
+												throw std::runtime_error("Not a valid pointer to this vector");
+											}
+											// Delete everything after where we want to insert
+											for(size_type i = pos; i < backup._data_size; i++) {
+												this->_alloc.destroy(this->_space + i);
+											}
+											this->_data_size = pos;
+											this->push_back(val);
+											for(size_type i = pos; i < backup._data_size; i++) {
+												this->push_back(backup[i]);
+											}
+										}
+										return iterator(this->_space + this->_data_size - 1);
+									}
 			void					insert(
 										iterator position,
 										size_type n,
