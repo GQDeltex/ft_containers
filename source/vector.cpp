@@ -181,4 +181,12 @@ void TestVector() {
 		test.equal(lst[0], 'N');
 		test.equal(lst[8], '!');
 	}
+	{
+		Test test("Clear Vector");
+		std::string str("Hello World!");
+		ft::vector<char> lst(str.begin(), str.end());
+		test.equal(lst.size(), (size_t)12);
+		lst.clear();
+		test.equal(lst.size(), (size_t)0);
+	}
 }

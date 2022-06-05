@@ -271,7 +271,13 @@ namespace ft {
 										iterator last
 									);
 			void					swap(vector& vec);
-			void					clear(void);
+			void					clear(void) {
+										this->__debug("Clearing Vector!");
+										for(size_type i = 0;i < this->_data_size;i++) {
+											this->_alloc.destroy(this->_space + i);
+										}
+										this->_data_size = 0;
+									}
 
 			// Allocator
 			allocator_type			get_allocator(void) const {
