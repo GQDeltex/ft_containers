@@ -168,6 +168,14 @@ void TestVector() {
 		test.equal(lst[6], 'X', "Is extended element equal to 'X'");
 	}
 	{
+		Test test("Clear Vector");
+		std::string str("Hello World!");
+		ft::vector<char> lst(str.begin(), str.end());
+		test.equal(lst.size(), (size_t)12);
+		lst.clear();
+		test.equal(lst.size(), (size_t)0);
+	}
+	{
 		Test test("Assing from Iterator (replace content)");
 		std::string str1("Hello World!");
 		ft::vector<char> lst(str1.begin(), str1.end());
@@ -182,11 +190,16 @@ void TestVector() {
 		test.equal(lst[8], '!');
 	}
 	{
-		Test test("Clear Vector");
-		std::string str("Hello World!");
-		ft::vector<char> lst(str.begin(), str.end());
+		Test test("Assing from value/type (place content)");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
 		test.equal(lst.size(), (size_t)12);
-		lst.clear();
-		test.equal(lst.size(), (size_t)0);
+		test.equal(lst[0], 'H');
+		test.equal(lst[8], 'r');
+		test.equal(lst[9], 'l');
+		lst.assign(4, 'X');
+		test.equal(lst.size(), (size_t)4);
+		test.equal(lst[0], 'X');
+		test.equal(lst[3], 'X');
 	}
 }
