@@ -231,7 +231,13 @@ namespace ft {
 			void					assign(
 										size_type n,
 										const value_type& val
-									);
+									) {
+										this->__debug("Assigning from value/type");
+										this->clear();
+										for(size_type i = 0;i < n;i++) {
+											this->push_back(val);
+										}
+									}
 			void					push_back(
 										const value_type& val
 									) {
