@@ -1,7 +1,13 @@
-#include "../include/ft/vector.hpp"
 #include "Test.hpp"
 #include "Dummy.hpp"
 #include <vector>
+
+#define USE_STD 0
+#if USE_STD == 1
+namespace ft = std;
+#else
+# include "../include/ft/vector.hpp"
+#endif
 
 void TestVector() {
 	{
@@ -160,10 +166,19 @@ void TestVector() {
 		lst.resize(8, 'X');
 		test.equal(lst.size(), (size_t)8, "Is size the size we requested");
 		test.equal(lst[6], 'X', "Is extended element equal to 'X'");
-		std::cout << lst[4] << std::endl;
-		std::cout << lst[5] << std::endl;
-		std::cout << lst[6] << std::endl;
-		std::cout << lst[7] << std::endl;
-		std::cout << lst[8] << std::endl;
+	}
+	{
+		Test test("Assing from Iterator (replace content)");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12);
+		test.equal(lst[0], 'H');
+		test.equal(lst[8], 'r');
+		test.equal(lst[9], 'l');
+		std::string str2("Nice Day!");
+		lst.assign(str2.begin(), str2.end());
+		test.equal(lst.size(), (size_t)9);
+		test.equal(lst[0], 'N');
+		test.equal(lst[8], '!');
 	}
 }
