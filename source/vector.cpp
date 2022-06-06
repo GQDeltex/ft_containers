@@ -289,4 +289,17 @@ void TestVector() {
 		test.equal(lst[3], ' ', "Is fourth element now the third");
 		test.equal(lst.size(), (size_t)10, "Is vector size smaller now");
 	}
+	{
+		Test test("Erase range of elements");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12, "Is length 12");
+		test.equal(lst[0], 'H', "Is first element 'H'");
+		lst.erase(lst.begin(), lst.begin() + 2);
+		test.equal(lst[0], 'l', "Is third element now the first");
+		test.equal(lst.size(), (size_t)10, "Is vector size smaller now");
+		lst.erase(lst.end() - 2, lst.end());
+		test.equal(lst[7], 'l', "Is third last element now the last");
+		test.equal(lst.size(), (size_t)8, "Is vector size smaller now");
+	}
 }

@@ -321,34 +321,43 @@ namespace ft {
 										iterator position
 									) {
 										this->__debug("Erase single Element");
-										vector<value_type> backup = *this;
-										size_type pos = 0;
-										iterator it = this->begin();
-										// Where are we actually?
-										while(it != position && pos < this->_data_size) {
-											it++;
-											pos++;
-										}
-										// Oh pointer not in vector? Well, here comes the exception!
-										if (pos == this->_data_size) {
-											throw std::runtime_error("Not a valid pointer to this vector");
-										}
-										// Delete everything after where we want to erase
-										for(size_type i = pos; i < backup._data_size; i++) {
-											this->_alloc.destroy(this->_space + i);
-										}
-										// Update the _data_size to the last 'stable' element
-										this->_data_size = pos;
-										// Add back all the 'old' elements after that
-										for(size_type i = pos + 1; i < backup._data_size; i++) {
-											this->push_back(backup[i]);
-										}
-										return iterator(this->_space + pos);
+										return this->erase(position, position+1);
 									}
 			iterator				erase(
 										iterator first,
 										iterator last
-									);
+									) {
+										this->__debug("Erase range of Elements");
+										vector<value_type> backup = *this;
+										size_type start_pos = 0;
+										size_type end_pos = 0;
+										iterator it = this->begin();
+										// Where are we actually?
+										while(it != first && start_pos < this->_data_size) {
+											it++;
+											start_pos++;
+										}
+										end_pos = start_pos;
+										while(it != last && end_pos <= this->_data_size) {
+											it++;
+											end_pos++;
+										}
+										// Oh pointer not in vector? Well, here comes the exception!
+										if (start_pos == this->_data_size || end_pos > this->_data_size) {
+											throw std::runtime_error("Not a valid pointer to this vector");
+										}
+										// Delete everything after where we want to erase
+										for(size_type i = start_pos; i < end_pos; i++) {
+											this->_alloc.destroy(this->_space + i);
+										}
+										// Update the _data_size to the last 'stable' element
+										this->_data_size = start_pos;
+										// Add back all the 'old' elements after that
+										for(size_type i = end_pos; i < backup._data_size; i++) {
+											this->push_back(backup[i]);
+										}
+										return iterator(this->_space + start_pos);
+									}
 			void					swap(vector& vec);
 			void					clear(void) {
 										this->__debug("Clearing Vector!");
