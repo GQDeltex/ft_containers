@@ -8,6 +8,7 @@
 # include <iostream>
 
 # include "iterator.hpp"
+# include "reverse_iterator.hpp"
 
 namespace ft {
 	template <
@@ -22,7 +23,7 @@ namespace ft {
 			typedef typename allocator_type::const_pointer		const_pointer;
 			typedef ft::iterator<T>								iterator;
 			typedef const iterator								const_iterator;
-			typedef typename std::reverse_iterator<iterator>	reverse_iterator;
+			typedef typename ft::reverse_iterator<T>			reverse_iterator;
 			typedef const reverse_iterator						const_reverse_iterator;
 			typedef std::iterator_traits<iterator>				difference_type;
 			typedef size_t										size_type;
@@ -118,11 +119,20 @@ namespace ft {
 			const_iterator			end(void) const {
 										return iterator(this->_space + this->_data_size);
 									}
-			reverse_iterator		rbegin(void);
-			const_reverse_iterator	rbegin(void) const;
-			reverse_iterator		rend(void);
-			const_reverse_iterator	rend(void) const;
-
+			reverse_iterator		rbegin(void) {
+										this->__debug("Getting rbegin reverse_iterator");
+										return reverse_iterator(this->_space + this->_data_size - 1);
+									}
+			const_reverse_iterator	rbegin(void) const {
+										return reverse_iterator(this->_space + this->_data_size - 1);
+									}
+			reverse_iterator		rend(void) {
+										this->__debug("Getting rend reverse_iterator");
+										return reverse_iterator(this->_space - 1);
+									}
+			const_reverse_iterator	rend(void) const {
+										return reverse_iterator(this->_space - 1);
+									}
 			// Capacity
 			size_type				size(void) const {
 										return this->_data_size;
