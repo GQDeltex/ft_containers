@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/05/31 15:12:41 by pstengl          ###   ########.fr        #
+#    Updated: 2022/06/06 17:18:23 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ NORMFLAGS:=
 SRCFILES:=\
 	main.cpp\
 	vector.cpp\
-	iterator.cpp
+	iterator.cpp\
+	reverse_iterator.cpp
 
 # ------------------------------------------
 # Do not change anything beyond this point!
