@@ -319,7 +319,32 @@ namespace ft {
 									}
 			iterator				erase(
 										iterator position
-									);
+									) {
+										this->__debug("Erase single Element");
+										vector<value_type> backup = *this;
+										size_type pos = 0;
+										iterator it = this->begin();
+										// Where are we actually?
+										while(it != position && pos < this->_data_size) {
+											it++;
+											pos++;
+										}
+										// Oh pointer not in vector? Well, here comes the exception!
+										if (pos == this->_data_size) {
+											throw std::runtime_error("Not a valid pointer to this vector");
+										}
+										// Delete everything after where we want to erase
+										for(size_type i = pos; i < backup._data_size; i++) {
+											this->_alloc.destroy(this->_space + i);
+										}
+										// Update the _data_size to the last 'stable' element
+										this->_data_size = pos;
+										// Add back all the 'old' elements after that
+										for(size_type i = pos + 1; i < backup._data_size; i++) {
+											this->push_back(backup[i]);
+										}
+										return iterator(this->_space + pos);
+									}
 			iterator				erase(
 										iterator first,
 										iterator last
