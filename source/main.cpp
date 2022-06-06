@@ -5,9 +5,11 @@ int Test::_failed_cases = 0;
 
 void TestVector();
 void TestIterator();
+void TestReverseIterator();
 
 int main(void) {
 	TestIterator();
+	TestReverseIterator();
 	TestVector();
 	Test test;
 	test.summary();
