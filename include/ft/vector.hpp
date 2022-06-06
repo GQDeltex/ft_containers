@@ -416,10 +416,12 @@ template<
 			typename ft::vector<T>::iterator itl = lhs.begin();
 			typename ft::vector<T>::iterator itr = rhs.begin();
 			while(true) {
+				if (itl == lhs.end() && itr == rhs.end())
+					break;
+				if (itl == lhs.end() || itr == rhs.end())
+					return false;
 				if (*itl != *itr)
 					return false;
-				if (itl == lhs.end() || itr == rhs.end())
-					break;
 				itl++;
 				itr++;
 			}
@@ -438,25 +440,47 @@ template<
 >bool	operator< (
 			const ft::vector<T>& lhs,
 			const ft::vector<T>& rhs
-		);
+		) {
+			typename ft::vector<T>::iterator itl = lhs.begin();
+			typename ft::vector<T>::iterator itr = rhs.begin();
+			while(true) {
+				if (itl == lhs.end() && itr == rhs.end())
+					break;
+				if (itl == lhs.end() || itr == rhs.end())
+					return true;
+				if (*itl < *itr)
+					return true;
+				if (*itl > *itr)
+					return true;
+				itl++;
+				itr++;
+			}
+			return false;
+		}
 template<
 	class T
 >bool	operator<=(
 			const ft::vector<T>& lhs,
 			const ft::vector<T>& rhs
-		);
+		) {
+			return !(rhs < lhs);
+		}
 template<
 	class T
 >bool	operator> (
 			const ft::vector<T>& lhs,
 			const ft::vector<T>& rhs
-		);
+		) {
+			return rhs < lhs;
+		}
 template<
 	class T
 >bool	operator>=(
 			const ft::vector<T>& lhs,
 			const ft::vector<T>& rhs
-		);
+		) {
+			return !(lhs < rhs);
+		}
 template<
 	class T
 >void	swap(
