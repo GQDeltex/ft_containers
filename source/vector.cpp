@@ -302,4 +302,16 @@ void TestVector() {
 		test.equal(lst[7], 'l', "Is third last element now the last");
 		test.equal(lst.size(), (size_t)8, "Is vector size smaller now");
 	}
+	{
+		Test test("Swap two vectors");
+		std::string str1("Hello World!");
+		std::string str2("This is nice");
+		ft::vector<char> lst1(str1.begin(), str1.end());
+		ft::vector<char> lst2(str2.begin(), str2.end());
+		ft::vector<char>::iterator it = lst1.begin() + 2;
+		lst1.swap(lst2);
+		test.equal(it, lst2.begin() + 2);
+		swap(lst1, lst2);
+		test.equal(it, lst1.begin() + 2);
+	}
 }

@@ -358,7 +358,18 @@ namespace ft {
 										}
 										return iterator(this->_space + start_pos);
 									}
-			void					swap(vector& vec);
+			void					swap(vector& vec) {
+										this->__debug("Swapping vectors");
+										value_type	*backup_space = vec._space;
+										size_type	backup_data_size = vec._data_size;
+										size_type	backup_space_size = vec._space_size;
+										vec._space = this->_space;
+										vec._data_size = this->_data_size;
+										vec._space_size = this->_space_size;
+										this->_space = backup_space;
+										this->_data_size = backup_data_size;
+										this->_space_size = backup_space_size;
+									}
 			void					clear(void) {
 										this->__debug("Clearing Vector!");
 										for(size_type i = 0;i < this->_data_size;i++) {
@@ -436,6 +447,7 @@ template<
 >void	swap(
 			ft::vector<T>& lhs,
 			ft::vector<T>& rhs
-		);
-
+		) {
+			lhs.swap(rhs);
+		}
 #endif
