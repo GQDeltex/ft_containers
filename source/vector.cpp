@@ -314,4 +314,16 @@ void TestVector() {
 		swap(lst1, lst2);
 		test.equal(it, lst1.begin() + 2);
 	}
+	{
+		Test test("Equal/Unequal operator");
+		std::string str1("Hello World!");
+		std::string str2("This is nice");
+		std::string str3("Hello World?");
+		ft::vector<char> lst1(str1.begin(), str1.end());
+		ft::vector<char> lst2(str2.begin(), str2.end());
+		ft::vector<char> lst3(str3.begin(), str3.end());
+		test.equal(lst1 == lst2, false);
+		test.equal(lst1 != lst2, true);
+		test.equal(lst3 == lst1, false);
+	}
 }
