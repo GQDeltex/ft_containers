@@ -109,7 +109,6 @@ namespace ft {
 										return iterator(this->_space);
 									}
 			const_iterator			begin(void) const {
-										this->__debug("Getting const begin iterator");
 										return iterator(this->_space);
 									}
 			iterator				end(void) {
@@ -117,7 +116,6 @@ namespace ft {
 										return iterator(this->_space + this->_data_size);
 									}
 			const_iterator			end(void) const {
-										this->__debug("Getting const end iterator");
 										return iterator(this->_space + this->_data_size);
 									}
 			reverse_iterator		rbegin(void);
@@ -411,13 +409,30 @@ template<
 > bool	operator==(
 			const ft::vector<T>& lhs,
 			const ft::vector<T>& rhs
-		);
+		) {
+			// If size doesn't match they can't be equal
+			if (lhs.size() != rhs.size())
+				return false;
+			typename ft::vector<T>::iterator itl = lhs.begin();
+			typename ft::vector<T>::iterator itr = rhs.begin();
+			while(true) {
+				if (*itl != *itr)
+					return false;
+				if (itl == lhs.end() || itr == rhs.end())
+					break;
+				itl++;
+				itr++;
+			}
+			return true;
+		}
 template<
 	class T
 >bool	operator!=(
 			const ft::vector<T>& lhs,
 			const ft::vector<T>& rhs
-		);
+		) {
+			return !(lhs == rhs);
+		}
 template<
 	class T
 >bool	operator< (
