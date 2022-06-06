@@ -2,9 +2,12 @@
 #include "Dummy.hpp"
 #include <vector>
 
-#define USE_STD 0
+#ifndef USE_STD
+# define USE_STD 0
+#endif
+
 #if USE_STD == 1
-namespace ft = std;
+  namespace ft = std;
 #else
 # include "../include/ft/vector.hpp"
 #endif
@@ -272,5 +275,18 @@ void TestVector() {
 		test.equal(lst[0], 'N');
 		test.equal(lst[2], 'W');
 		test.equal(lst[3], 'H', "Is beginning still 'H'");
+	}
+	{
+		Test test("Erase single element");
+		std::string str1("Hello World!");
+		ft::vector<char> lst(str1.begin(), str1.end());
+		test.equal(lst.size(), (size_t)12, "Is length 12");
+		test.equal(lst[0], 'H', "Is first element 'H'");
+		lst.erase(lst.begin());
+		test.equal(lst[0], 'e', "Is second element now the first");
+		test.equal(lst.size(), (size_t)11, "Is vector size smaller now");
+		lst.erase(lst.begin() + 3);
+		test.equal(lst[3], ' ', "Is fourth element now the third");
+		test.equal(lst.size(), (size_t)10, "Is vector size smaller now");
 	}
 }
