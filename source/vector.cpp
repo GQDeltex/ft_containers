@@ -55,7 +55,7 @@ void TestVector() {
 		test.equal(lst.empty(), false);
 		ft::vector<char>::iterator it = lst.begin();
 		std::string::iterator ref = test_str.begin();
-		while (it != lst.end() || ref != test_str.end()) {
+		while (it != lst.end() && ref != test_str.end()) {
 			test.equal(*it, *ref);
 			ref++;
 			it++;
@@ -338,5 +338,31 @@ void TestVector() {
 		test.equal(lst1 >= lst2, false);
 		test.equal(lst1 <= lst1, true);
 		test.equal(lst3 > lst1, true);
+	}
+	{
+		Test test("Iterators: rbegin() get the beginning of the reverse_iterator");
+		std::string test_str("Hello World");
+		ft::vector<char> lst(test_str.begin(), test_str.end());
+		test.equal(lst.empty(), false);
+		ft::vector<char>::reverse_iterator start = lst.rbegin();
+		test.equal(*start, 'd');
+		start++;
+		test.equal(*start, 'l');
+	}
+	{
+		Test test("Iterators: end() get the end of the reverse_iterator");
+		std::string test_str("Hello World");
+		ft::vector<char> lst(test_str.begin(), test_str.end());
+		test.equal(lst.empty(), false);
+		ft::vector<char>::reverse_iterator it = lst.rbegin();
+		std::string::reverse_iterator ref = test_str.rbegin();
+		while (it != lst.rend() && ref != test_str.rend()) {
+			if (!test.equal(*it, *ref))
+				break;
+			ref++;
+			it++;
+		}
+		test.equal(it == lst.rend(), true);
+		test.equal(ref == test_str.rend(), true);
 	}
 }
