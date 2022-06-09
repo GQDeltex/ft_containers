@@ -7,12 +7,14 @@ void TestVector();
 void TestIterator();
 void TestReverseIterator();
 void TestIsIntegral();
+void TestEnableIf();
 
 int main(void) {
 	TestIterator();
 	TestReverseIterator();
 	TestVector();
 	TestIsIntegral();
+	TestEnableIf();
 	Test test;
 	test.summary();
 }
