@@ -1,7 +1,7 @@
 #include "Test.hpp"
 
 #ifndef USE_STD
-# define USE_STD 1
+# define USE_STD 0
 #endif
 
 #if USE_STD == 0
