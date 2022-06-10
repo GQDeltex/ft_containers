@@ -9,6 +9,8 @@
 
 # include "iterator.hpp"
 # include "reverse_iterator.hpp"
+# include "is_integral.hpp"
+# include "enable_if.hpp"
 
 namespace ft {
 	template <
@@ -58,7 +60,7 @@ namespace ft {
 				class InputIterator
 			>						vector(
 										InputIterator first,
-										InputIterator last,
+										typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last,
 										const allocator_type& alloc = allocator_type()
 									) {
 										this->__debug("Range Constructor");
@@ -228,7 +230,7 @@ namespace ft {
 				class InputIterator
 			> void					assign(
 										InputIterator first,
-										InputIterator last
+										typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last
 									) {
 										this->__debug("Assigning from Iterator");
 										this->clear();
@@ -317,7 +319,7 @@ namespace ft {
 			> void					insert(
 										iterator position,
 										InputIterator first,
-										InputIterator last
+										typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last
 									) {
 										this->__debug("Inserting from Iterator");
 										for (; first != last; first++) {
