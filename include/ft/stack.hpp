@@ -48,6 +48,42 @@ namespace ft {
 			void				pop() {
 									this->cont.pop_back();
 								}
+			friend bool			operator== (
+									const ft::stack<T,Container>& lhs,
+									const ft::stack<T,Container>& rhs
+								) {
+									return lhs.cont == rhs.cont;
+								}
+			friend bool			operator!= (
+									const ft::stack<T,Container>& lhs,
+									const ft::stack<T,Container>& rhs
+								) {
+									return lhs.cont != rhs.cont;
+								}
+			friend bool			operator< (
+									const ft::stack<T,Container>& lhs,
+									const ft::stack<T,Container>& rhs
+								) {
+									return lhs.cont < rhs.cont;
+								}
+			friend bool			operator> (
+									const ft::stack<T,Container>& lhs,
+									const ft::stack<T,Container>& rhs
+								) {
+									return lhs.cont > rhs.cont;
+								}
+			friend bool			operator<= (
+									const ft::stack<T,Container>& lhs,
+									const ft::stack<T,Container>& rhs
+								) {
+									return lhs.cont <= rhs.cont;
+								}
+			friend bool			operator>= (
+									const ft::stack<T,Container>& lhs,
+									const ft::stack<T,Container>& rhs
+								) {
+									return lhs.cont >= rhs.cont;
+								}
 	};
 }
 
