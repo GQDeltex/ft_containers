@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/06/11 15:23:35 by pstengl          ###   ########.fr        #
+#    Updated: 2022/06/11 17:04:32 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -146,3 +146,9 @@ ifeq ($(wildcard $(TESTS)/test.sh),)
 	$(error "Test Script test.sh not found in $(TESTS)")
 endif
 	@./tests/test.sh
+
+# Run with external script
+testext: norm fclean
+	mkdir -p $(BINARIES)
+	$(CC) $(CFLAGS) $(SOURCE)/external.cpp -o $(BINARIES)/$(NAME) $(LDFLAGS) $(LDLIBS)
+	$(BINARIES)/ft_containers 1234
