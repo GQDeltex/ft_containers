@@ -11,6 +11,7 @@
 # include "reverse_iterator.hpp"
 # include "is_integral.hpp"
 # include "enable_if.hpp"
+# include "compare.hpp"
 
 namespace ft {
 	template <
@@ -433,19 +434,7 @@ template<
 			// If size doesn't match they can't be equal
 			if (lhs.size() != rhs.size())
 				return false;
-			typename ft::vector<T>::iterator itl = lhs.begin();
-			typename ft::vector<T>::iterator itr = rhs.begin();
-			while(true) {
-				if (itl == lhs.end() && itr == rhs.end())
-					break;
-				if (itl == lhs.end() || itr == rhs.end())
-					return false;
-				if (*itl != *itr)
-					return false;
-				itl++;
-				itr++;
-			}
-			return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 template<
 	class T,
@@ -463,21 +452,7 @@ template<
 			const ft::vector<T, Alloc>& lhs,
 			const ft::vector<T, Alloc>& rhs
 		) {
-			typename ft::vector<T>::iterator itl = lhs.begin();
-			typename ft::vector<T>::iterator itr = rhs.begin();
-			while(true) {
-				if (itl == lhs.end() && itr == rhs.end())
-					break;
-				if (itl == lhs.end() || itr == rhs.end())
-					return true;
-				if (*itl < *itr)
-					return true;
-				if (*itl > *itr)
-					return true;
-				itl++;
-				itr++;
-			}
-			return false;
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 template<
 	class T,
