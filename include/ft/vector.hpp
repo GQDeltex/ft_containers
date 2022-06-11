@@ -94,6 +94,8 @@ namespace ft {
 										this->__debug("Assignment operator called");
 										if (this->_space_size > 0) {
 											this->__debug("Freeing old existing space");
+											for (size_type i = 0; i < this->_data_size; i++)
+												this->_alloc.destroy(this->_space + i);
 											this->_alloc.deallocate(this->_space, this->_space_size);
 										}
 										// Start with new

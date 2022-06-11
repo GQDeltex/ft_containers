@@ -147,10 +147,14 @@ void TestVector() {
 	}
 	{
 		Test test("Leak test with dummy class");
-		ft::vector<Dummy> lst;
-		lst.push_back(Dummy());
-		lst.push_back(Dummy());
-		lst.push_back(Dummy());
+		ft::vector<Dummy> lst1;
+		lst1.push_back(Dummy());
+		lst1.push_back(Dummy());
+		lst1.push_back(Dummy());
+		ft::vector<Dummy> lst2;
+		lst2.push_back(Dummy());
+		lst2 = lst1;
+		lst2.push_back(Dummy());
 	}
 	{
 		Test test("Check Allocated Space with capacity");
