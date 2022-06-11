@@ -1,12 +1,12 @@
 #include "Test.hpp"
 #include "Dummy.hpp"
-#include <vector>
 
 #ifndef USE_STD
 # define USE_STD 0
 #endif
 
 #if USE_STD == 1
+# include <vector>
   namespace ft = std;
 #else
 # include "../include/ft/vector.hpp"
@@ -16,8 +16,7 @@ void TestVector() {
 	{
 		Test test("Constructor Default: Construct an empty list");
 		ft::vector<std::string> lst;
-		std::vector<std::string> vec;
-		test.equal(lst.empty(), vec.empty());
+		test.equal(lst.empty(), true);
 	}
 	{
 		Test test("Constructor Fill: Fill the list with an item");
