@@ -124,6 +124,18 @@ void TestVector() {
 		test.equal(lst.back(), std::string("Hi there!"), "is last element correct");
 	}
 	{
+		Test test("at(): get last item");
+		ft::vector<std::string> lst;
+		lst.push_back("Hello World!");
+		lst.push_back("Hi there!");
+		test.equal(lst.at(1), std::string("Hi there!"), "element at 1 correct");
+		try {
+			test.equal(lst.at(5), std::string());
+		} catch (std::exception& e) {
+			// Ok!
+		}
+	}
+	{
 		Test test("get_allocator(): get the allocator");
 		ft::vector<std::string> lst;
 		test.equal(lst.get_allocator(), std::allocator<std::string>(), "is allocator std::allocator");

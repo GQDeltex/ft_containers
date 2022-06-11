@@ -3,6 +3,7 @@
 
 # include <cstddef>
 # include <memory>
+# include <stdexcept>
 
 # include <iostream>
 
@@ -202,6 +203,10 @@ namespace ft {
 			reference				at(
 										size_type n
 									) {
+										if (n < 0)
+											throw std::runtime_error("Index < 0");
+										if (n > this->_data_size)
+											throw std::runtime_error("Index > data_size");
 										return this->_space[n];
 									}
 			const_reference			at(
@@ -402,7 +407,8 @@ namespace ft {
 										this->__debug("--> INIT <--");
 									}
 			void					__debug(const std::string& msg) {
-										std::cout << "\e[1;33m" << msg << "\e[0m" << std::endl;
+										(void)msg;
+										//std::cout << "\e[1;33m" << msg << "\e[0m" << std::endl;
 									}
 			value_type				*__copy(value_type *dest, value_type *src, size_type len) {
 										if (len > 0) {
