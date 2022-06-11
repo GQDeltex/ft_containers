@@ -75,8 +75,8 @@ namespace ft {
 									this->_ptr -= n;
 									return *this;
 								}
-			friend iterator		operator+(const iterator<T>&it, const int&n) {
-									iterator temp(it);
+			iterator			operator+(const int&n) {
+									iterator temp(*this);
 									temp._ptr += n;
 									return temp;
 								}
@@ -85,8 +85,8 @@ namespace ft {
 									temp._ptr += n;
 									return temp;
 								}
-			friend iterator		operator-(const iterator<T>&it, const int&n) {
-									iterator temp(it);
+			iterator			operator-(const int&n) {
+									iterator temp(*this);
 									temp._ptr -= n;
 									return temp;
 								}
