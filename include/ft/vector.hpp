@@ -216,12 +216,12 @@ namespace ft {
 										return this->_space[0];
 									}
 			reference				back(void) {
-										if (this->size > 0)
+										if (this->size() == 0)
 											return this->_space[0];
 										return this->_space[this->_data_size - 1];
 									}
 			const_reference			back(void) const {
-										if (this->size > 0)
+										if (this->size() == 0)
 											return this->_space[0];
 										return this->_space[this->_data_size - 1];
 									}
@@ -265,7 +265,7 @@ namespace ft {
 									}
 			void					pop_back(void) {
 										this->__debug("Deleting last element");
-										this->_alloc.destroy(this->_space + this->_data_size);
+										this->_alloc.destroy(this->_space + this->_data_size - 1);
 										this->_data_size--;
 									}
 			iterator				insert(

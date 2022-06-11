@@ -76,6 +76,24 @@ void TestVector() {
 		test.equal(lst[2], std::string("Ok cool"), "is lst[2] right content");
 	}
 	{
+		Test test("pop_back");
+		ft::vector<std::string> lst;
+		lst.push_back("Hello World!");
+		test.notnull(lst[0], "is lst[0] not NULL");
+		test.equal(lst[0], std::string("Hello World!"), "is lst[0] right content");
+		lst.push_back("Hi there!");
+		test.notnull(lst[1], "is lst[1] not NULL");
+		test.equal(lst[1], std::string("Hi there!"), "is lst[1] right content");
+		lst.push_back("Ok cool");
+		test.notnull(lst[2], "is lst[2] not NULL");
+		test.equal(lst[2], std::string("Ok cool"), "is lst[2] right content");
+		test.equal(lst.size(), (size_t)3);
+		lst.pop_back();
+		test.equal(lst.size(), (size_t)2);
+		test.notnull(lst[1], "is lst[1] not NULL");
+		test.equal(lst[1], std::string("Hi there!"), "is lst[1] right content");
+	}
+	{
 		Test test("empty(): check if list is empty");
 		ft::vector<std::string> lst;
 		test.equal(lst.empty(), true, "is lst empty");
@@ -97,6 +115,13 @@ void TestVector() {
 		lst.push_back("Hello World!");
 		lst.push_back("Hi there!");
 		test.equal(lst.front(), std::string("Hello World!"), "is first element correct");
+	}
+	{
+		Test test("back(): get last item");
+		ft::vector<std::string> lst;
+		lst.push_back("Hello World!");
+		lst.push_back("Hi there!");
+		test.equal(lst.back(), std::string("Hi there!"), "is last element correct");
 	}
 	{
 		Test test("get_allocator(): get the allocator");
@@ -182,7 +207,7 @@ void TestVector() {
 		test.equal(lst.size(), (size_t)0);
 	}
 	{
-		Test test("Assing from Iterator (replace content)");
+		Test test("Assining from Iterator (replace content)");
 		std::string str1("Hello World!");
 		ft::vector<char> lst(str1.begin(), str1.end());
 		test.equal(lst.size(), (size_t)12);
@@ -196,7 +221,7 @@ void TestVector() {
 		test.equal(lst[8], '!');
 	}
 	{
-		Test test("Assing from value/type (place content)");
+		Test test("Assining from value/type (place content)");
 		std::string str1("Hello World!");
 		ft::vector<char> lst(str1.begin(), str1.end());
 		test.equal(lst.size(), (size_t)12);
@@ -207,17 +232,6 @@ void TestVector() {
 		test.equal(lst.size(), (size_t)4);
 		test.equal(lst[0], 'X');
 		test.equal(lst[3], 'X');
-	}
-	{
-		Test test("Assing from value/type (place content)");
-		std::string str1("Hello World!");
-		ft::vector<char> lst(str1.begin(), str1.end());
-		test.equal(lst.size(), (size_t)12);
-		test.equal(lst[10], 'd');
-		test.equal(lst[11], '!');
-		lst.pop_back();
-		test.equal(lst.size(), (size_t)11);
-		test.equal(lst[10], 'd');
 	}
 	{
 		Test test("Inserting single element");
