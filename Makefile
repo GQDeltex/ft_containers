@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/06/11 17:04:32 by pstengl          ###   ########.fr        #
+#    Updated: 2022/06/11 17:50:47 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ SRCFILES:=\
 	reverse_iterator.cpp\
 	is_integral.cpp\
 	enable_if.cpp\
-	stack.cpp
+	stack.cpp\
+	pairs.cpp
 
 # ------------------------------------------
 # Do not change anything beyond this point!
