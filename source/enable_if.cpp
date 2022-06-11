@@ -12,26 +12,27 @@
   namespace ft = std;
 #endif
 
-void negate(int in, int sum) {
+std::string negate(int in, int sum) {
 	(void)in;
 	(void)sum;
-	std::cout << "Integer" << std::endl;
+	return "Integer";
 }
 
 template <
 	typename T
 //> void negate(T in) {
 //> T negate(typename ft::enable_if<!ft::is_integral<T>::value>::type in) {
-> void negate(T in, typename ft::enable_if<!ft::is_integral<T>::value, T>::type sum) {
+> std::string negate(T in, typename ft::enable_if<!ft::is_integral<T>::value, T>::type sum) {
 	(void)in;
 	(void)sum;
-	std::cout << "Others" << std::endl;
+	return ("Others");
 }
 
 void TestEnableIf() {
 	{
-		negate(3.4, 3.4);
-		negate(4, 4);
-		negate("Hi", "Hello World");
+		Test test("Enable if working correctly");
+		test.equal(negate(3.4, 3.4), std::string("Others"));
+		test.equal(negate(4, 4), std::string("Integer"));
+		test.equal(negate("Hi", "Hello World"), std::string("Others"));
 	}
 }
