@@ -9,6 +9,7 @@ void TestReverseIterator();
 void TestIsIntegral();
 void TestEnableIf();
 void TestStack();
+void TestPairs();
 
 int main(void) {
 	TestIterator();
@@ -17,6 +18,7 @@ int main(void) {
 	TestIsIntegral();
 	TestEnableIf();
 	TestStack();
+	TestPairs();
 	Test test;
 	test.summary();
 }
