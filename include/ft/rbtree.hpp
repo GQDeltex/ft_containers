@@ -81,6 +81,17 @@ namespace ft {
 				y->parent = x;
 				x->right_child = y;
 			}
+			void rotate_left_right(Node* target) {
+				if (target->left_child == nullptr)
+					throw std::runtime_error("Cannot rotate left-right with no left child");
+				if (target->left_child->right_child == nullptr)
+					throw std::runtime_error("Cannot rotate left-right with no right child-child");
+				Node* z = target;
+				Node* x = target->left_child;
+
+				rotate_left(x);
+				rotate_right(z);
+			}
 			Node*	create_node(T data, Node* parent=nullptr) {
 				Node* node = new Node;
 				node->color = 'r';
