@@ -136,4 +136,44 @@ void TestRBTree() {
 		delete x;
 		delete z;
 	}
+	{
+		Test test("Right-Left Rotate");
+		ft::RBTree<std::string> rbtree;
+		Node* z = rbtree.create_node("z");
+		Node* x = rbtree.create_node("x", z);
+		z->left_child = nullptr;
+		z->right_child = x;
+		Node* y = rbtree.create_node("y", x);
+		rbtree.root = z;
+
+		test.equal(z->data, std::string("z"), "z is z");
+		test.equal(z->parent, (Node*)nullptr, "z is root");
+		test.equal(z->left_child, (Node*)nullptr, "z has no left child");
+		test.equal(z->right_child, x, "z has right child x");
+		test.equal(x->data, std::string("x"), "x is x");
+		test.equal(x->parent, z, "x has parent z");
+		test.equal(x->left_child, y, "x has left child y");
+		test.equal(x->right_child, (Node*)nullptr, "x has no right child");
+		test.equal(y->data, std::string("y"), "y is y");
+		test.equal(y->parent, x, "y has parent x");
+		test.equal(y->left_child, (Node*)nullptr, "y has no left child");
+		test.equal(y->right_child, (Node*)nullptr, "y has no right child");
+		rbtree.rotate_right_left(z);
+		test.equal(y->data, std::string("y"), "y is y");
+		test.equal(y->parent, (Node*)nullptr, "y is root node");
+		test.equal(y->left_child, z, "y has left child z");
+		test.equal(y->right_child, x, "y has right child x");
+		test.equal(x->data, std::string("x"), "x is x");
+		test.equal(x->parent, y, "x has parent y");
+		test.equal(x->left_child, (Node*)nullptr, "x has no left child");
+		test.equal(x->right_child, (Node*)nullptr, "x has no right child");
+		test.equal(z->data, std::string("z"), "z is z");
+		test.equal(z->parent, y, "z has parent y");
+		test.equal(z->left_child, (Node*)nullptr, "z has no left child");
+		test.equal(z->right_child, (Node*)nullptr, "z has no right child");
+
+		delete y;
+		delete x;
+		delete z;
+	}
 }
