@@ -79,7 +79,7 @@ namespace ft {
 				}
 				std::cout << "Setting new parent and child" << std::endl;
 				y->parent = x;
-				x->left_child = y;
+				x->right_child = y;
 			}
 			Node*	create_node(T data, Node* parent=nullptr) {
 				Node* node = new Node;
