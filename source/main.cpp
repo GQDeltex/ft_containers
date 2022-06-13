@@ -10,8 +10,10 @@ void TestIsIntegral();
 void TestEnableIf();
 void TestStack();
 void TestPairs();
+void TestRBTree();
 
 int main(void) {
+	/*
 	TestIterator();
 	TestReverseIterator();
 	TestVector();
@@ -19,6 +21,8 @@ int main(void) {
 	TestEnableIf();
 	TestStack();
 	TestPairs();
+	*/
+	TestRBTree();
 	Test test;
 	test.summary();
 }
