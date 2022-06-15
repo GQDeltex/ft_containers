@@ -20,7 +20,9 @@ void TestRBTree() {
 		Test test("Create node and child");
 		ft::RBTree<std::string> rbtree;
 		Node* x = rbtree.create_node("x");
-		Node* z = rbtree.create_node("z", x);
+		Node* z = rbtree.create_node("z");
+		x->left_child = z;
+		z->parent = x;
 
 		test.equal(x->color, 'r');
 		test.equal(x->data, std::string("x"));
@@ -40,9 +42,9 @@ void TestRBTree() {
 		Test test("Left rotate");
 		ft::RBTree<std::string> rbtree;
 		Node* x = rbtree.create_node("x");
-		Node* y = rbtree.create_node("y", x);
-		x->left_child = NULL;
+		Node* y = rbtree.create_node("y");
 		x->right_child = y;
+		y->parent = x;
 		rbtree.root = x;
 
 		//rbtree.print_node(rbtree.root, true);
@@ -71,7 +73,9 @@ void TestRBTree() {
 		Test test("Right rotate");
 		ft::RBTree<std::string> rbtree;
 		Node* y = rbtree.create_node("y");
-		Node* x = rbtree.create_node("x", y);
+		Node* x = rbtree.create_node("x");
+		y->left_child = x;
+		x->parent = y;
 		rbtree.root = y;
 
 		//rbtree.print_node(rbtree.root, true);
@@ -100,10 +104,12 @@ void TestRBTree() {
 		Test test("Left-Right Rotate");
 		ft::RBTree<std::string> rbtree;
 		Node* z = rbtree.create_node("z");
-		Node* x = rbtree.create_node("x", z);
-		Node* y = rbtree.create_node("y", x);
-		x->left_child = NULL;
+		Node* x = rbtree.create_node("x");
+		z->left_child = x;
+		x->parent = z;
+		Node* y = rbtree.create_node("y");
 		x->right_child = y;
+		y->parent = x;
 		rbtree.root = z;
 
 		test.equal(z->data, std::string("z"), "z is z");
@@ -140,10 +146,12 @@ void TestRBTree() {
 		Test test("Right-Left Rotate");
 		ft::RBTree<std::string> rbtree;
 		Node* z = rbtree.create_node("z");
-		Node* x = rbtree.create_node("x", z);
-		z->left_child = NULL;
+		Node* x = rbtree.create_node("x");
 		z->right_child = x;
-		Node* y = rbtree.create_node("y", x);
+		x->parent = z;
+		Node* y = rbtree.create_node("y");
+		y->parent = x;
+		x->left_child = y;
 		rbtree.root = z;
 
 		test.equal(z->data, std::string("z"), "z is z");

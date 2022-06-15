@@ -103,20 +103,12 @@ namespace ft {
 				rotate_right(x);
 				rotate_left(z);
 			}
-			Node*	create_node(T data, Node* parent=NULL) {
+			Node*	create_node(T data) {
 				Node* node = new Node;
 				node->color = 'r';
 				node->right_child = NULL;
 				node->left_child = NULL;
-				node->parent = parent;
-				if (parent != NULL) {
-					if (parent->left_child == NULL)
-						parent->left_child = node;
-					else if (parent->right_child == NULL)
-						parent->right_child = node;
-					else
-						throw std::runtime_error("No free child available");
-				}
+				node->parent = NULL;
 				node->data = data;
 				return node;
 			}
