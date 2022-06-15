@@ -17,7 +17,48 @@ namespace ft {
 				Node*	parent;
 			};
 			Node*	root;
+			bool	(*comp)(T, T);
+			RBTree(bool (*f)(T, T) = NULL) {
+				this->root = NULL;
+				this->comp = this->default_comp;
+				if (f != NULL)
+					this->comp = f;
+			}
+			bool	static default_comp(T lhs, T rhs) {
+				return lhs < rhs;
+			}
+			void	insert(T data) {
+				Node* new_node = create_node(data);
+				if (this->root == NULL) {
+					new_node->color = 'b';
+					this->root = new_node;
+					return;
+				}
+				Node* current_node = this->root;
+				while (1) {
+					Node** leaf = NULL;
+					if (this->comp(current_node->data, new_node->data)) {
+						std::cout << "Left tree" << std::endl;
+						leaf = &(current_node->left_child);
+					} else {
+						std::cout << "Right tree" << std::endl;
+						leaf = &(current_node->right_child);
+					}
+					if (*leaf == NULL) {
+						std::cout << "Found NULL, inserting" << std::endl;
+						*leaf = new_node;
+						new_node->parent = current_node;
+						break;
+					} else {
+						std::cout << "Traversing deeper" << std::endl;
+						current_node = *leaf;
+						continue;
+					}
+				}
+				// fix red-black after insert
+			}
 			void	rotate_left(Node* target) {
+				std::cout << "Rotate Left" << std::endl;
 				if (target->right_child == NULL)
 					throw std::runtime_error("Cannot rotate left with no right child");
 				Node* x = target;
@@ -51,6 +92,7 @@ namespace ft {
 				y->left_child = x;
 			}
 			void	rotate_right(Node *target) {
+				std::cout << "Rotate Right" << std::endl;
 				if (target->left_child == NULL)
 					throw std::runtime_error("Cannot rotate right with no left child");
 				Node* y = target;
@@ -82,6 +124,7 @@ namespace ft {
 				x->right_child = y;
 			}
 			void rotate_left_right(Node* target) {
+				std::cout << "Rotate Left-Right" << std::endl;
 				if (target->left_child == NULL)
 					throw std::runtime_error("Cannot rotate left-right with no left child");
 				if (target->left_child->right_child == NULL)
@@ -93,6 +136,7 @@ namespace ft {
 				rotate_right(z);
 			}
 			void rotate_right_left(Node* target) {
+				std::cout << "Rotate Right-Left" << std::endl;
 				if (target->right_child == NULL)
 					throw std::runtime_error("Cannot rotate right_left with no right child");
 				if (target->right_child->left_child == NULL)
@@ -134,6 +178,16 @@ namespace ft {
 					std::cout << target->right_child->data << std::endl;
 				else
 					std::cout << "-" << std::endl;
+			}
+			void	delete_node(Node *target) {
+				if (target->left_child != NULL)
+					delete_node(target->left_child);
+				if (target->right_child != NULL)
+					delete_node(target->right_child);
+				delete target;
+			}
+			~RBTree() {
+				this->delete_node(this->root);
 			}
 	};
 }
