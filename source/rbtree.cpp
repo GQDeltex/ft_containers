@@ -4,6 +4,23 @@
 
 typedef ft::RBTree<std::string>::Node Node;
 
+bool testTree(Node* target) {
+	bool is_wrong = false;
+	if (target->parent != NULL) {
+		if (target->parent->color == target->color)
+			is_wrong = true;
+	}
+	if (target->left_child != NULL) {
+		if (testTree(target->left_child))
+			is_wrong = true;
+	}
+	if (target->right_child != NULL) {
+		if (testTree(target->right_child))
+			is_wrong = true;
+	}
+	return is_wrong;
+}
+
 void TestRBTree() {
 	{
 		Test test("Create Node");
@@ -62,7 +79,6 @@ void TestRBTree() {
 		test.equal(y->data, std::string("y"));
 		test.equal(y->parent, (Node*)NULL);
 		test.equal(y->left_child, x);
-		test.equal(y->right_child, (Node*)NULL);
 	}
 	{
 		Test test("Right rotate");
@@ -178,6 +194,7 @@ void TestRBTree() {
 		test.equal(rbtree.root->left_child, (Node*)NULL, "No left child");
 		test.equal(rbtree.root->right_child, (Node*)NULL, "No right child");
 		test.equal(rbtree.root->parent, (Node*)NULL, "No parent");
+		test.equal(testTree(rbtree.root), false);
 	}
 	{
 		Test test("Insert with two items");
@@ -198,6 +215,7 @@ void TestRBTree() {
 		test.equal(y->parent, rbtree.root, "Parent is root node");
 		test.equal(y->left_child, (Node*)NULL, "No left child");
 		test.equal(y->right_child, (Node*)NULL, "No right child");
+		test.equal(testTree(rbtree.root), false);
 	}
 	{
 		Test test("Insert with four items (E2) lc");
@@ -244,6 +262,7 @@ void TestRBTree() {
 		test.equal(a->color, 'b');
 
 		rbtree.print_node(rbtree.root, true);
+		test.equal(testTree(rbtree.root), false);
 	}
 	{
 		Test test("Insert with three items (E2) rc");
@@ -288,6 +307,7 @@ void TestRBTree() {
 		test.equal(z->color, 'b');
 
 		rbtree.print_node(rbtree.root, true);
+		test.equal(testTree(rbtree.root), false);
 	}
 	{
 		Test test("Insert with three items (E3/E4) lc");
@@ -305,6 +325,7 @@ void TestRBTree() {
 		test.equal(d->color, 'b', "d is black");
 		test.equal(d->left_child->color, 'r', "left child is red");
 		test.equal(d->right_child->color, 'r', "right child is red");
+		test.equal(testTree(rbtree.root), false);
 	}
 	{
 		Test test("Insert with three items (E3/E4) rc");
@@ -322,5 +343,20 @@ void TestRBTree() {
 		test.equal(d->color, 'b', "d is black");
 		test.equal(d->left_child->color, 'r', "left child is red");
 		test.equal(d->right_child->color, 'r', "right child is red");
+		test.equal(testTree(rbtree.root), false);
+	}
+	{
+		Test test("Testing around");
+		ft::RBTree<std::string> rbtree;
+		rbtree.insert(std::string("e"));
+		rbtree.insert(std::string("c"));
+		rbtree.insert(std::string("d"));
+		rbtree.insert(std::string("f"));
+		rbtree.insert(std::string("a"));
+		rbtree.insert(std::string("b"));
+		rbtree.insert(std::string("g"));
+		rbtree.insert(std::string("h"));
+		rbtree.print_node(rbtree.root, true);
+		test.equal(testTree(rbtree.root), false);
 	}
 }

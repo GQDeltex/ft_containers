@@ -58,6 +58,19 @@ namespace ft {
 				}
 				this->maintain_insert(new_node);
 			}
+			void	__recolor(Node* target) {
+				char newcolor = 'r';
+				if (target->color == 'r')
+					newcolor = 'b';
+				if (target->left_child != NULL) {
+					target->left_child->color = newcolor;
+					this->__recolor(target->left_child);
+				}
+				if (target->right_child != NULL) {
+					target->right_child->color = newcolor;
+					this->__recolor(target->right_child);
+				}
+			}
 			void	maintain_insert(Node* target) {
 				std::cout << "Maintaining Red-Black constraint" << std::endl;
 				while (1) {
@@ -80,6 +93,7 @@ namespace ft {
 					if (parent == this->root) {
 						std::cout << "E5" << std::endl;
 						parent->color = 'b';
+						this->__recolor(parent);
 						break;
 					}
 
