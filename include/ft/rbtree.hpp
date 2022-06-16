@@ -8,42 +8,55 @@
 namespace ft {
 	template <class T>
 	class RBTree {
-		public:
-			struct Node {
-				T		data;
-				char	color;
-				Node*	right_child;
-				Node*	left_child;
-				Node*	parent;
-			};
-			Node*	root;
-			bool	(*comp)(T, T);
-			RBTree(bool (*f)(T, T) = NULL) {
-				this->root = NULL;
-				this->comp = this->default_comp;
-				if (f != NULL)
-					this->comp = f;
-			}
-			bool	static default_comp(T lhs, T rhs) {
+		private:
+			bool	static __default_comp(T lhs, T rhs) {
 				return lhs < rhs;
+			}
+		public:
+			typedef T		value_type;
+			typedef size_t	size_type;
+
+			struct Node {
+				value_type	data;
+				char		color;
+				Node*		right_child;
+				Node*		left_child;
+				Node*		parent;
+			};
+
+			Node*		_root;
+			bool		(*_comp)(T, T);
+			size_type	_size;
+
+			RBTree(bool (*f)(T, T) = NULL) {
+				this->_root = NULL;
+				this->_size = 0;
+				this->_comp = this->__default_comp;
+				if (f != NULL)
+					this->_comp = f;
+			}
+			size_type	size() {
+				return this->_size;
 			}
 			void	insert(T data) {
 				Node* new_node = create_node(data);
-				if (this->root == NULL) {
+				if (this->_root == NULL) {
 					std::cout << "Is now root node" << std::endl;
 					new_node->color = 'b';
-					this->root = new_node;
+					this->_root = new_node;
 					return;
 				}
-				Node* current_node = this->root;
+				Node* current_node = this->_root;
 				while (1) {
 					Node** leaf = NULL;
-					if (this->comp(current_node->data, new_node->data)) {
+					if (this->_comp(current_node->data, new_node->data)) {
 						std::cout << "Left tree" << std::endl;
 						leaf = &(current_node->left_child);
-					} else {
+					} else if (this->_comp(new_node->data, current_node->data)) {
 						std::cout << "Right tree" << std::endl;
 						leaf = &(current_node->right_child);
+					} else {
+						throw std::runtime_error("Node already exists");
 					}
 					if (*leaf == NULL) {
 						std::cout << "Found NULL, inserting" << std::endl;
@@ -57,6 +70,7 @@ namespace ft {
 					}
 				}
 				this->maintain_insert(new_node);
+				this->_size++;
 			}
 			void	__recolor(Node* target) {
 				char newcolor = 'r';
@@ -76,12 +90,12 @@ namespace ft {
 				while (1) {
 					// Setup done
 					std::cout << "--> Start Loop <--" << std::endl;
-					this->print_node(this->root, true);
+					this->print_node(this->_root, true);
 					std::cout << "-->            <--" << std::endl;
 
 					// E0
 					// target ist root
-					if (target == this->root) {
+					if (target == this->_root) {
 						std::cout << "E0" << std::endl;
 						break;
 					}
@@ -90,7 +104,7 @@ namespace ft {
 
 					// E5
 					// parent ist root
-					if (parent == this->root) {
+					if (parent == this->_root) {
 						std::cout << "E5" << std::endl;
 						parent->color = 'b';
 						this->__recolor(parent);
@@ -193,7 +207,7 @@ namespace ft {
 				}
 				if (x->parent == NULL) {
 					std::cout << "Is root, replacing" << std::endl;
-					this->root = y;
+					this->_root = y;
 					y->parent = NULL;
 				}
 				else if (p->left_child == x) {
@@ -227,7 +241,7 @@ namespace ft {
 				}
 				if (y->parent == NULL) {
 					std::cout << "Is root, replacing" << std::endl;
-					this->root = x;
+					this->_root = x;
 					x->parent = NULL;
 				} else if (p->right_child == y) {
 					std::cout << "Is right_child, replacing" << std::endl;
@@ -306,7 +320,7 @@ namespace ft {
 				delete target;
 			}
 			~RBTree() {
-				this->delete_node(this->root);
+				this->delete_node(this->_root);
 			}
 	};
 }
