@@ -237,5 +237,18 @@ void TestRBTree() {
 		test.equal(z->parent, y, "Parent is y");
 		test.equal(z->left_child, (Node*)NULL, "No left child");
 		test.equal(z->right_child, (Node*)NULL, "No right child");
+
+		rbtree.print_node(rbtree.root, true);
+	}
+	{
+		Test test("The alphabet");
+		ft::RBTree<std::string> rbtree;
+		for(char c='a';c<='z';c++) {
+			std::string s;
+			s.push_back(c);
+			std::cout << "Adding " << s << std::endl;
+			rbtree.insert(std::string(s));
+		}
+		rbtree.print_node(rbtree.root, true);
 	}
 }

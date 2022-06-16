@@ -55,7 +55,64 @@ namespace ft {
 						continue;
 					}
 				}
-				// fix red-black after insert
+				this->maintain_insert(new_node);
+			}
+			void	maintain_insert(Node* target) {
+				if (target->parent == NULL) {
+					std::cout << "Nothing to do, there is no parent" << std::endl;
+					return;
+				}
+				if (target->parent->parent == NULL) {
+					std::cout << "Nothing to do, there is no grandparent" << std::endl;
+					return;
+				}
+				std::cout << "Maintaining Red-Black constraint" << std::endl;
+				while (target->parent->color != 'b') {
+					std::cout << "Looping" << std::endl;
+					this->print_node(this->root, true);
+					if (target->parent == target->parent->parent->left_child) {
+						if (target->parent->parent->right_child->color == 'r') {
+							std::cout << "Case I" << std::endl;
+							target->parent->parent->right_child->color = 'b';
+							target->parent->parent->left_child->color = 'b';
+							target->parent->parent->color = 'r';
+							target = target->parent->parent;
+						} else {
+							if (target == target->parent->right_child) {
+								std::cout << "Case II" << std::endl;
+								target = target->parent;
+								this->rotate_left(target);
+							}
+							std::cout << "Case III" << std::endl;
+							target->parent->color = 'b';
+							target->parent->parent->color = 'r';
+							this->rotate_right(target->parent->parent);
+						}
+					} else {
+						if (target->parent->parent->left_child->color == 'r') {
+							std::cout << "Case IV" << std::endl;
+							target->parent->parent->left_child->color = 'b';
+							target->parent->parent->right_child->color = 'b';
+							target->parent->parent->color = 'r';
+							target = target->parent->parent;
+						} else {
+							std::cout << "Case V" << std::endl;
+							if (target == target->parent->left_child) {
+								target = target->parent;
+								this->rotate_right(target);
+							}
+							target->parent->color = 'b';
+							target->parent->parent->color = 'r';
+							this->rotate_left(target->parent->parent);
+						}
+					}
+					if (target->parent == NULL) {
+						std::cout << "Target is root node, done balancing" << std::cout;
+						return;
+					}
+				}
+				this->root->color = 'b';
+				std::cout << "Done balancing" << std::endl;
 			}
 			void	rotate_left(Node* target) {
 				std::cout << "Rotate Left" << std::endl;
@@ -159,8 +216,6 @@ namespace ft {
 			void print_node(Node *target, bool recurse=false) {
 				if (target->left_child != NULL && recurse)
 					print_node(target->left_child, recurse);
-				if (target->right_child != NULL && recurse)
-					print_node(target->right_child, recurse);
 				std::cout << "Node: " << target->data << std::endl;
 				std::cout << "       Color: " << target->color << std::endl;
 				std::cout << "      Parent: ";
@@ -178,6 +233,8 @@ namespace ft {
 					std::cout << target->right_child->data << std::endl;
 				else
 					std::cout << "-" << std::endl;
+				if (target->right_child != NULL && recurse)
+					print_node(target->right_child, recurse);
 			}
 			void	delete_node(Node *target) {
 				if (target->left_child != NULL)
