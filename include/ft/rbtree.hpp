@@ -30,6 +30,7 @@ namespace ft {
 			void	insert(T data) {
 				Node* new_node = create_node(data);
 				if (this->root == NULL) {
+					std::cout << "Is now root node" << std::endl;
 					new_node->color = 'b';
 					this->root = new_node;
 					return;
