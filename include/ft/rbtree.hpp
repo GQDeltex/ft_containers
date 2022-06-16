@@ -58,60 +58,107 @@ namespace ft {
 				this->maintain_insert(new_node);
 			}
 			void	maintain_insert(Node* target) {
-				if (target->parent == NULL) {
-					std::cout << "Nothing to do, there is no parent" << std::endl;
-					return;
-				}
-				if (target->parent->parent == NULL) {
-					std::cout << "Nothing to do, there is no grandparent" << std::endl;
-					return;
-				}
 				std::cout << "Maintaining Red-Black constraint" << std::endl;
-				while (target->parent->color != 'b') {
-					std::cout << "Looping" << std::endl;
+				while (1) {
+					// Setup done
+					std::cout << "--> Start Loop <--" << std::endl;
 					this->print_node(this->root, true);
-					if (target->parent == target->parent->parent->left_child) {
-						if (target->parent->parent->right_child->color == 'r') {
-							std::cout << "Case I" << std::endl;
-							target->parent->parent->right_child->color = 'b';
-							target->parent->parent->left_child->color = 'b';
-							target->parent->parent->color = 'r';
-							target = target->parent->parent;
-						} else {
-							if (target == target->parent->right_child) {
-								std::cout << "Case II" << std::endl;
-								target = target->parent;
-								this->rotate_left(target);
-							}
-							std::cout << "Case III" << std::endl;
-							target->parent->color = 'b';
-							target->parent->parent->color = 'r';
-							this->rotate_right(target->parent->parent);
-						}
-					} else {
-						if (target->parent->parent->left_child->color == 'r') {
-							std::cout << "Case IV" << std::endl;
-							target->parent->parent->left_child->color = 'b';
-							target->parent->parent->right_child->color = 'b';
-							target->parent->parent->color = 'r';
-							target = target->parent->parent;
-						} else {
-							std::cout << "Case V" << std::endl;
-							if (target == target->parent->left_child) {
-								target = target->parent;
-								this->rotate_right(target);
-							}
-							target->parent->color = 'b';
-							target->parent->parent->color = 'r';
-							this->rotate_left(target->parent->parent);
+					std::cout << "-->            <--" << std::endl;
+
+					// E0
+					// target ist root
+					if (target == this->root) {
+						std::cout << "E0" << std::endl;
+						break;
+					}
+
+					Node* parent = target->parent;
+
+					// E5
+					// parent ist root
+					if (parent == this->root) {
+						std::cout << "E5" << std::endl;
+						parent->color = 'b';
+						break;
+					}
+
+					Node* grand = parent->parent;
+					Node* uncle = NULL;
+					if (parent == grand->left_child)
+						uncle = grand->right_child;
+					else
+						uncle = grand->left_child;
+
+					// E1
+					// parent ist schwarz
+					if (parent->color == 'b') {
+						std::cout << "E1" << std::endl;
+						break;
+					}
+
+					if (uncle != NULL) {
+						// E2
+						// uncle und parent sind rot
+						if (parent->color == 'r' && uncle->color == 'r') {
+							std::cout << "E2" << std::endl;
+							parent->color = 'b';
+							uncle->color = 'b';
+							grand->color = 'r';
+							target = grand;
+							continue;
 						}
 					}
-					if (target->parent == NULL) {
-						std::cout << "Target is root node, done balancing" << std::cout;
-						return;
+					// Uncle is black or non-existent and parent is red
+
+					// E3
+					// keinen oder schwarzen onkel
+					// target is inner child
+					if (target == parent->right_child && parent == grand->left_child) {
+						std::cout << "E3 lc" << std::endl;
+						rotate_left(parent);
+						target = parent;
+						continue;
+					}
+					if (target == parent->left_child && parent == grand->right_child) {
+						std::cout << "E3 rc" << std::endl;
+						rotate_right(parent);
+						target = parent;
+						continue;
+					}
+					// E4
+					// keinen oder schwarzen onkel
+					// target is outer child
+					if (target == parent->left_child && parent == grand->left_child) {
+						std::cout << "E4 lc" << std::endl;
+						rotate_right(grand);
+						// Invert grandparent color
+						if (grand->color == 'r')
+							grand->color = 'b';
+						else
+							grand->color = 'r';
+						// Inver parent color
+						if (parent->color == 'r')
+							parent->color = 'b';
+						else
+							parent->color = 'r';
+						continue;
+					}
+					if (target == parent->right_child && parent == grand->right_child) {
+						std::cout << "E4 rc" << std::endl;
+						rotate_left(grand);
+						// Invert grandparent color
+						if (grand->color == 'r')
+							grand->color = 'b';
+						else
+							grand->color = 'r';
+						// Inver parent color
+						if (parent->color == 'r')
+							parent->color = 'b';
+						else
+							parent->color = 'r';
+						continue;
 					}
 				}
-				this->root->color = 'b';
 				std::cout << "Done balancing" << std::endl;
 			}
 			void	rotate_left(Node* target) {

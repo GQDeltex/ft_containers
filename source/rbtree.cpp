@@ -168,7 +168,7 @@ void TestRBTree() {
 		test.equal(z->right_child, (Node*)NULL, "z has no right child");
 	}
 	{
-		Test test("Insert on empty tree");
+		Test test("Insert with one item");
 		ft::RBTree<std::string> rbtree;
 		test.equal(rbtree.root, (Node*)NULL, "Tree is empty in the beginning");
 		rbtree.insert(std::string("x"));
@@ -180,7 +180,7 @@ void TestRBTree() {
 		test.equal(rbtree.root->parent, (Node*)NULL, "No parent");
 	}
 	{
-		Test test("Insert with one item");
+		Test test("Insert with two items");
 		ft::RBTree<std::string> rbtree;
 		test.equal(rbtree.root, (Node*)NULL, "Tree is empty in the beginning");
 		rbtree.insert(std::string("x"));
@@ -200,12 +200,13 @@ void TestRBTree() {
 		test.equal(y->right_child, (Node*)NULL, "No right child");
 	}
 	{
-		Test test("Insert with two item");
+		Test test("Insert with three items (E2)");
 		ft::RBTree<std::string> rbtree;
 		test.equal(rbtree.root, (Node*)NULL, "Tree is empty in the beginning");
 
 		rbtree.insert(std::string("x"));
 		test.unequal(rbtree.root, (Node*)NULL, "Tree is not empty anymore");
+		Node* x = rbtree.root;
 		test.equal(rbtree.root->color, 'b', "Node is black");
 		test.equal(rbtree.root->data, std::string("x"), "Data is correct");
 		test.equal(rbtree.root->left_child, (Node*)NULL, "No left child");
@@ -238,17 +239,44 @@ void TestRBTree() {
 		test.equal(z->left_child, (Node*)NULL, "No left child");
 		test.equal(z->right_child, (Node*)NULL, "No right child");
 
+		test.equal(x->color, 'r');
+		test.equal(y->color, 'b');
+		test.equal(a->color, 'b');
+
 		rbtree.print_node(rbtree.root, true);
 	}
 	{
-		Test test("The alphabet");
+		Test test("Insert with three items (E3/E4)");
 		ft::RBTree<std::string> rbtree;
-		for(char c='a';c<='z';c++) {
-			std::string s;
-			s.push_back(c);
-			std::cout << "Adding " << s << std::endl;
-			rbtree.insert(std::string(s));
-		}
+		rbtree.insert(std::string("c"));
+		rbtree.insert(std::string("e"));
+		rbtree.insert(std::string("d"));
 		rbtree.print_node(rbtree.root, true);
+		Node* d = rbtree.root;
+		test.equal(d->data, std::string("d"), "d is root node");
+		test.unequal(d->left_child, (Node*)NULL, "d has left child");
+		test.unequal(d->left_child, (Node*)NULL, "d has right child");
+		test.equal(d->left_child->data, std::string("e"), "left child is e");
+		test.equal(d->right_child->data, std::string("c"), "right child is c");
+		test.equal(d->color, 'b', "d is black");
+		test.equal(d->left_child->color, 'r', "left child is red");
+		test.equal(d->right_child->color, 'r', "right child is red");
+	}
+	{
+		Test test("Insert with four items (E3/E4)");
+		ft::RBTree<std::string> rbtree;
+		rbtree.insert(std::string("c"));
+		rbtree.insert(std::string("e"));
+		rbtree.insert(std::string("d"));
+		rbtree.print_node(rbtree.root, true);
+		Node* d = rbtree.root;
+		test.equal(d->data, std::string("d"), "d is root node");
+		test.unequal(d->left_child, (Node*)NULL, "d has left child");
+		test.unequal(d->left_child, (Node*)NULL, "d has right child");
+		test.equal(d->left_child->data, std::string("e"), "left child is e");
+		test.equal(d->right_child->data, std::string("c"), "right child is c");
+		test.equal(d->color, 'b', "d is black");
+		test.equal(d->left_child->color, 'r', "left child is red");
+		test.equal(d->right_child->color, 'r', "right child is red");
 	}
 }
