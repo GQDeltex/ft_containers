@@ -359,4 +359,22 @@ void TestRBTree() {
 		rbtree.print_node(rbtree._root, true);
 		test.equal(testTree(rbtree._root), false);
 	}
+	{
+		Test test("delete root from tree");
+		ft::RBTree<std::string> rbtree;
+		rbtree.insert(std::string("e"));
+		test.unequal(rbtree._root, (Node*)NULL);
+		rbtree.remove(std::string("e"));
+		test.equal(rbtree._root, (Node*)NULL);
+	}
+	{
+		Test test("delete root from tree");
+		ft::RBTree<std::string> rbtree;
+		rbtree.insert(std::string("e"));
+		rbtree.insert(std::string("f"));
+		rbtree.insert(std::string("c"));
+		rbtree.print_node(rbtree._root, true);
+		rbtree.remove(std::string("e"));
+		rbtree.print_node(rbtree._root, true);
+	}
 }
