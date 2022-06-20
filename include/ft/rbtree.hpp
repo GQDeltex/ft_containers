@@ -79,9 +79,11 @@ namespace ft {
 				this->_size++;
 			}
 			Node*	__bst_find_delete(Node* target) {
+				std::cout << "BST DELETE" << std::endl;
 				Node* D = target;
 				// Step 1
 				if (this->__num_children(D) != 2) {
+					std::cout << "Less than 2 children" << std::endl;
 					Node* F = D->right_child;
 					if (D->left_child != NULL)
 						F = D->left_child;
@@ -90,7 +92,7 @@ namespace ft {
 						return D;
 					}
 					// Step 3
-					Node* G = target->parent;
+					Node* G = D->parent;
 					if (D == G->left_child)
 						G->left_child = F;
 					else
@@ -99,17 +101,33 @@ namespace ft {
 						F->parent = G;
 					return D;
 				}
+				std::cout << "2 Children" << std::endl;
 				// Step 4
 				Node* E = this->__find_leftmost(D->right_child);
+				std::cout << "Node is: " << D->data << std::endl;
+				std::cout << "Node to switch with: " << E->data << std::endl;
 				Node* G = E->parent;
+
+				// Save the data
 				D->data = E->data;
+				this->print_node(this->_root, true);
+				std::cout << "         " << std::endl;
+
+				// Get the (maybe) remaining child
 				Node* F = E->right_child;
+				if (G == E->right_child)
+					F = E->left_child;
+
+				// Replace node with child
 				if (E == G->left_child)
 					G->left_child = F;
 				else
 					G->right_child = F;
 				if (F != NULL)
 					F->parent = G;
+
+				this->print_node(this->_root, true);
+
 				return E;
 			}
 			Node*	__find_leftmost(Node* target) {
@@ -154,11 +172,6 @@ namespace ft {
 				// target is red and has no children
 				if (target->color == 'r' && this->__num_children(target) == 0) {
 					std::cout << "Target is red and has no children" << std::endl;
-					Node* parent = target->parent;
-					if (target == parent->left_child)
-						parent->left_child = NULL;
-					else
-						parent->right_child = NULL;
 					delete target;
 					return;
 				}
@@ -302,12 +315,12 @@ namespace ft {
 				Node* found = NULL;
 				if (this->_comp_equal(data, target->data))
 					return target;
-				if (target->left_child != NULL) {
+				if (target->left_child != NULL && this->_comp_smlthn(target->data, data)) {
 					found = __find_node(target->left_child, data);
 					if (found != NULL)
 						return found;
 				}
-				if (target->right_child != NULL) {
+				if (target->right_child != NULL && this->_comp_smlthn(data, target->data)) {
 					found = __find_node(target->right_child, data);
 					if (found != NULL)
 						return found;
