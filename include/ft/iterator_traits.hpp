@@ -1,24 +1,11 @@
 #ifndef FT_ITERATOR_TRAITS_H
 # define FT_ITERATOR_TRAITS_H
 
-#include <cmath>
+# include <cmath>
 # include <cstddef>
 # include <iterator>
 
 namespace ft {
-	template<
-		class Category,
-		class T,
-		class Distance = ptrdiff_t,
-		class Pointer = T*,
-		class Reference = T&
-	> class iterator {
-		typedef T	value_type;
-		typedef Distance	difference_type;
-		typedef Pointer		pointer;
-		typedef Reference	reference;
-		typedef Category	iterator_category;
-	};
 	template<
 		class Iterator
 	> class iterator_traits {
@@ -44,7 +31,7 @@ namespace ft {
 	> class iterator_traits<const T*> {
 		public:
 			typedef ptrdiff_t						difference_type;
-			typedef const T							value_type;
+			typedef T								value_type;
 			typedef const T*						pointer;
 			typedef const T&						reference;
 			typedef std::random_access_iterator_tag	iterator_category;
