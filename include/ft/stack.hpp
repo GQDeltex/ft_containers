@@ -1,6 +1,7 @@
 #ifndef FT_STACK_H
 # define FT_STACK_H
 
+# include <cstddef>
 # include "vector.hpp"
 
 namespace ft {
@@ -54,37 +55,49 @@ namespace ft {
 								) {
 									return lhs.c == rhs.c;
 								}
-			friend bool			operator!= (
-									const ft::stack<T,Container>& lhs,
-									const ft::stack<T,Container>& rhs
-								) {
-									return lhs.c != rhs.c;
-								}
 			friend bool			operator< (
 									const ft::stack<T,Container>& lhs,
 									const ft::stack<T,Container>& rhs
 								) {
-									return lhs.c < rhs.c;
-								}
-			friend bool			operator> (
-									const ft::stack<T,Container>& lhs,
-									const ft::stack<T,Container>& rhs
-								) {
-									return lhs.c > rhs.c;
-								}
-			friend bool			operator<= (
-									const ft::stack<T,Container>& lhs,
-									const ft::stack<T,Container>& rhs
-								) {
-									return lhs.c <= rhs.c;
-								}
-			friend bool			operator>= (
-									const ft::stack<T,Container>& lhs,
-									const ft::stack<T,Container>& rhs
-								) {
-									return lhs.c >= rhs.c;
+									return (lhs.c < rhs.c);
 								}
 	};
+	template<
+		class T,
+		class Container
+	> bool			operator!= (
+						const ft::stack<T,Container>& lhs,
+						const ft::stack<T,Container>& rhs
+					) {
+						return !(lhs == rhs);
+					}
+	template<
+		class T,
+		class Container
+	>bool			operator> (
+						const ft::stack<T,Container>& lhs,
+						const ft::stack<T,Container>& rhs
+					) {
+						return rhs < lhs;
+					}
+	template<
+		class T,
+		class Container
+	>bool			operator<= (
+						const ft::stack<T,Container>& lhs,
+						const ft::stack<T,Container>& rhs
+					) {
+						return !(lhs > rhs);
+					}
+	template<
+		class T,
+		class Container
+	>bool			operator>= (
+						const ft::stack<T,Container>& lhs,
+						const ft::stack<T,Container>& rhs
+					) {
+						return !(lhs < rhs);
+					}
 }
 
 #endif

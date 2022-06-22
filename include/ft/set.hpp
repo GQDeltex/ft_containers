@@ -14,21 +14,21 @@ namespace ft {
 		class Alloc = std::allocator<T>
 	> class set {
 		public:
-			typedef T									key_type;
-			typedef T									value_type;
-			typedef Compare								key_compare;
-			typedef Compare								value_compare;
-			typedef Alloc								allocator_type;
-			typedef typename allocator_type::reference	reference;
-			typedef const reference						const_reference;
-			typedef typename allocator_type::pointer	pointer;
-			typedef const pointer						const_pointer;
-			typedef ft::iterator<T>						iterator;
-			typedef const iterator						const_iterator;
-			typedef std::reverse_iterator<iterator>		reverse_iterator;
-			typedef	const reverse_iterator				const_reverse_iterator;
-			typedef ptrdiff_t							difference_type;
-			typedef size_t								size_type;
+			typedef T										key_type;
+			typedef T										value_type;
+			typedef Compare									key_compare;
+			typedef Compare									value_compare;
+			typedef Alloc									allocator_type;
+			typedef typename allocator_type::reference		reference;
+			typedef const reference							const_reference;
+			typedef typename allocator_type::pointer		pointer;
+			typedef const pointer							const_pointer;
+			typedef ft::rbtree_iterator<value_type>			iterator;
+			typedef ft::rbtree_iterator<const value_type>	const_iterator;
+			typedef std::reverse_iterator<iterator>			reverse_iterator;
+			typedef	const reverse_iterator					const_reverse_iterator;
+			typedef ptrdiff_t								difference_type;
+			typedef size_t									size_type;
 
 		// Constructors
 									set (
