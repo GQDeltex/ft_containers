@@ -41,19 +41,47 @@ namespace ft {
 				temp--;
 				return *(temp);
 			}
-			reverse_iterator	operator+(difference_type n) const;
-			reverse_iterator&	operator++();
-			reverse_iterator	operator++(int);
-			reverse_iterator&	operator+=(difference_type n);
-			reverse_iterator	operator-(difference_type n) const;
-			reverse_iterator&	operator--();
-			reverse_iterator	operator--(int);
-			reverse_iterator&	operator-=(difference_type n);
+			reverse_iterator	operator+(difference_type n) const {
+				return this->_itr - n;
+			}
+			reverse_iterator&	operator++() {
+				this->_itr--;
+				return *this;
+			}
+			reverse_iterator	operator++(int) {
+				iterator_type temp(this->_itr);
+				this->_itr--;
+				return temp;
+			}
+			reverse_iterator&	operator+=(difference_type n) {
+				this->_itr -= n;
+				return *this;
+			}
+			reverse_iterator	operator-(difference_type n) const {
+				return this->_itr + n;
+			}
+			reverse_iterator&	operator--() {
+				this->_itr++;
+				return *this;
+			}
+			reverse_iterator	operator--(int) {
+				iterator_type	temp(this->_itr);
+				this->_itr++;
+				return temp;
+			}
+			reverse_iterator&	operator-=(difference_type n) {
+				this->_itr += n;
+				return *this;
+			}
 			pointer	operator->() const {
-				return *(this->_itr);
+				iterator_type temp(this->_itr);
+				temp--;
+				return *(temp);
 			}
 			reference	operator[](difference_type n) const {
-				return *(this->_itr - n);
+				iterator_type temp(this->_itr);
+				temp--;
+				return *(temp - n);
 			}
 
 	};
@@ -97,13 +125,13 @@ namespace ft {
 	  reverse_iterator<Iterator> operator+ (
 				 typename reverse_iterator<Iterator>::difference_type n,
 				 const reverse_iterator<Iterator>& rev_it) {
-		  return reverse_iterator<Iterator>(rev_it.base() - n);
+		  return rev_it.base() - n;
 	  };
 	template <class Iterator>
 	  typename reverse_iterator<Iterator>::difference_type operator- (
 		const reverse_iterator<Iterator>& lhs,
 		const reverse_iterator<Iterator>& rhs) {
-		  return reverse_iterator<Iterator>(rhs.base() - lhs.base());
+		  return rhs.base() - lhs.base();
 	  };
 };
 
