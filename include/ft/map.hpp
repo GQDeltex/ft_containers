@@ -19,7 +19,7 @@ namespace ft {
 		public:
 			typedef Key														key_type;
 			typedef T														mapped_type;
-			typedef pair<const key_type, mapped_type>						value_type;
+			typedef ft::pair<const key_type, mapped_type>						value_type;
 		private:
 			class value_compare : std::binary_function<value_type, value_type, bool> {
 				protected:
@@ -82,7 +82,7 @@ namespace ft {
 		// Element Access
 			mapped_type&				operator[] (const key_type& k);
 		// Modifiers
-			pair<iterator, bool>		insert(const value_type& val);
+			ft::pair<iterator, bool>		insert(const value_type& val);
 			iterator					insert(
 											iterator position,
 											const value_type& val
@@ -109,8 +109,8 @@ namespace ft {
 			const_iterator				lower_bound(const key_type& k) const;
 			iterator					upper_bound(const key_type& k);
 			const_iterator				upper_bound(const key_type& k) const;
-			pair<iterator, iterator>	equal_range(const key_type& k);
-			pair<
+			ft::pair<iterator, iterator>	equal_range(const key_type& k);
+			ft::pair<
 				const_iterator,
 				const_iterator
 			>							equal_range(const key_type& k) const;

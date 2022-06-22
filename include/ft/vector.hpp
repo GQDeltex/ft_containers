@@ -115,28 +115,28 @@ namespace ft {
 										return iterator(this->_space);
 									}
 			const_iterator			begin(void) const {
-										return iterator(this->_space);
+										return const_iterator(this->_space);
 									}
 			iterator				end(void) {
 										this->__debug("Getting end iterator");
 										return iterator(this->_space + this->_data_size);
 									}
 			const_iterator			end(void) const {
-										return iterator(this->_space + this->_data_size);
+										return const_iterator(this->_space + this->_data_size);
 									}
 			reverse_iterator		rbegin(void) {
 										this->__debug("Getting rbegin reverse_iterator");
 										return reverse_iterator(this->end());
 									}
 			const_reverse_iterator	rbegin(void) const {
-										return reverse_iterator(this->end());
+										return const_reverse_iterator(this->end());
 									}
 			reverse_iterator		rend(void) {
 										this->__debug("Getting rend reverse_iterator");
 										return reverse_iterator(this->begin());
 									}
 			const_reverse_iterator	rend(void) const {
-										return reverse_iterator(this->begin());
+										return const_reverse_iterator(this->begin());
 									}
 			// Capacity
 			size_type				size(void) const {
