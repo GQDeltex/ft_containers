@@ -1,7 +1,6 @@
 #ifndef FT_ITERATOR_TRAITS_H
 # define FT_ITERATOR_TRAITS_H
 
-# include <cmath>
 # include <cstddef>
 # include <iterator>
 
