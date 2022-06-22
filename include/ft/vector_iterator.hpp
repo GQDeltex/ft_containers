@@ -84,7 +84,7 @@ namespace ft {
 									temp._ptr += n;
 									return temp;
 								}
-			friend vector_iterator		operator+(const int&n, const vector_iterator<T>&it) {
+			friend vector_iterator	operator+(const int&n, const vector_iterator<T>&it) {
 									vector_iterator temp(it);
 									temp._ptr += n;
 									return temp;
@@ -94,12 +94,12 @@ namespace ft {
 									temp._ptr -= n;
 									return temp;
 								}
-			friend vector_iterator		operator-(const int&n, const vector_iterator<T>&it) {
+			friend vector_iterator	operator-(const int&n, const vector_iterator<T>&it) {
 									vector_iterator temp(it);
 									temp._ptr -= n;
 									return temp;
 								}
-			friend int			operator-(const vector_iterator<T>&lhs, const vector_iterator<T>&rhs) {
+			friend difference_type	operator-(const vector_iterator<T>&lhs, const vector_iterator<T>&rhs) {
 									return lhs._ptr - rhs._ptr;
 								}
 			friend bool			operator==(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {

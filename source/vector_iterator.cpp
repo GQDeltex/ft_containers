@@ -83,7 +83,7 @@ void TestIterator() {
 		ft::vector_iterator<char> it2 = 5 + it;
 		test.equal(*it1, 'l');
 		test.equal(*it2, ' ');
-		test.equal(it2 - it1, 2);
+		test.equal(it2 - it1, (long)2);
 	}
 	{
 		Test test("Compound Operators");
