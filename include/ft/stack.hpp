@@ -50,16 +50,16 @@ namespace ft {
 									this->c.pop_back();
 								}
 			friend bool			operator== (
-									const ft::stack<T,Container>& lhs,
-									const ft::stack<T,Container>& rhs
+									const ft::stack<T, Container>& lhs,
+									const ft::stack<T, Container>& rhs
 								) {
-									return lhs.c == rhs.c;
+									return ft::equal(lhs.c.begin(), lhs.c.end(), rhs.c.begin());
 								}
 			friend bool			operator< (
-									const ft::stack<T,Container>& lhs,
-									const ft::stack<T,Container>& rhs
+									const ft::stack<T, Container>& lhs,
+									const ft::stack<T, Container>& rhs
 								) {
-									return (lhs.c < rhs.c);
+									return ft::lexicographical_compare(lhs.c.begin(), lhs.c.end(), rhs.c.begin(), rhs.c.end());
 								}
 	};
 	template<

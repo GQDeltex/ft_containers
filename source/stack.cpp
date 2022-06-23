@@ -61,6 +61,8 @@ void TestStack() {
 		ft::stack<char, ft::vector<char> > stk1(lst1);
 		ft::stack<char, ft::vector<char> > stk2(lst2);
 		ft::stack<char, ft::vector<char> > stk3(lst3);
+		test.equal(stk3 == stk2, false);
+		test.equal(stk1 != stk2, true);
 		test.equal(stk1 < stk2, true);
 		test.equal(stk1 >= stk2, false);
 		test.equal(stk1 <= stk1, true);
