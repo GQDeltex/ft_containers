@@ -6,9 +6,11 @@
 
 #if USE_STD == 1
 # include <stack>
+# include <vector>
   namespace ft = std;
 #else
 # include "../include/ft/stack.hpp"
+# include "../include/ft/vector.hpp"
 #endif
 
 void TestStack() {
@@ -56,9 +58,9 @@ void TestStack() {
 		ft::vector<char> lst1(str1.begin(), str1.end());
 		ft::vector<char> lst2(str2.begin(), str2.end());
 		ft::vector<char> lst3(str3.begin(), str3.end());
-		ft::stack<char> stk1(lst1);
-		ft::stack<char> stk2(lst2);
-		ft::stack<char> stk3(lst3);
+		ft::stack<char, ft::vector<char> > stk1(lst1);
+		ft::stack<char, ft::vector<char> > stk2(lst2);
+		ft::stack<char, ft::vector<char> > stk3(lst3);
 		test.equal(stk1 < stk2, true);
 		test.equal(stk1 >= stk2, false);
 		test.equal(stk1 <= stk1, true);

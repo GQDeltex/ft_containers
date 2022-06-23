@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/06/13 11:22:25 by pstengl          ###   ########.fr        #
+#    Updated: 2022/06/23 13:26:34 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ NORMFLAGS:=
 SRCFILES:=\
 	main.cpp\
 	vector.cpp\
-	iterator.cpp\
+	vector_iterator.cpp\
 	reverse_iterator.cpp\
 	is_integral.cpp\
 	enable_if.cpp\
