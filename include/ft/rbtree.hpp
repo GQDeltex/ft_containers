@@ -12,8 +12,8 @@ namespace ft {
 			bool	static __default_comp_smlthn(T lhs, T rhs) {
 				return lhs < rhs;
 			}
-			bool	static __default_comp_equal(T lhs, T rhs) {
-				return lhs == rhs;
+			bool _comp_equal(T lhs, T rhs) {
+				return (!this->_comp_smlthn(lhs, rhs)) && (!this->_comp_smlthn(rhs, lhs));
 			}
 		public:
 			typedef T		value_type;
@@ -29,17 +29,14 @@ namespace ft {
 
 			Node*		_root;
 			bool		(*_comp_smlthn)(T, T);
-			bool		(*_comp_equal)(T, T);
 			size_type	_size;
 
 			RBTree(
-				bool (*comp_smlthn)(T, T) = __default_comp_smlthn,
-				bool (*comp_equal)(T, T) = __default_comp_equal
+				bool (*comp_smlthn)(T, T) = __default_comp_smlthn
 			) {
 				this->_root = NULL;
 				this->_size = 0;
 				this->_comp_smlthn = comp_smlthn;
-				this->_comp_equal = comp_equal;
 			}
 			size_type	size() {
 				return this->_size;
