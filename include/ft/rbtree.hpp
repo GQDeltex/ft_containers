@@ -16,26 +16,22 @@ namespace ft {
 		Node*		left_child;
 		Node*		parent;
 	};
+
 	template <
 		class T,
+		class Compare = std::less<T>,
 		class Alloc = std::allocator<Node<T> >
 	>class RBTree {
 		public:
 			typedef T					value_type;
-			typedef size_t				size_type;
 			typedef Alloc				allocator_type;
-			typedef Node<value_type>*	node_ptr;
-
-		private:
-			bool	static __default_comp_smlthn(T lhs, T rhs) {
-				return lhs < rhs;
-			}
-			bool _comp_equal(T lhs, T rhs) {
-				return (!this->_comp_smlthn(lhs, rhs)) && (!this->_comp_smlthn(rhs, lhs));
-			}
+			typedef Compare				value_compare;
+			typedef size_t				size_type;
 
 		protected:
-			bool			(*_comp_smlthn)(T, T);
+			typedef Node<value_type>*	node_ptr;
+
+			value_compare	_comp;
 			size_type		_size;
 			allocator_type	_alloc;
 
@@ -43,15 +39,15 @@ namespace ft {
 			node_ptr			_root;
 
 			RBTree(
-				bool (*comp_smlthn)(T, T) = __default_comp_smlthn,
+				const value_compare& comp = value_compare(),
 				const allocator_type& alloc = allocator_type()
 			) {
 				this->_root = NULL;
 				this->_size = 0;
-				this->_comp_smlthn = comp_smlthn;
+				this->_comp = comp;
 				this->_alloc = alloc;
 			}
-			size_type	size() {
+			size_type	size() const {
 				return this->_size;
 			}
 			void	insert(T data) {
@@ -65,10 +61,10 @@ namespace ft {
 				node_ptr current_node = this->_root;
 				while (1) {
 					node_ptr* leaf = NULL;
-					if (this->_comp_smlthn(current_node->data, new_node->data)) {
+					if (this->_comp(current_node->data, new_node->data)) {
 						std::cout << "Left tree" << std::endl;
 						leaf = &(current_node->left_child);
-					} else if (this->_comp_smlthn(new_node->data, current_node->data)) {
+					} else if (this->_comp(new_node->data, current_node->data)) {
 						std::cout << "Right tree" << std::endl;
 						leaf = &(current_node->right_child);
 					} else {
@@ -86,7 +82,6 @@ namespace ft {
 					}
 				}
 				this->maintain_insert(new_node);
-				this->_size++;
 			}
 			node_ptr	__bst_find_delete(node_ptr target) {
 				std::cout << "BST DELETE" << std::endl;
@@ -323,14 +318,15 @@ namespace ft {
 			}
 			node_ptr	__find_node(node_ptr target, T data) {
 				node_ptr found = NULL;
-				if (this->_comp_equal(data, target->data))
+				// Not smaller or larget == equal
+				if ((!this->_comp(data, target->data)) && (!this->_comp(target->data, data)))
 					return target;
-				if (target->left_child != NULL && this->_comp_smlthn(target->data, data)) {
+				if (target->left_child != NULL && this->_comp(target->data, data)) {
 					found = __find_node(target->left_child, data);
 					if (found != NULL)
 						return found;
 				}
-				if (target->right_child != NULL && this->_comp_smlthn(data, target->data)) {
+				if (target->right_child != NULL && this->_comp(data, target->data)) {
 					found = __find_node(target->right_child, data);
 					if (found != NULL)
 						return found;
@@ -555,6 +551,7 @@ namespace ft {
 				node->left_child = NULL;
 				node->parent = NULL;
 				node->data = data;
+				this->_size++;
 				return node;
 			}
 			void print_node(node_ptr target, bool recurse=false) {
@@ -593,6 +590,7 @@ namespace ft {
 					delete_node(target->right_child, recurse);
 				this->_alloc.destroy(target);
 				this->_alloc.deallocate(target, 1);
+				this->_size--;
 			}
 			~RBTree() {
 				this->delete_node(this->_root, true);
