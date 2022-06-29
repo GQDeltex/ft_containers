@@ -49,7 +49,12 @@ namespace ft {
 										InputIterator last,
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
-									);
+										) {
+										this->tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										for (;first != last;first++) {
+											this->tree.insert(*first);
+										}
+									}
 									set (const set& x);
 		// Destructor
 									~set() {}
