@@ -4,6 +4,7 @@
 # include <iterator>
 # include <memory>
 
+# include "rbtree.hpp"
 # include "rbtree_iterator.hpp"
 # include "pairs.hpp"
 
@@ -30,11 +31,17 @@ namespace ft {
 			typedef ptrdiff_t								difference_type;
 			typedef size_t									size_type;
 
+		protected:
+			ft::RBTree<value_type, value_compare>	tree;
+
+		public:
 		// Constructors
 									set (
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
-									);
+										) {
+										this->tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+									}
 									template<
 										class InputIterator
 									> set (
@@ -45,21 +52,25 @@ namespace ft {
 									);
 									set (const set& x);
 		// Destructor
-									~set();
+									~set() {}
 		// Assignment operator
 			set&					operator=(const set& x);
 		// Iterators
 			iterator				begin();
-			const_iterator			begin();
+			const_iterator			begin() const;
 			iterator				end();
-			const_iterator			end();
+			const_iterator			end() const;
 			reverse_iterator		rbegin();
-			const_reverse_iterator	rbegin();
+			const_reverse_iterator	rbegin() const;
 			reverse_iterator		rend();
-			const_reverse_iterator	rend();
+			const_reverse_iterator	rend() const;
 		// Capacity
-			bool					empty() const;
-			size_type				size() const;
+			bool					empty() const {
+				return this->size() == 0;
+			}
+			size_type				size() const {
+				return this->tree.size();
+			}
 			size_type				max_size() const;
 		// Modifiers
 			ft::pair<iterator,bool>	insert(const value_type& val);

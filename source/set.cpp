@@ -5,6 +5,7 @@ void TestSet() {
 	{
 		Test test("Default Constructor");
 		ft::set<char> st;
-		test.unequal(st, NULL);
+		test.equal(st.size(), (unsigned long)0);
+		test.equal(st.empty(), true);
 	}
 }
