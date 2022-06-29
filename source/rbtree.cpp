@@ -2,7 +2,7 @@
 #include "Test.hpp"
 #include <cstddef>
 
-typedef ft::RBTree<std::string>::Node Node;
+typedef ft::Node<std::string> Node;
 
 bool testIsTreeValid(Node* target) {
 	if (target->parent != NULL) {

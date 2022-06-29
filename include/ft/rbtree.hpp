@@ -4,10 +4,28 @@
 # include <cstddef>
 # include <iostream>
 # include <stdexcept>
+# include <memory>
 
 namespace ft {
-	template <class T>
-	class RBTree {
+	template<
+		typename T
+	>struct Node {
+		T			data;
+		char		color;
+		Node*		right_child;
+		Node*		left_child;
+		Node*		parent;
+	};
+	template <
+		class T,
+		class Alloc = std::allocator<Node<T> >
+	>class RBTree {
+		public:
+			typedef T					value_type;
+			typedef size_t				size_type;
+			typedef Alloc				allocator_type;
+			typedef Node<value_type>*	node_ptr;
+
 		private:
 			bool	static __default_comp_smlthn(T lhs, T rhs) {
 				return lhs < rhs;
@@ -15,43 +33,38 @@ namespace ft {
 			bool _comp_equal(T lhs, T rhs) {
 				return (!this->_comp_smlthn(lhs, rhs)) && (!this->_comp_smlthn(rhs, lhs));
 			}
+
+		protected:
+			bool			(*_comp_smlthn)(T, T);
+			size_type		_size;
+			allocator_type	_alloc;
+
 		public:
-			typedef T		value_type;
-			typedef size_t	size_type;
-
-			struct Node {
-				value_type	data;
-				char		color;
-				Node*		right_child;
-				Node*		left_child;
-				Node*		parent;
-			};
-
-			Node*		_root;
-			bool		(*_comp_smlthn)(T, T);
-			size_type	_size;
+			node_ptr			_root;
 
 			RBTree(
-				bool (*comp_smlthn)(T, T) = __default_comp_smlthn
+				bool (*comp_smlthn)(T, T) = __default_comp_smlthn,
+				const allocator_type& alloc = allocator_type()
 			) {
 				this->_root = NULL;
 				this->_size = 0;
 				this->_comp_smlthn = comp_smlthn;
+				this->_alloc = alloc;
 			}
 			size_type	size() {
 				return this->_size;
 			}
 			void	insert(T data) {
-				Node* new_node = create_node(data);
+				node_ptr new_node = create_node(data);
 				if (this->_root == NULL) {
 					std::cout << "Is now root node" << std::endl;
 					new_node->color = 'b';
 					this->_root = new_node;
 					return;
 				}
-				Node* current_node = this->_root;
+				node_ptr current_node = this->_root;
 				while (1) {
-					Node** leaf = NULL;
+					node_ptr* leaf = NULL;
 					if (this->_comp_smlthn(current_node->data, new_node->data)) {
 						std::cout << "Left tree" << std::endl;
 						leaf = &(current_node->left_child);
@@ -75,13 +88,13 @@ namespace ft {
 				this->maintain_insert(new_node);
 				this->_size++;
 			}
-			Node*	__bst_find_delete(Node* target) {
+			node_ptr	__bst_find_delete(node_ptr target) {
 				std::cout << "BST DELETE" << std::endl;
-				Node* D = target;
+				node_ptr D = target;
 				// Step 1
 				if (this->__num_children(D) != 2) {
 					std::cout << "Less than 2 children" << std::endl;
-					Node* F = D->right_child;
+					node_ptr F = D->right_child;
 					if (D->left_child != NULL)
 						F = D->left_child;
 					// Step 2
@@ -89,7 +102,7 @@ namespace ft {
 						return D;
 					}
 					// Step 3
-					Node* G = D->parent;
+					node_ptr G = D->parent;
 					if (D == G->left_child)
 						G->left_child = F;
 					else
@@ -100,10 +113,10 @@ namespace ft {
 				}
 				std::cout << "2 Children" << std::endl;
 				// Step 4
-				Node* E = this->__find_leftmost(D->right_child);
+				node_ptr E = this->__find_leftmost(D->right_child);
 				std::cout << "Node is: " << D->data << std::endl;
 				std::cout << "Node to switch with: " << E->data << std::endl;
-				Node* G = E->parent;
+				node_ptr G = E->parent;
 
 				// Save the data
 				D->data = E->data;
@@ -111,7 +124,7 @@ namespace ft {
 				std::cout << "         " << std::endl;
 
 				// Get the (maybe) remaining child
-				Node* F = E->right_child;
+				node_ptr F = E->right_child;
 				if (G == E->right_child)
 					F = E->left_child;
 
@@ -127,7 +140,7 @@ namespace ft {
 
 				return E;
 			}
-			Node*	__find_leftmost(Node* target) {
+			node_ptr	__find_leftmost(node_ptr target) {
 				if (target->left_child != NULL) {
 					return this->__find_leftmost(target->left_child);
 				}
@@ -135,7 +148,7 @@ namespace ft {
 			}
 			void	remove(T data) {
 				std::cout << "Removing node" << std::endl;
-				Node* target = this->__find_node(this->_root, data);
+				node_ptr target = this->__find_node(this->_root, data);
 				if (target == NULL)
 					throw std::runtime_error("Cannot find Node");
 				// Do recursive BST delete (which results in the to be deleted
@@ -144,15 +157,15 @@ namespace ft {
 				// target is root and has no children
 				if (target == this->_root && this->__num_children(target) == 0) {
 					std::cout << "target is root and has no children" << std::endl;
-					delete target;
+					delete_node(target);
 					this->_root = NULL;
 					return;
 				}
 				// target is black and has one child
 				if (this->__num_children(target) == 1) {
 					std::cout << "Target is black and has one child" << std::endl;
-					Node* parent = target->parent;
-					Node* child = NULL;
+					node_ptr parent = target->parent;
+					node_ptr child = NULL;
 					if (target->left_child != NULL)
 						child = target->left_child;
 					else
@@ -163,24 +176,24 @@ namespace ft {
 					else
 						parent->right_child = child;
 					child->parent = parent;
-					delete target;
+					delete_node(target);
 					return;
 				}
 				// target is red and has no children
 				if (target->color == 'r' && this->__num_children(target) == 0) {
 					std::cout << "Target is red and has no children" << std::endl;
-					delete target;
+					delete_node(target);
 					return;
 				}
 				// target is not root has no children and is black
 				if (target != this->_root && this->__num_children(target) == 0 && target->color == 'b') {
 					std::cout << "target is not root and has no children and is black" << std::endl;
 					this->maintain_remove(target);
-					delete target;
+					delete_node(target);
 					return;
 				}
 			}
-			void	maintain_remove(Node* target) {
+			void	maintain_remove(node_ptr target) {
 				std::cout << "Maintaining tree after removal" << std::endl;
 				while (1) {
 					std::cout << "--> Looping <--" << std::endl;
@@ -191,10 +204,10 @@ namespace ft {
 						std::cout << "L0" << std::endl;
 						break;
 					}
-					Node* parent = target->parent;
-					Node* sibling = parent->left_child;
-					Node* close = sibling->right_child;
-					Node* distant = sibling->left_child;
+					node_ptr parent = target->parent;
+					node_ptr sibling = parent->left_child;
+					node_ptr close = sibling->right_child;
+					node_ptr distant = sibling->left_child;
 					if (target == parent->left_child) {
 						sibling = parent->right_child;
 						close = sibling->left_child;
@@ -300,7 +313,7 @@ namespace ft {
 				}
 				std::cout << "Done rebalancing" << std::cout;
 			}
-			short	__num_children(Node* target) {
+			short	__num_children(node_ptr target) {
 				short result = 0;
 				if (target->right_child != NULL)
 					result++;
@@ -308,8 +321,8 @@ namespace ft {
 					result++;
 				return result;
 			}
-			Node*	__find_node(Node* target, T data) {
-				Node* found = NULL;
+			node_ptr	__find_node(node_ptr target, T data) {
+				node_ptr found = NULL;
 				if (this->_comp_equal(data, target->data))
 					return target;
 				if (target->left_child != NULL && this->_comp_smlthn(target->data, data)) {
@@ -324,7 +337,7 @@ namespace ft {
 				}
 				return found;
 			}
-			void	__recolor(Node* target) {
+			void	__recolor(node_ptr target) {
 				char newcolor = 'r';
 				if (target->color == 'r')
 					newcolor = 'b';
@@ -337,7 +350,7 @@ namespace ft {
 					this->__recolor(target->right_child);
 				}
 			}
-			void	maintain_insert(Node* target) {
+			void	maintain_insert(node_ptr target) {
 				std::cout << "Maintaining Red-Black constraint" << std::endl;
 				while (1) {
 					// Setup done
@@ -352,7 +365,7 @@ namespace ft {
 						break;
 					}
 
-					Node* parent = target->parent;
+					node_ptr parent = target->parent;
 
 					// E5
 					// parent ist root
@@ -363,8 +376,8 @@ namespace ft {
 						break;
 					}
 
-					Node* grand = parent->parent;
-					Node* uncle = NULL;
+					node_ptr grand = parent->parent;
+					node_ptr uncle = NULL;
 					if (parent == grand->left_child)
 						uncle = grand->right_child;
 					else
@@ -442,13 +455,13 @@ namespace ft {
 				}
 				std::cout << "Done balancing" << std::endl;
 			}
-			void	rotate_left(Node* target) {
+			void	rotate_left(node_ptr target) {
 				std::cout << "Rotate Left" << std::endl;
 				if (target->right_child == NULL)
 					throw std::runtime_error("Cannot rotate left with no right child");
-				Node* x = target;
-				Node* y = target->right_child;
-				Node* p = target->parent;
+				node_ptr x = target;
+				node_ptr y = target->right_child;
+				node_ptr p = target->parent;
 
 				if (y->left_child != NULL) {
 					std::cout << "Has child, moving to x" << std::endl;
@@ -476,13 +489,13 @@ namespace ft {
 				x->parent = y;
 				y->left_child = x;
 			}
-			void	rotate_right(Node* target) {
+			void	rotate_right(node_ptr target) {
 				std::cout << "Rotate Right" << std::endl;
 				if (target->left_child == NULL)
 					throw std::runtime_error("Cannot rotate right with no left child");
-				Node* y = target;
-				Node* x = target->left_child;
-				Node* p = target->parent;
+				node_ptr y = target;
+				node_ptr x = target->left_child;
+				node_ptr p = target->parent;
 
 				if (x->right_child != NULL) {
 					std::cout << "Has child, moving to y" << std::endl;
@@ -508,32 +521,35 @@ namespace ft {
 				y->parent = x;
 				x->right_child = y;
 			}
-			void rotate_left_right(Node* target) {
+			void rotate_left_right(node_ptr target) {
 				std::cout << "Rotate Left-Right" << std::endl;
 				if (target->left_child == NULL)
 					throw std::runtime_error("Cannot rotate left-right with no left child");
 				if (target->left_child->right_child == NULL)
 					throw std::runtime_error("Cannot rotate left-right with no right child-child");
-				Node* z = target;
-				Node* x = target->left_child;
+				node_ptr z = target;
+				node_ptr x = target->left_child;
 
 				rotate_left(x);
 				rotate_right(z);
 			}
-			void rotate_right_left(Node* target) {
+			void rotate_right_left(node_ptr target) {
 				std::cout << "Rotate Right-Left" << std::endl;
 				if (target->right_child == NULL)
 					throw std::runtime_error("Cannot rotate right_left with no right child");
 				if (target->right_child->left_child == NULL)
 					throw std::runtime_error("Cannot rotate right-left with no left child-child");
-				Node* z = target;
-				Node* x = target->right_child;
+				node_ptr z = target;
+				node_ptr x = target->right_child;
 
 				rotate_right(x);
 				rotate_left(z);
 			}
-			Node*	create_node(T data) {
-				Node* node = new Node;
+			node_ptr	create_node(T data) {
+
+				node_ptr node = this->_alloc.allocate(1);
+				this->_alloc.construct(node);
+				//node_ptr node = new Node;
 				node->color = 'r';
 				node->right_child = NULL;
 				node->left_child = NULL;
@@ -541,7 +557,7 @@ namespace ft {
 				node->data = data;
 				return node;
 			}
-			void print_node(Node* target, bool recurse=false) {
+			void print_node(node_ptr target, bool recurse=false) {
 				if (target == NULL) {
 					std::cout << "### Tree empty ###" << std::endl;
 					return;
@@ -568,17 +584,18 @@ namespace ft {
 				if (target->right_child != NULL && recurse)
 					print_node(target->right_child, recurse);
 			}
-			void	delete_node(Node* target) {
+			void	delete_node(node_ptr target, bool recurse = false) {
 				if (target == NULL)
 					return;
-				if (target->left_child != NULL)
-					delete_node(target->left_child);
-				if (target->right_child != NULL)
-					delete_node(target->right_child);
-				delete target;
+				if (target->left_child != NULL && recurse)
+					delete_node(target->left_child, recurse);
+				if (target->right_child != NULL && recurse)
+					delete_node(target->right_child, recurse);
+				this->_alloc.destroy(target);
+				this->_alloc.deallocate(target, 1);
 			}
 			~RBTree() {
-				this->delete_node(this->_root);
+				this->delete_node(this->_root, true);
 			}
 	};
 }
