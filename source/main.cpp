@@ -11,6 +11,7 @@ void TestEnableIf();
 void TestStack();
 void TestPairs();
 void TestRBTree();
+void TestSet();
 
 int main(void) {
 	/*
@@ -21,8 +22,9 @@ int main(void) {
 	TestEnableIf();
 	TestStack();
 	TestPairs();
-	*/
 	TestRBTree();
+	*/
+	TestSet();
 	Test test;
 	test.summary();
 }
