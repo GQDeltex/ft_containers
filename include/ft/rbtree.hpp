@@ -35,6 +35,18 @@ namespace ft {
 			size_type		_size;
 			allocator_type	_alloc;
 
+		private:
+			node_ptr	__copy_deep(node_ptr target) {
+				if (target == NULL)
+					return NULL;
+				node_ptr new_node = this->create_node(target->data);
+				new_node->color = target->color;
+				new_node->left_child = __copy_deep(target->left_child);
+				new_node->right_child = __copy_deep(target->right_child);
+				new_node->parent = target->parent;
+				return new_node;
+			}
+
 		public:
 			node_ptr			_root;
 
@@ -46,6 +58,13 @@ namespace ft {
 				this->_size = 0;
 				this->_comp = comp;
 				this->_alloc = alloc;
+			}
+			RBTree&	operator=(const RBTree& rbt) {
+				this->_root = this->__copy_deep(rbt._root);
+				this->_size = rbt._size;
+				this->_comp = rbt._comp;
+				this->_alloc = rbt._alloc;
+				return *this;
 			}
 			size_type	size() const {
 				return this->_size;

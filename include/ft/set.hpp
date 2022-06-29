@@ -55,11 +55,16 @@ namespace ft {
 											this->tree.insert(*first);
 										}
 									}
-									set (const set& x);
+									set (const set& x) {
+										*this = x;
+									}
 		// Destructor
 									~set() {}
 		// Assignment operator
-			set&					operator=(const set& x);
+									set&					operator=(const set& x) {
+										this->tree = x.tree;
+										return *this;
+									}
 		// Iterators
 			iterator				begin();
 			const_iterator			begin() const;

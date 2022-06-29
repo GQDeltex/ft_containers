@@ -15,4 +15,17 @@ void TestSet() {
 		test.equal(st.empty(), false);
 		test.equal(st.size(), (unsigned long)26);
 	}
+	{
+		Test test("Copy Constructor / Assignment operator");
+		std::string str("abcdefghijklmnopqrstuvwxyz");
+		ft::set<char> st1(str.begin(), str.end());
+		test.equal(st1.empty(), false);
+		test.equal(st1.size(), (unsigned long)26);
+		ft::set<char> st2 = st1;
+		test.equal(st2.empty(), false);
+		test.equal(st2.size(), (unsigned long)26);
+		ft::set<char> st3(st1);
+		test.equal(st3.empty(), false);
+		test.equal(st3.size(), (unsigned long)26);
+	}
 }
