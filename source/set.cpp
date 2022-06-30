@@ -1,9 +1,10 @@
 #include "../include/ft/set.hpp"
 #include "Test.hpp"
+#include "../include/ft/pairs.hpp"
 
 void TestSet() {
 	{
-		Test test("Default Constructor");
+		Test test("Default Constructor checking size and empty");
 		ft::set<char> st;
 		test.equal(st.size(), (unsigned long)0);
 		test.equal(st.empty(), true);
@@ -27,5 +28,20 @@ void TestSet() {
 		ft::set<char> st3(st1);
 		test.equal(st3.empty(), false);
 		test.equal(st3.size(), (unsigned long)26);
+	}
+	{
+		Test test("Insert value");
+		ft::set<char> st;
+		test.equal(st.empty(), true, "Is empty in beginning");
+		ft::pair<ft::set<char>::iterator,bool>back1 = st.insert('x');
+		test.equal(back1.second, true, "Was inserted");
+		// Check iterator to be at beginning
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(st.size(), (unsigned long)1, "Is 1 long now");
+		ft::pair<ft::set<char>::iterator,bool>back2 = st.insert('x');
+		test.equal(back2.second, false, "Was not inserted");
+		// Check iterator to be at beginning
+		test.equal(st.empty(), false, "Is still not empty");
+		test.equal(st.size(), (unsigned long)1, "Size is still 1");
 	}
 }

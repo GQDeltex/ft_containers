@@ -10,10 +10,13 @@ namespace ft {
 		public:
 			typedef T	value_type;
 
-			rbtree_iterator();
+			rbtree_iterator() {}
 			rbtree_iterator(const rbtree_iterator& rbi);
-			rbtree_iterator& operator=(const rbtree_iterator& rbi);
-			~rbtree_iterator();
+			rbtree_iterator& operator=(const rbtree_iterator& rbi) {
+				(void)rbi;
+				return *this;
+			}
+			~rbtree_iterator() {}
 
 			friend bool	operator==(const rbtree_iterator& lhs, const rbtree_iterator& rhs);
 

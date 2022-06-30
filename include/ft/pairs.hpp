@@ -20,7 +20,10 @@ namespace ft {
 						T1 x,
 						T2 y
 					) {
-						return (pair<T1, T2>(x, y));
+						pair<T1, T2> pr;
+						pr.first = x;
+						pr.second = y;
+						return (pr);
 					}
 }
 

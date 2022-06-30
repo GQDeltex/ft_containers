@@ -83,7 +83,14 @@ namespace ft {
 			}
 			size_type				max_size() const;
 		// Modifiers
-			ft::pair<iterator,bool>	insert(const value_type& val);
+			ft::pair<iterator,bool>	insert(const value_type& val) {
+										try {
+											this->tree.insert(val);
+										} catch (const std::exception& e) {
+											return ft::make_pair<iterator,bool>(this->find(val), false);
+										}
+										return ft::make_pair<iterator,bool>(this->find(val), true);
+									}
 			iterator				insert(
 										iterator position,
 										const value_type& val
@@ -103,7 +110,10 @@ namespace ft {
 			key_compare				key_comp() const;
 			value_compare			value_comp() const;
 		// Operations
-			iterator				find(const value_type& val) const;
+			iterator				find(const value_type& val) const {
+										(void)val;
+										return iterator();
+									}
 			size_type				count(const value_type& val) const;
 			iterator				lower_bound(const value_type& val) const;
 			iterator				upper_bound(const value_type& val) const;

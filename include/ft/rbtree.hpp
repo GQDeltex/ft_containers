@@ -95,6 +95,7 @@ namespace ft {
 						std::cout << "Right tree" << std::endl;
 						leaf = &(current_node->right_child);
 					} else {
+						delete_node(new_node);
 						throw std::runtime_error("Node already exists");
 					}
 					if (*leaf == NULL) {
