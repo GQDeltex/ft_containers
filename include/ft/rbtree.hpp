@@ -7,6 +7,7 @@
 # include <memory>
 
 namespace ft {
+
 	template<
 		typename T
 	>struct Node {
@@ -40,10 +41,14 @@ namespace ft {
 				if (target == NULL)
 					return NULL;
 				node_ptr new_node = this->create_node(target->data);
+				this->_size--; // Fix runaway size
 				new_node->color = target->color;
 				new_node->left_child = __copy_deep(target->left_child);
+				if (new_node->left_child != NULL)
+					new_node->left_child->parent = new_node;
 				new_node->right_child = __copy_deep(target->right_child);
-				new_node->parent = target->parent;
+				if (new_node->right_child != NULL)
+					new_node->right_child->parent = new_node;
 				return new_node;
 			}
 
@@ -58,6 +63,9 @@ namespace ft {
 				this->_size = 0;
 				this->_comp = comp;
 				this->_alloc = alloc;
+			}
+			RBTree(const RBTree& rbt) {
+				*this = rbt;
 			}
 			RBTree&	operator=(const RBTree& rbt) {
 				this->_root = this->__copy_deep(rbt._root);
