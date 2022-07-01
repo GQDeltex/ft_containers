@@ -6,6 +6,7 @@
 
 # include "rbtree.hpp"
 # include "rbtree_iterator.hpp"
+# include "reverse_iterator.hpp"
 # include "pairs.hpp"
 
 namespace ft {
@@ -15,21 +16,21 @@ namespace ft {
 		class Alloc = std::allocator<T>
 	> class set {
 		public:
-			typedef T										key_type;
-			typedef T										value_type;
-			typedef Compare									key_compare;
-			typedef Compare									value_compare;
-			typedef Alloc									allocator_type;
-			typedef typename allocator_type::reference		reference;
-			typedef const reference							const_reference;
-			typedef typename allocator_type::pointer		pointer;
-			typedef const pointer							const_pointer;
-			typedef ft::rbtree_iterator<value_type>			iterator;
-			typedef ft::rbtree_iterator<const value_type>	const_iterator;
-			typedef std::reverse_iterator<iterator>			reverse_iterator;
-			typedef	const reverse_iterator					const_reverse_iterator;
-			typedef ptrdiff_t								difference_type;
-			typedef size_t									size_type;
+			typedef T														key_type;
+			typedef T														value_type;
+			typedef Compare													key_compare;
+			typedef Compare													value_compare;
+			typedef Alloc													allocator_type;
+			typedef typename allocator_type::reference						reference;
+			typedef const reference											const_reference;
+			typedef typename allocator_type::pointer						pointer;
+			typedef const pointer											const_pointer;
+			typedef ft::rbtree_iterator<value_type, value_compare>			iterator;
+			typedef ft::rbtree_iterator<const value_type, value_compare>	const_iterator;
+			typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef	ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef ptrdiff_t												difference_type;
+			typedef size_t													size_type;
 
 		protected:
 			ft::RBTree<value_type, value_compare>	tree;
@@ -61,26 +62,42 @@ namespace ft {
 		// Destructor
 									~set() {}
 		// Assignment operator
-									set&					operator=(const set& x) {
+			set&					operator=(const set& x) {
 										this->tree = x.tree;
 										return *this;
 									}
 		// Iterators
-			iterator				begin();
-			const_iterator			begin() const;
-			iterator				end();
-			const_iterator			end() const;
-			reverse_iterator		rbegin();
-			const_reverse_iterator	rbegin() const;
-			reverse_iterator		rend();
-			const_reverse_iterator	rend() const;
+			iterator				begin() {
+										iterator(this->tree.begin());
+									}
+			const_iterator			begin() const {
+										const_iterator(this->tree.begin());
+									}
+			iterator				end() {
+										iterator(this->tree.end());
+									}
+			const_iterator			end() const {
+										const_iterator(this->tree.end());
+									}
+			reverse_iterator		rbegin() {
+										reverse_iterator(this->tree.begin());
+									}
+			const_reverse_iterator	rbegin() const {
+										const_reverse_iterator(this->tree.begin());
+									}
+			reverse_iterator		rend() {
+										reverse_iterator(this->tree.end());
+									}
+			const_reverse_iterator	rend() const {
+										const_reverse_iterator(this->tree.end());
+									}
 		// Capacity
 			bool					empty() const {
-				return this->size() == 0;
-			}
+										return this->size() == 0;
+									}
 			size_type				size() const {
-				return this->tree.size();
-			}
+										return this->tree.size();
+									}
 			size_type				max_size() const;
 		// Modifiers
 			ft::pair<iterator,bool>	insert(const value_type& val) {
