@@ -396,7 +396,6 @@ namespace ft {
 					if (parent == this->_root) {
 						std::cout << "E5" << std::endl;
 						parent->color = 'b';
-						this->__recolor(parent);
 						break;
 					}
 
