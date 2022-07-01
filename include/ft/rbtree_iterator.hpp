@@ -18,7 +18,10 @@ namespace ft {
 			}
 			~rbtree_iterator() {}
 
-			friend bool	operator==(const rbtree_iterator& lhs, const rbtree_iterator& rhs);
+			friend bool	operator==(const rbtree_iterator& lhs, const rbtree_iterator& rhs) {
+				return false;
+			}
+
 
 			value_type	operator*(const rbtree_iterator& rbi);
 			rbtree_iterator&	operator++();

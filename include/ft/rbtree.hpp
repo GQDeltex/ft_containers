@@ -569,10 +569,10 @@ namespace ft {
 				rotate_right(x);
 				rotate_left(z);
 			}
-			node_ptr	create_node(T data) {
+			node_ptr	create_node(value_type data) {
 
 				node_ptr node = this->_alloc.allocate(1);
-				this->_alloc.construct(node);
+				this->_alloc.construct(node, Node<value_type>());
 				//node_ptr node = new Node;
 				node->color = 'r';
 				node->right_child = NULL;
