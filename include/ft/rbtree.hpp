@@ -88,10 +88,10 @@ namespace ft {
 				node_ptr current_node = this->_root;
 				while (1) {
 					node_ptr* leaf = NULL;
-					if (this->_comp(current_node->data, new_node->data)) {
+					if (this->_comp(new_node->data, current_node->data)) {
 						std::cout << "Left tree" << std::endl;
 						leaf = &(current_node->left_child);
-					} else if (this->_comp(new_node->data, current_node->data)) {
+					} else if (this->_comp(current_node->data, new_node->data)) {
 						std::cout << "Right tree" << std::endl;
 						leaf = &(current_node->right_child);
 					} else {
@@ -349,12 +349,12 @@ namespace ft {
 				// Not smaller or larget == equal
 				if ((!this->_comp(data, target->data)) && (!this->_comp(target->data, data)))
 					return target;
-				if (target->left_child != NULL && this->_comp(target->data, data)) {
+				if (target->left_child != NULL && this->_comp(data, target->data)) {
 					found = __find_node(target->left_child, data);
 					if (found != NULL)
 						return found;
 				}
-				if (target->right_child != NULL && this->_comp(data, target->data)) {
+				if (target->right_child != NULL && this->_comp(target->data, data)) {
 					found = __find_node(target->right_child, data);
 					if (found != NULL)
 						return found;
