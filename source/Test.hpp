@@ -2,6 +2,7 @@
 # define TEST_H
 
 # include <iostream>
+# include <cstdlib>
 
 class Test {
 	private:

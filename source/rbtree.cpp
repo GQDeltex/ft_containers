@@ -6,8 +6,8 @@ typedef ft::Node<std::string> Node;
 
 bool testIsTreeValid(Node* target) {
 	if (target->parent != NULL) {
-		if (target->parent->color == target->color) {
-			std::cout << "Has same color as parent" << std::endl;
+		if (target->parent->color == 'r' && target->color == 'r') {
+			std::cout << "Parent and Target are red (!RR)" << std::endl;
 			return false;
 		}
 	}
@@ -364,7 +364,7 @@ void TestRBTree() {
 		rbtree.insert(std::string("g"));
 		rbtree.insert(std::string("h"));
 		rbtree.print_node(rbtree._root, true);
-		test.equal(testIsTreeValid(rbtree._root), true);
+		test.equal(testIsTreeValid(rbtree._root), true, "Is Tree valid");
 	}
 	{
 		Test test("delete root from tree");
