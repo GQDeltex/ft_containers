@@ -77,6 +77,9 @@ namespace ft {
 			size_type	size() const {
 				return this->_size;
 			}
+			node_ptr	begin() {
+				return this->__find_leftmost(this->_root);
+			}
 			void	insert(T data) {
 				node_ptr new_node = create_node(data);
 				if (this->_root == NULL) {

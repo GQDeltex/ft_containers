@@ -12,6 +12,7 @@ void TestStack();
 void TestPairs();
 void TestRBTree();
 void TestSet();
+void TestRBTreeIterator();
 
 int main(void) {
 	/*
@@ -24,7 +25,8 @@ int main(void) {
 	TestPairs();
 	TestRBTree();
 	*/
-	TestSet();
+	TestRBTreeIterator();
+	//TestSet();
 	Test test;
 	test.summary();
 }
