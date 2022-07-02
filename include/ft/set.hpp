@@ -68,28 +68,28 @@ namespace ft {
 									}
 		// Iterators
 			iterator				begin() {
-										iterator(this->tree.begin());
+										return iterator(this->tree.begin());
 									}
 			const_iterator			begin() const {
-										const_iterator(this->tree.begin());
+										return const_iterator(this->tree.begin());
 									}
 			iterator				end() {
-										iterator(this->tree.end());
+										return iterator(this->tree.end());
 									}
 			const_iterator			end() const {
-										const_iterator(this->tree.end());
+										return const_iterator(this->tree.end());
 									}
 			reverse_iterator		rbegin() {
-										reverse_iterator(this->tree.begin());
+										return reverse_iterator(this->tree.begin());
 									}
 			const_reverse_iterator	rbegin() const {
-										const_reverse_iterator(this->tree.begin());
+										return const_reverse_iterator(this->tree.begin());
 									}
 			reverse_iterator		rend() {
-										reverse_iterator(this->tree.end());
+										return reverse_iterator(this->tree.end());
 									}
 			const_reverse_iterator	rend() const {
-										const_reverse_iterator(this->tree.end());
+										return const_reverse_iterator(this->tree.end());
 									}
 		// Capacity
 			bool					empty() const {

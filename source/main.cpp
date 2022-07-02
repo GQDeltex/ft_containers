@@ -24,9 +24,9 @@ int main(void) {
 	TestStack();
 	TestPairs();
 	TestRBTree();
-	*/
 	TestRBTreeIterator();
-	//TestSet();
+	*/
+	TestSet();
 	Test test;
 	test.summary();
 }

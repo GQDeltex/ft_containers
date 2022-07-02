@@ -115,9 +115,13 @@ namespace ft {
 					return target;
 				}
 				if (target->parent != NULL) {
-					while (target->parent != NULL && this->_comp(target->data, target->parent->data)) {
-						target = target->parent;
+					while (target->parent != NULL) {
+						if (this->_comp(target->parent->data, target->data))
+							target = target->parent;
+						else
+							break;
 					}
+					target = target->parent;
 					if (target != start)
 						return target;
 				}
@@ -135,9 +139,13 @@ namespace ft {
 					return target;
 				}
 				if (target->parent != NULL) {
-					while (target->parent != NULL && this->_comp(target->parent->data, target->data)) {
-						target = target->parent;
+					while (target->parent != NULL) {
+						if (this->_comp(target->data, target->parent->data))
+							target = target->parent;
+						else
+							break;
 					}
+					target = target->parent;
 					if (target != start)
 						return target;
 				}

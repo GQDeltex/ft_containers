@@ -6,7 +6,13 @@
 # include <stdexcept>
 # include <memory>
 
+
 namespace ft {
+
+	template<
+		class T,
+		class Compare
+	> class rbtree_iterator;
 
 	template<
 		typename T
@@ -28,6 +34,7 @@ namespace ft {
 			typedef Alloc				allocator_type;
 			typedef Compare				value_compare;
 			typedef size_t				size_type;
+			typedef rbtree_iterator<value_type, value_compare>	iterator;
 
 		protected:
 			typedef Node<value_type>*	node_ptr;
@@ -77,8 +84,13 @@ namespace ft {
 			size_type	size() const {
 				return this->_size;
 			}
-			node_ptr	begin() {
-				return this->__find_leftmost(this->_root);
+			iterator	begin() {
+				return iterator(this->__find_leftmost(this->_root));
+			}
+			iterator	end() {
+				iterator it = iterator(this->__find_rightmost(this->_root));
+				it++;
+				return it;
 			}
 			void	insert(T data) {
 				node_ptr new_node = create_node(data);
@@ -169,6 +181,12 @@ namespace ft {
 			node_ptr	__find_leftmost(node_ptr target) {
 				if (target->left_child != NULL) {
 					return this->__find_leftmost(target->left_child);
+				}
+				return target;
+			}
+			node_ptr	__find_rightmost(node_ptr target) {
+				if (target->right_child != NULL) {
+					return this->__find_rightmost(target->right_child);
 				}
 				return target;
 			}
@@ -337,7 +355,9 @@ namespace ft {
 						break;
 					}
 				}
-				std::cout << "Done rebalancing" << std::cout;
+				std::cout << "--> Done balancing <--" << std::endl;
+				this->print_node(this->_root, true);
+				std::cout << "-->                <--" << std::endl;
 			}
 			short	__num_children(node_ptr target) {
 				short result = 0;
@@ -479,7 +499,9 @@ namespace ft {
 						continue;
 					}
 				}
-				std::cout << "Done balancing" << std::endl;
+				std::cout << "--> Done balancing <--" << std::endl;
+				this->print_node(this->_root, true);
+				std::cout << "-->                <--" << std::endl;
 			}
 			void	rotate_left(node_ptr target) {
 				std::cout << "Rotate Left" << std::endl;

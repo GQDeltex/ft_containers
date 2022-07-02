@@ -44,4 +44,24 @@ void TestSet() {
 		test.equal(st.empty(), false, "Is still not empty");
 		test.equal(st.size(), (unsigned long)1, "Size is still 1");
 	}
+	{
+		Test test("Iterators");
+		ft::set<char> st;
+		test.equal(st.empty(), true, "Is empty in beginning");
+		st.insert('x');
+		st.insert('g');
+		st.insert('s');
+		st.insert('k');
+		st.insert('i');
+		ft::set<char>::iterator begin = st.begin();
+		ft::set<char>::iterator end = st.end();
+		ft::set<char>::iterator it = begin;
+		for(;it!=end;it++) {
+			std::cout << "SET: " << *it << std::endl;
+		}
+		do {
+			it--;
+			std::cout << "SET: " << *it << std::endl;
+		} while (it != begin);
+	}
 }
