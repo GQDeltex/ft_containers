@@ -182,7 +182,11 @@ namespace ft {
 			iterator				find(const value_type& val) const {
 										return iterator(this->_tree.find(val));
 									}
-			size_type				count(const value_type& val) const;
+			size_type				count(const value_type& val) const {
+										if (this->_tree.find(val) == this->_tree.end())
+											return 0;
+										return 1;
+									}
 			iterator				lower_bound(const value_type& val) const;
 			iterator				upper_bound(const value_type& val) const;
 			ft::pair<

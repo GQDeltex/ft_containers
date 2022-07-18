@@ -215,4 +215,12 @@ void TestSet() {
 		ft::set<char>::iterator it2 = st.find('x');
 		test.equal(it2, st.end(), "If not found iterator to end");
 	}
+	{
+		Test test("Count");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		test.equal(st.count('W'), (unsigned long)1, "Found 'W' one time");
+		test.equal(st.count('x'), (unsigned long)0, "Found 'x' zero times");
+	}
 }
