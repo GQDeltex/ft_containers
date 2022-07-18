@@ -88,10 +88,10 @@ namespace ft {
 			size_type	max_size() const {
 				return this->_alloc.max_size();
 			}
-			iterator	begin() {
+			iterator	begin() const {
 				return iterator(this->__find_leftmost(this->_root));
 			}
-			iterator	end() {
+			iterator	end() const {
 				iterator it = iterator(this->__find_rightmost(this->_root));
 				it++;
 				return it;
@@ -186,13 +186,13 @@ namespace ft {
 
 				return E;
 			}
-			node_ptr	__find_leftmost(node_ptr target) {
+			node_ptr	__find_leftmost(node_ptr target) const {
 				if (target->left_child != NULL) {
 					return this->__find_leftmost(target->left_child);
 				}
 				return target;
 			}
-			node_ptr	__find_rightmost(node_ptr target) {
+			node_ptr	__find_rightmost(node_ptr target) const {
 				if (target->right_child != NULL) {
 					return this->__find_rightmost(target->right_child);
 				}
@@ -400,7 +400,10 @@ namespace ft {
 				return result;
 			}
 			iterator	find(value_type data) const {
-				return iterator(this->__find_node(this->_root, data));
+				node_ptr target = this->__find_node(this->_root, data);
+				if (target == NULL)
+					return iterator(this->end());
+				return iterator(target);
 			}
 			node_ptr	__find_node(node_ptr target, value_type data) const {
 				node_ptr found = NULL;

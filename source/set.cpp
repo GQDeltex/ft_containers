@@ -205,4 +205,14 @@ void TestSet() {
 		test.equal(typeid(st.value_comp()).name(), typeid(std::less<char>).name(), "Value comp is std::less");
 		test.equal(typeid(st.key_comp()).name(), typeid(std::less<char>).name(), "Key comp is std::less");
 	}
+	{
+		Test test("Find");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		ft::set<char>::iterator it1 = st.find('W');
+		test.equal(*it1, 'W', "Returns correct item");
+		ft::set<char>::iterator it2 = st.find('x');
+		test.equal(it2, st.end(), "If not found iterator to end");
+	}
 }
