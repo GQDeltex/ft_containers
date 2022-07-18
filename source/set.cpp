@@ -1,3 +1,5 @@
+#include <typeinfo>
+
 #include "../include/ft/set.hpp"
 #include "Test.hpp"
 #include "../include/ft/pairs.hpp"
@@ -196,5 +198,11 @@ void TestSet() {
 		st.clear();
 		test.equal(st.empty(), true, "Set is empty");
 		test.equal(st.size(), (unsigned long)0, "Size is 0");
+	}
+	{
+		Test test("value_comp and key_comp");
+		ft::set<char> st;
+		test.equal(typeid(st.value_comp()).name(), typeid(std::less<char>).name(), "Value comp is std::less");
+		test.equal(typeid(st.key_comp()).name(), typeid(std::less<char>).name(), "Key comp is std::less");
 	}
 }

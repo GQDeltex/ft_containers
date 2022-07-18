@@ -35,7 +35,8 @@ namespace ft {
 			typedef size_t													size_type;
 
 		protected:
-			ft::RBTree<value_type, value_compare>	tree;
+			ft::RBTree<value_type, value_compare>	_tree;
+			value_compare							_comp;
 
 		public:
 		// Constructors
@@ -43,7 +44,8 @@ namespace ft {
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
 										) {
-										this->tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_comp = comp;
 									}
 									template<
 										class InputIterator
@@ -53,9 +55,9 @@ namespace ft {
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
 										) {
-										this->tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
 										for (;first != last;first++) {
-											this->tree.insert(*first);
+											this->_tree.insert(*first);
 										}
 									}
 									set (const set& x) {
@@ -65,48 +67,49 @@ namespace ft {
 									~set() {}
 		// Assignment operator
 			set&					operator=(const set& x) {
-										this->tree = x.tree;
+										this->_tree = x._tree;
+										this->_comp = x._comp;
 										return *this;
 									}
 		// Iterators
 			iterator				begin() {
-										return iterator(this->tree.begin());
+										return iterator(this->_tree.begin());
 									}
 			const_iterator			begin() const {
-										return const_iterator(this->tree.begin());
+										return const_iterator(this->_tree.begin());
 									}
 			iterator				end() {
-										return iterator(this->tree.end());
+										return iterator(this->_tree.end());
 									}
 			const_iterator			end() const {
-										return const_iterator(this->tree.end());
+										return const_iterator(this->_tree.end());
 									}
 			reverse_iterator		rbegin() {
-										return reverse_iterator(this->tree.end());
+										return reverse_iterator(this->_tree.end());
 									}
 			const_reverse_iterator	rbegin() const {
-										return const_reverse_iterator(this->tree.end());
+										return const_reverse_iterator(this->_tree.end());
 									}
 			reverse_iterator		rend() {
-										return reverse_iterator(this->tree.begin());
+										return reverse_iterator(this->_tree.begin());
 									}
 			const_reverse_iterator	rend() const {
-										return const_reverse_iterator(this->tree.begin());
+										return const_reverse_iterator(this->_tree.begin());
 									}
 		// Capacity
 			bool					empty() const {
 										return this->size() == 0;
 									}
 			size_type				size() const {
-										return this->tree.size();
+										return this->_tree.size();
 									}
 			size_type				max_size() const {
-										return this->tree.max_size();
+										return this->_tree.max_size();
 									}
 		// Modifiers
 			ft::pair<iterator,bool>	insert(const value_type& val) {
 										try {
-											this->tree.insert(val);
+											this->_tree.insert(val);
 										} catch (const std::exception& e) {
 											return ft::make_pair<iterator,bool>(this->find(val), false);
 										}
@@ -118,7 +121,7 @@ namespace ft {
 									) {
 										(void)position;
 										try {
-											this->tree.insert(val);
+											this->_tree.insert(val);
 										} catch (const std::exception& e) {
 											// Just ignore the error
 										}
@@ -137,7 +140,7 @@ namespace ft {
 									}
 			void					erase(iterator position) {
 										try {
-											this->tree.remove(*position);
+											this->_tree.remove(*position);
 										} catch (const std::exception& e) {
 											// Ignore
 										}
@@ -145,7 +148,7 @@ namespace ft {
 									}
 			size_type				erase(const value_type& val) {
 										try {
-											this->tree.remove(val);
+											this->_tree.remove(val);
 										} catch (const std::exception& e) {
 											return 0;
 										}
@@ -155,7 +158,7 @@ namespace ft {
 										set<value_type, value_compare, allocator_type> temp(*this);
 										for(;first!=last;first++) {
 											try {
-												temp.tree.remove(*first);
+												temp._tree.remove(*first);
 											} catch (const std::exception& e) {
 												// Ignore
 											}
@@ -163,17 +166,21 @@ namespace ft {
 										*this = temp;
 									}
 			void					swap(set& x) {
-										this->tree.swap(x.tree);
+										this->_tree.swap(x._tree);
 									}
 			void					clear() {
 										this->erase(this->begin(), this->end());
 									}
 		// Observers
-			key_compare				key_comp() const;
-			value_compare			value_comp() const;
+			key_compare				key_comp() const {
+										return this->_comp;
+									}
+			value_compare			value_comp() const {
+										return this->_comp;
+									}
 		// Operations
 			iterator				find(const value_type& val) const {
-										return iterator(this->tree.find(val));
+										return iterator(this->_tree.find(val));
 									}
 			size_type				count(const value_type& val) const;
 			iterator				lower_bound(const value_type& val) const;
