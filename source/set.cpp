@@ -156,4 +156,34 @@ void TestSet() {
 		test.equal(st.empty(), true, "Is empty now");
 		test.equal(st.size(), (unsigned long)0, "Is empty (0 elements)");
 	}
+	{
+		Test test("Swapping one set with another");
+		std::string	str1("Hello World");
+		ft::set<char> st1;
+		st1.insert(str1.begin(), str1.end());
+		std::string str2("What's up?");
+		ft::set<char> st2;
+		st2.insert(str2.begin(), str2.end());
+
+		ft::set<char>::iterator it1 = st1.begin();
+		ft::set<char>::iterator it2 = st2.begin();
+		ft::set<char>::iterator it1_1 = it1;
+		ft::set<char>::iterator it2_1 = it2;
+
+		ft::set<char> st1_1 = st1;
+		ft::set<char> st2_1 = st2;
+
+		st2.swap(st1);
+
+		test.equal(it1, it1_1);
+		test.equal(it2, it2_1);
+		it1++;
+		it2++;
+		it1_1++;
+		it2_1++;
+		test.equal(it1, it1_1);
+		test.equal(it2, it2_1);
+		//test.equal(st1, st2_1);
+		//test.equal(st2, st1_1);
+	}
 }

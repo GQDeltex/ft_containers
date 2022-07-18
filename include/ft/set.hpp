@@ -162,7 +162,9 @@ namespace ft {
 										}
 										*this = temp;
 									}
-			void					swap(set& x);
+			void					swap(set& x) {
+										this->tree.swap(x.tree);
+									}
 			void					clear();
 		// Observers
 			key_compare				key_comp() const;

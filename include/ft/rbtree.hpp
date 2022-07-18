@@ -696,6 +696,20 @@ namespace ft {
 				this->_alloc.deallocate(target, 1);
 				this->_size--;
 			}
+			void	swap(RBTree<value_type, value_compare, allocator_type>& swp) {
+				node_ptr temp_root = this->_root;
+				size_type temp_size = this->_size;
+				allocator_type temp_alloc = this->_alloc;
+				value_compare temp_comp = this->_comp;
+				this->_root = swp._root;
+				this->_size = swp._size;
+				this->_alloc = swp._alloc;
+				this->_comp = swp._comp;
+				swp._root = temp_root;
+				swp._size = temp_size;
+				swp._alloc = temp_alloc;
+				swp._comp = temp_comp;
+			}
 			~RBTree() {
 				this->delete_node(this->_root, true);
 			}
