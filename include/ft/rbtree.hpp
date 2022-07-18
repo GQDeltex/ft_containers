@@ -75,6 +75,7 @@ namespace ft {
 				*this = rbt;
 			}
 			RBTree&	operator=(const RBTree& rbt) {
+				this->delete_node(this->_root, true);
 				this->_root = this->__copy_deep(rbt._root);
 				this->_size = rbt._size;
 				this->_comp = rbt._comp;
@@ -130,27 +131,31 @@ namespace ft {
 				this->maintain_insert(new_node);
 			}
 			node_ptr	__bst_find_delete(node_ptr target) {
-				std::cout << "BSvalue_type DELETE" << std::endl;
+				std::cout << "BST DELETE" << std::endl;
 				node_ptr D = target;
 				// Step 1
 				if (this->__num_children(D) != 2) {
 					std::cout << "Less than 2 children" << std::endl;
-					node_ptr F = D->right_child;
-					if (D->left_child != NULL)
-						F = D->left_child;
+					return D;
+					/*
 					// Step 2
 					if (D == this->_root) {
 						return D;
 					}
+					node_ptr F = D->right_child;
+					if (D->left_child != NULL)
+						F = D->left_child;
 					// Step 3
 					node_ptr G = D->parent;
 					if (D == G->left_child)
 						G->left_child = F;
 					else
 						G->right_child = F;
-					if (F != NULL)
+					if (F != NULL) {
 						F->parent = G;
+					}
 					return D;
+					*/
 				}
 				std::cout << "2 Children" << std::endl;
 				// Step 4
@@ -198,7 +203,7 @@ namespace ft {
 				node_ptr target = this->__find_node(this->_root, data);
 				if (target == NULL)
 					throw std::runtime_error("Cannot find Node");
-				// Do recursive BSvalue_type delete (which results in the to be deleted
+				// Do recursive BST delete (which results in the to be deleted
 				// node having a maximum of 1 children)
 				target = this->__bst_find_delete(target);
 				// target is root and has no children
@@ -218,11 +223,16 @@ namespace ft {
 					else
 						child = target->right_child;
 					child->color = 'b';
-					if (target == parent->left_child)
-						parent->left_child = child;
-					else
-						parent->right_child = child;
-					child->parent = parent;
+					if (target == this->_root) {
+						this->_root = child;
+						child->parent = NULL;
+					} else {
+						if (target == parent->left_child)
+							parent->left_child = child;
+						else
+							parent->right_child = child;
+						child->parent = parent;
+					}
 					delete_node(target);
 					return;
 				}
@@ -244,6 +254,8 @@ namespace ft {
 				std::cout << "Maintaining tree after removal" << std::endl;
 				while (1) {
 					std::cout << "--> Looping <--" << std::endl;
+					this->print_node(target);
+					std::cout << "---------------" << std::endl;
 					this->print_node(this->_root, true);
 					std::cout << "-->         <--" << std::endl;
 					// L0
@@ -252,14 +264,31 @@ namespace ft {
 						break;
 					}
 					node_ptr parent = target->parent;
-					node_ptr sibling = parent->left_child;
-					node_ptr close = sibling->right_child;
-					node_ptr distant = sibling->left_child;
+					node_ptr sibling = NULL;
+					node_ptr close = NULL;
+					node_ptr distant = NULL;
 					if (target == parent->left_child) {
 						sibling = parent->right_child;
-						close = sibling->left_child;
-						distant = sibling->right_child;
+						if (sibling != NULL) {
+							close = sibling->left_child;
+							distant = sibling->right_child;
+						}
+					} else {
+						sibling = parent->left_child;
+						if (sibling != NULL) {
+							close = sibling->right_child;
+							distant = sibling->left_child;
+						}
 					}
+					std::cout << "Target: " << target->data << std::endl;
+					std::cout << "Target color: " << target->color << std::endl;
+					std::cout << "Parent color: " << parent->color << std::endl;
+					if (sibling != NULL)
+						std::cout << "Sibling color: " << sibling->color << std::endl;
+					if (close != NULL)
+						std::cout << "Close color: " << close->color << std::endl;
+					if (distant != NULL)
+						std::cout << "Distant color: " << distant->color << std::endl;
 					// L1
 					// parent and sibling and close and distand if they exist are black
 					if (
@@ -319,7 +348,7 @@ namespace ft {
 					// sibling is black, close is red, distant (if exists) is black
 					if (
 						sibling->color == 'b'
-						&& close->color == 'r'
+						&& (close != NULL && close->color == 'r')
 						&& !(distant != NULL && distant->color == 'r')
 				    ) {
 						std::cout << "L4" << std::endl;
@@ -375,6 +404,8 @@ namespace ft {
 			}
 			node_ptr	__find_node(node_ptr target, value_type data) const {
 				node_ptr found = NULL;
+				if (target == NULL)
+					return NULL;
 				// Not smaller or larget == equal
 				if ((!this->_comp(data, target->data)) && (!this->_comp(target->data, data)))
 					return target;
@@ -642,10 +673,25 @@ namespace ft {
 			void	delete_node(node_ptr target, bool recurse = false) {
 				if (target == NULL)
 					return;
+				if (recurse) {
+					std::cout << "Deleting Node" << std::endl;
+					this->print_node(target);
+					std::cout << "----" << std::endl;
+					this->print_node(this->_root, true);
+					std::cout << "----" << std::endl;
+				}
 				if (target->left_child != NULL && recurse)
 					delete_node(target->left_child, recurse);
 				if (target->right_child != NULL && recurse)
 					delete_node(target->right_child, recurse);
+				if (target->parent != NULL) {
+					if (target->parent->left_child == target) {
+						target->parent->left_child = NULL;
+					}
+					if (target->parent->right_child == target) {
+						target->parent->right_child = NULL;
+					}
+				}
 				this->_alloc.destroy(target);
 				this->_alloc.deallocate(target, 1);
 				this->_size--;

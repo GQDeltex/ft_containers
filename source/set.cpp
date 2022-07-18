@@ -115,4 +115,45 @@ void TestSet() {
 		st.insert('g');
 		std::cout << "Max Size: " << st.max_size() << std::endl;
 	}
+	{
+		Test test("Delete one element from iterator");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(st.size(), (unsigned long)8, "8 unique characters");
+		ft::set<char>::iterator it = st.begin();
+		it++;
+		it++;
+		st.erase(it);
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(st.size(), (unsigned long)7, "7 unique characters");
+	}
+	{
+		Test test("Delete one element from value");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(st.size(), (unsigned long)8, "8 unique characters");
+		size_t erased_elements = st.erase(' ');
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(erased_elements, (unsigned long)1, "Erased 1 element");
+		test.equal(st.size(), (unsigned long)7, "7 unique characters");
+		erased_elements = st.erase(' ');
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(erased_elements, (unsigned long)0, "Erased 0 element");
+		test.equal(st.size(), (unsigned long)7, "7 unique characters");
+	}
+	{
+		Test test("Delete one element from range");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(st.size(), (unsigned long)8, "8 unique characters");
+		st.erase(st.begin(), st.end());
+		test.equal(st.empty(), true, "Is empty now");
+		test.equal(st.size(), (unsigned long)0, "Is empty (0 elements)");
+	}
 }

@@ -135,9 +135,33 @@ namespace ft {
 											this->insert(*first);
 										}
 									}
-			void					erase(iterator position);
-			size_type				erase(const value_type& val);
-			void					erase(iterator first, iterator last);
+			void					erase(iterator position) {
+										try {
+											this->tree.remove(*position);
+										} catch (const std::exception& e) {
+											// Ignore
+										}
+										std::cout << "Done erasing" << std::endl;
+									}
+			size_type				erase(const value_type& val) {
+										try {
+											this->tree.remove(val);
+										} catch (const std::exception& e) {
+											return 0;
+										}
+										return 1;
+									}
+			void					erase(iterator first, iterator last) {
+										set<value_type, value_compare, allocator_type> temp(*this);
+										for(;first!=last;first++) {
+											try {
+												temp.tree.remove(*first);
+											} catch (const std::exception& e) {
+												// Ignore
+											}
+										}
+										*this = temp;
+									}
 			void					swap(set& x);
 			void					clear();
 		// Observers
