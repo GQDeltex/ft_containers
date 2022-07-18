@@ -186,4 +186,15 @@ void TestSet() {
 		//test.equal(st1, st2_1);
 		//test.equal(st2, st1_1);
 	}
+	{
+		Test test("Clear the set");
+		std::string	str("Hello World");
+		ft::set<char> st;
+		st.insert(str.begin(), str.end());
+		test.equal(st.empty(), false, "Set is not empty");
+		test.equal(st.size(), (unsigned long)8, "Size is 8");
+		st.clear();
+		test.equal(st.empty(), true, "Set is empty");
+		test.equal(st.size(), (unsigned long)0, "Size is 0");
+	}
 }
