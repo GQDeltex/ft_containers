@@ -98,7 +98,9 @@ namespace ft {
 			size_type				size() const {
 										return this->tree.size();
 									}
-			size_type				max_size() const;
+			size_type				max_size() const {
+										return this->tree.max_size();
+									}
 		// Modifiers
 			ft::pair<iterator,bool>	insert(const value_type& val) {
 										try {

@@ -84,6 +84,9 @@ namespace ft {
 			size_type	size() const {
 				return this->_size;
 			}
+			size_type	max_size() const {
+				return this->_alloc.max_size();
+			}
 			iterator	begin() {
 				return iterator(this->__find_leftmost(this->_root));
 			}

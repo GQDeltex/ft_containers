@@ -85,4 +85,13 @@ void TestSet() {
 		} while (it != begin);
 
 	}
+	{
+		Test test("max_size()");
+		ft::set<char> st;
+		test.equal(st.empty(), true, "Is empty in beginning");
+		test.unequal(st.max_size(), (unsigned long)0, "Max size is not zero");
+		st.insert('x');
+		st.insert('g');
+		std::cout << "Max Size: " << st.max_size() << std::endl;
+	}
 }
