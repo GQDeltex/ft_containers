@@ -223,4 +223,17 @@ void TestSet() {
 		test.equal(st.count('W'), (unsigned long)1, "Found 'W' one time");
 		test.equal(st.count('x'), (unsigned long)0, "Found 'x' zero times");
 	}
+	{
+		Test test("Lower Bound");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		ft::set<char>::iterator lb_it = st.lower_bound('e');
+		test.equal(*lb_it, 'e', "Is lower bound of 'e' equal 'e'");
+		ft::set<char>::iterator ub_it = st.upper_bound('o');
+		test.equal(*ub_it, 'r', "Is upper bound of 'o' equal 'r'");
+		ft::pair<ft::set<char>::iterator, ft::set<char>::iterator> eq_rg = st.equal_range('e');
+		test.equal(*(eq_rg.first), 'e', "Is lower bound of range 'e'");;
+		test.equal(*(eq_rg.second), 'l', "Is upper bound of range 'l'");;
+	}
 }

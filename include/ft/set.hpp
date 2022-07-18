@@ -27,8 +27,8 @@ namespace ft {
 			typedef const reference											const_reference;
 			typedef typename allocator_type::pointer						pointer;
 			typedef const pointer											const_pointer;
-			typedef ft::rbtree_iterator<value_type, value_compare>			iterator;
-			typedef ft::rbtree_iterator<const value_type, value_compare>	const_iterator;
+			typedef ft::rbtree_iterator<value_type>							iterator;
+			typedef ft::rbtree_iterator<const value_type>					const_iterator;
 			typedef ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			typedef ptrdiff_t												difference_type;
@@ -37,6 +37,7 @@ namespace ft {
 		protected:
 			ft::RBTree<value_type, value_compare>	_tree;
 			value_compare							_comp;
+			allocator_type							_alloc;
 
 		public:
 		// Constructors
@@ -46,6 +47,7 @@ namespace ft {
 										) {
 										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
 										this->_comp = comp;
+										this->_alloc = alloc;
 									}
 									template<
 										class InputIterator
@@ -59,6 +61,8 @@ namespace ft {
 										for (;first != last;first++) {
 											this->_tree.insert(*first);
 										}
+										this->_comp = comp;
+										this->_alloc = alloc;
 									}
 									set (const set& x) {
 										*this = x;
@@ -69,6 +73,7 @@ namespace ft {
 			set&					operator=(const set& x) {
 										this->_tree = x._tree;
 										this->_comp = x._comp;
+										this->_alloc = x._alloc;
 										return *this;
 									}
 		// Iterators
@@ -187,14 +192,34 @@ namespace ft {
 											return 0;
 										return 1;
 									}
-			iterator				lower_bound(const value_type& val) const;
-			iterator				upper_bound(const value_type& val) const;
+			iterator				lower_bound(const value_type& val) const {
+										const_iterator it = this->begin();
+										const_iterator end = this->end();
+										for(;it!=end;it++) {
+											if (this->_comp(*it, val) == false)
+												break;
+										}
+										return this->find(*it); //TODO
+									}
+			iterator				upper_bound(const value_type& val) const {
+										const_iterator it = this->begin();
+										const_iterator end = this->end();
+										for(;it!=end;it++) {
+											if (this->_comp(val, *it) == true)
+												break;
+										}
+										return this->find(*it); //TODO
+									}
 			ft::pair<
 				iterator,
 				iterator
-			>						equal_range(const value_type& val) const;
+			>						equal_range(const value_type& val) const {
+										return ft::make_pair(this->lower_bound(val), this->upper_bound(val));
+									}
 		// Allocator
-			allocator_type			get_allocator() const;
+			allocator_type			get_allocator() const {
+										return this->_alloc;
+									}
 	};
 }
 
