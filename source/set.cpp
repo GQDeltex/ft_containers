@@ -58,6 +58,14 @@ void TestSet() {
 		test.equal(st.size(), (unsigned long)2, "Size is still 2");
 	}
 	{
+		Test test("Insert multiple elements from range");
+		ft::set<char> st;
+		std::string	str("Hello World");
+		st.insert(str.begin(), str.end());
+		test.equal(st.empty(), false, "Is not empty now");
+		test.equal(st.size(), (unsigned long)8, "8 unique characters");
+	}
+	{
 		Test test("Iterators");
 		ft::set<char> st;
 		test.equal(st.empty(), true, "Is empty in beginning");

@@ -8,6 +8,8 @@
 # include "rbtree_iterator.hpp"
 # include "reverse_iterator.hpp"
 # include "pairs.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 
 namespace ft {
 	template <
@@ -127,8 +129,12 @@ namespace ft {
 			class InputIterator
 			> void					insert(
 										InputIterator	first,
-										InputIterator	last
-									);
+										typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last
+									) {
+										for(;first!=last;first++) {
+											this->insert(*first);
+										}
+									}
 			void					erase(iterator position);
 			size_type				erase(const value_type& val);
 			void					erase(iterator first, iterator last);
