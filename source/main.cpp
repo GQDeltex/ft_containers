@@ -15,7 +15,6 @@ void TestSet();
 void TestRBTreeIterator();
 
 int main(void) {
-	/*
 	TestIterator();
 	TestReverseIterator();
 	TestVector();
@@ -25,7 +24,6 @@ int main(void) {
 	TestPairs();
 	TestRBTree();
 	TestRBTreeIterator();
-	*/
 	TestSet();
 	Test test;
 	test.summary();

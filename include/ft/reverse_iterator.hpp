@@ -74,9 +74,7 @@ namespace ft {
 				return *this;
 			}
 			pointer	operator->() const {
-				iterator_type temp(this->_itr);
-				temp--;
-				return *(temp);
+				return &(operator*());
 			}
 			reference	operator[](difference_type n) const {
 				iterator_type temp(this->_itr);

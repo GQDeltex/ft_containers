@@ -11,9 +11,15 @@ namespace ft {
 	template<
 		typename T,
 		typename Comp = std::less<T>
-	>class rbtree_iterator: std::iterator<T, std::bidirectional_iterator_tag> {
+	>class rbtree_iterator: public std::iterator<std::bidirectional_iterator_tag, T> {
+		private:
+			typedef typename std::iterator<std::bidirectional_iterator_tag, T>	stditr;
 		public:
-			typedef T					value_type;
+			typedef T									value_type;
+			typedef typename stditr::difference_type	difference_type;
+			typedef typename stditr::pointer			pointer;
+			typedef typename stditr::reference			reference;
+			typedef typename stditr::iterator_category	iterator_category;
 			typedef Comp				value_compare;
 			typedef Node<value_type>*	node_ptr;
 		protected:
@@ -47,10 +53,13 @@ namespace ft {
 				return lhs._node == rhs._node;
 			}
 
-			value_type	operator*() {
+			reference	operator*() {
 				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
 					throw std::runtime_error("Cannot dereference iterator");
 				return this->_node->data;
+			}
+			pointer		operator->() const {
+				return &(operator*());
 			}
 			rbtree_iterator&	operator++() {
 				if (this->_node == NULL && this->_node != (node_ptr)0xDEAD)

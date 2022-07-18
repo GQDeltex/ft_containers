@@ -10,7 +10,7 @@ void TestSet() {
 		test.equal(st.empty(), true);
 	}
 	{
-		Test test("Range Constructor");
+		Test test("Range Constructor / empty / size");
 		std::string str("abcdefghijklmnopqrstuvwxyz");
 		ft::set<char> st(str.begin(), str.end());
 		test.equal(st.empty(), false);
@@ -63,5 +63,26 @@ void TestSet() {
 			it--;
 			std::cout << "SET: " << *it << std::endl;
 		} while (it != begin);
+	}
+	{
+		Test test("Reverse Iterators");
+		ft::set<char> st;
+		test.equal(st.empty(), true, "Is empty in beginning");
+		st.insert('x');
+		st.insert('g');
+		st.insert('s');
+		st.insert('k');
+		st.insert('i');
+		ft::set<char>::reverse_iterator begin = st.rbegin();
+		ft::set<char>::reverse_iterator end = st.rend();
+		ft::set<char>::reverse_iterator it = begin;
+		for(;it!=end;it++) {
+			std::cout << "SET: " << *it << std::endl;
+		}
+		do {
+			it--;
+			std::cout << "SET: " << *it << std::endl;
+		} while (it != begin);
+
 	}
 }
