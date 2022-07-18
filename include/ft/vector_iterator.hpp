@@ -31,6 +31,9 @@ namespace ft {
 									vector_iterator(const vector_iterator& it) {
 										*this = it;
 									}
+									operator vector_iterator<T const>() const {
+										return vector_iterator<T const>(this->_ptr);
+									}
 			const vector_iterator&	operator=(const vector_iterator& it) {
 										this->_ptr = it._ptr;
 										return *this;
