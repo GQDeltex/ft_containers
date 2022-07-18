@@ -95,7 +95,7 @@ namespace ft {
 				it++;
 				return it;
 			}
-			void	insert(T data) {
+			void	insert(value_type data) {
 				node_ptr new_node = create_node(data);
 				if (this->_root == NULL) {
 					std::cout << "Is now root node" << std::endl;
@@ -130,7 +130,7 @@ namespace ft {
 				this->maintain_insert(new_node);
 			}
 			node_ptr	__bst_find_delete(node_ptr target) {
-				std::cout << "BST DELETE" << std::endl;
+				std::cout << "BSvalue_type DELETE" << std::endl;
 				node_ptr D = target;
 				// Step 1
 				if (this->__num_children(D) != 2) {
@@ -193,12 +193,12 @@ namespace ft {
 				}
 				return target;
 			}
-			void	remove(T data) {
+			void	remove(value_type data) {
 				std::cout << "Removing node" << std::endl;
 				node_ptr target = this->__find_node(this->_root, data);
 				if (target == NULL)
 					throw std::runtime_error("Cannot find Node");
-				// Do recursive BST delete (which results in the to be deleted
+				// Do recursive BSvalue_type delete (which results in the to be deleted
 				// node having a maximum of 1 children)
 				target = this->__bst_find_delete(target);
 				// target is root and has no children
@@ -370,18 +370,21 @@ namespace ft {
 					result++;
 				return result;
 			}
-			node_ptr	__find_node(node_ptr target, T data) {
+			iterator	find(value_type data) const {
+				return iterator(this->__find_node(this->_root, data));
+			}
+			node_ptr	__find_node(node_ptr target, value_type data) const {
 				node_ptr found = NULL;
 				// Not smaller or larget == equal
 				if ((!this->_comp(data, target->data)) && (!this->_comp(target->data, data)))
 					return target;
 				if (target->left_child != NULL && this->_comp(data, target->data)) {
-					found = __find_node(target->left_child, data);
+					found = this->__find_node(target->left_child, data);
 					if (found != NULL)
 						return found;
 				}
 				if (target->right_child != NULL && this->_comp(target->data, data)) {
-					found = __find_node(target->right_child, data);
+					found = this->__find_node(target->right_child, data);
 					if (found != NULL)
 						return found;
 				}

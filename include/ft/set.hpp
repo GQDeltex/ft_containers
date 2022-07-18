@@ -113,7 +113,16 @@ namespace ft {
 			iterator				insert(
 										iterator position,
 										const value_type& val
-									);
+									) {
+										(void)position;
+										try {
+											this->tree.insert(val);
+										} catch (const std::exception& e) {
+											// Just ignore the error
+										}
+										return this->find(val);
+
+									}
 			template<
 			class InputIterator
 			> void					insert(
@@ -130,8 +139,7 @@ namespace ft {
 			value_compare			value_comp() const;
 		// Operations
 			iterator				find(const value_type& val) const {
-										(void)val;
-										return iterator();
+										return iterator(this->tree.find(val));
 									}
 			size_type				count(const value_type& val) const;
 			iterator				lower_bound(const value_type& val) const;

@@ -30,7 +30,7 @@ void TestSet() {
 		test.equal(st3.size(), (unsigned long)26);
 	}
 	{
-		Test test("Insert value");
+		Test test("Insert single value without hint");
 		ft::set<char> st;
 		test.equal(st.empty(), true, "Is empty in beginning");
 		ft::pair<ft::set<char>::iterator,bool>back1 = st.insert('x');
@@ -43,6 +43,19 @@ void TestSet() {
 		// Check iterator to be at beginning
 		test.equal(st.empty(), false, "Is still not empty");
 		test.equal(st.size(), (unsigned long)1, "Size is still 1");
+	}
+	{
+		Test test("Insert single value with hint");
+		ft::set<char> st;
+		test.equal(st.empty(), true, "Is empty in beginning");
+		ft::pair<ft::set<char>::iterator,bool>back2 = st.insert('x');
+		ft::set<char>::iterator back3 = st.insert(back2.first, 'g');
+		test.equal(*back3, 'g', "Iterator points to new value");
+		test.equal(st.size(), (unsigned long)2, "Size is now 2");
+		ft::set<char>::iterator back4 = st.insert(back3, 'g');
+		test.equal(*back4, 'g', "Iterator points to old value");
+		test.equal(back3, back4, "Iterators are the same");
+		test.equal(st.size(), (unsigned long)2, "Size is still 2");
 	}
 	{
 		Test test("Iterators");
