@@ -1,8 +1,16 @@
 #include <typeinfo>
-
-#include "../include/ft/set.hpp"
 #include "Test.hpp"
-#include "../include/ft/pairs.hpp"
+
+#ifndef USE_STD
+# define USE_STD 0
+#endif
+#if USE_STD == 1
+# include <set>
+  namespace ft = std;
+#else
+# include "../include/ft/set.hpp"
+# include "../include/ft/pairs.hpp"
+#endif
 
 void TestSet() {
 	{

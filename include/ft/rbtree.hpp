@@ -424,19 +424,6 @@ namespace ft {
 				}
 				return found;
 			}
-			void	__recolor(node_ptr target) {
-				char newcolor = 'r';
-				if (target->color == 'r')
-					newcolor = 'b';
-				if (target->left_child != NULL) {
-					target->left_child->color = newcolor;
-					this->__recolor(target->left_child);
-				}
-				if (target->right_child != NULL) {
-					target->right_child->color = newcolor;
-					this->__recolor(target->right_child);
-				}
-			}
 			void	maintain_insert(node_ptr target) {
 				std::cout << "Maintaining Red-Black constraint" << std::endl;
 				while (1) {

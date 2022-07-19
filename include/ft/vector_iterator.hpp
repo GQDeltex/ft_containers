@@ -23,10 +23,10 @@ namespace ft {
 			value_type	*_ptr;
 		public:
 									vector_iterator() {
-										_ptr = NULL;
+										this->_ptr = NULL;
 									}
 									vector_iterator(value_type *in) {
-										_ptr = in;
+										this->_ptr = in;
 									}
 									vector_iterator(const vector_iterator& it) {
 										*this = it;
@@ -39,43 +39,43 @@ namespace ft {
 										return *this;
 									}
 			reference				operator*() const {
-										if (_ptr == NULL)
+										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot dereference NULL Pointer");
-										return *_ptr;
+										return *(this->_ptr);
 									}
 			pointer					operator->() const {
 										return &(operator*());
 									}
 			vector_iterator			operator++() {
-										if (_ptr == NULL)
+										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot increment NULL Pointer");
-										_ptr++;
+										this->_ptr++;
 										return *this;
 									}
 			vector_iterator			operator++(int) {
-										if (_ptr == NULL)
+										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot increment NULL Pointer");
 										ft::vector_iterator<T> temp = *this;
-										_ptr++;
+										this->_ptr++;
 										return temp;
 									}
 			vector_iterator			operator--() {
-										if (_ptr == NULL)
+										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot decrement NULL Pointer");
-										_ptr--;
+										this->_ptr--;
 										return *this;
 									}
 			vector_iterator			operator--(int) {
-										if (_ptr == NULL)
+										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot decrement NULL Pointer");
 										ft::vector_iterator<T> temp = *this;
-										_ptr--;
+										this->_ptr--;
 										return temp;
 									}
 			reference				operator[](difference_type n) {
-										if (_ptr == NULL)
+										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot dereference NULL Pointer");
-										return *(_ptr + n);
+										return *(this->_ptr + n);
 									}
 			vector_iterator			operator+=(int n) {
 										this->_ptr += n;
