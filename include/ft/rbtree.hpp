@@ -547,6 +547,7 @@ namespace ft {
 				if (y->left_child != NULL) {
 					std::cout << "Has child, moving to x" << std::endl;
 					x->right_child = y->left_child;
+					x->right_child->parent = x;
 				}
 				else {
 					x->right_child = NULL;
@@ -581,6 +582,7 @@ namespace ft {
 				if (x->right_child != NULL) {
 					std::cout << "Has child, moving to y" << std::endl;
 					y->left_child = x->right_child;
+					y->left_child->parent = y;
 				}
 				else {
 					y->left_child = NULL;
@@ -646,21 +648,21 @@ namespace ft {
 				}
 				if (target->left_child != NULL && recurse)
 					print_node(target->left_child, recurse);
-				std::cout << "Node: " << target << std::endl;
+				std::cout << "Node: " << *(target->data) << std::endl;
 				std::cout << "       Color: " << target->color << std::endl;
 				std::cout << "      Parent: ";
 				if (target->parent != NULL)
-					std::cout << target->parent << std::endl;
+					std::cout << *(target->parent->data) << std::endl;
 				else
 					std::cout << "-" << std::endl;
 				std::cout << "  Left Child: ";
 				if (target->left_child != NULL)
-					std::cout << target->left_child << std::endl;
+					std::cout << *(target->left_child->data) << std::endl;
 				else
 					std::cout << "-" << std::endl;
 				std::cout << " Right Child: ";
 				if (target->right_child != NULL)
-					std::cout << target->right_child << std::endl;
+					std::cout << *(target->right_child->data) << std::endl;
 				else
 					std::cout << "-" << std::endl;
 				if (target->right_child != NULL && recurse)
@@ -669,7 +671,7 @@ namespace ft {
 			void	delete_node(node_ptr target, bool recurse = false) {
 				if (target == NULL)
 					return;
-				if (recurse) {
+				if (!recurse) {
 					std::cout << "Deleting Node" << std::endl;
 					this->print_node(target);
 					std::cout << "----" << std::endl;
