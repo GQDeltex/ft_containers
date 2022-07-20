@@ -17,7 +17,7 @@ namespace ft {
 	template<
 		typename T
 	>struct Node {
-		T			data;
+		T*			data;
 		char		color;
 		Node*		right_child;
 		Node*		left_child;
@@ -27,13 +27,14 @@ namespace ft {
 	template <
 		class T,
 		class Compare = std::less<T>,
-		class Alloc = std::allocator<Node<T> >
+		class Alloc = std::allocator<T>
 	>class RBTree {
 		public:
-			typedef T					value_type;
-			typedef Alloc				allocator_type;
-			typedef Compare				value_compare;
-			typedef size_t				size_type;
+			typedef T											value_type;
+			typedef Alloc										allocator_value;
+			typedef std::allocator<Node<T> >					allocator_type;
+			typedef Compare										value_compare;
+			typedef size_t										size_type;
 			typedef rbtree_iterator<value_type, value_compare>	iterator;
 
 		protected:
@@ -42,12 +43,13 @@ namespace ft {
 			value_compare	_comp;
 			size_type		_size;
 			allocator_type	_alloc;
+			allocator_value	_alloc_val;
 
 		private:
 			node_ptr	__copy_deep(node_ptr target) {
 				if (target == NULL)
 					return NULL;
-				node_ptr new_node = this->create_node(target->data);
+				node_ptr new_node = this->create_node(*(target->data));
 				this->_size--; // Fix runaway size
 				new_node->color = target->color;
 				new_node->left_child = __copy_deep(target->left_child);
@@ -64,12 +66,13 @@ namespace ft {
 
 			RBTree(
 				const value_compare& comp = value_compare(),
-				const allocator_type& alloc = allocator_type()
+				const allocator_value& alloc = allocator_value()
 			) {
 				this->_root = NULL;
 				this->_size = 0;
 				this->_comp = comp;
-				this->_alloc = alloc;
+				this->_alloc_val = alloc;
+				this->_alloc = allocator_type();
 			}
 			RBTree(const RBTree& rbt) {
 				*this = rbt;
@@ -79,6 +82,7 @@ namespace ft {
 				this->_root = this->__copy_deep(rbt._root);
 				this->_size = rbt._size;
 				this->_comp = rbt._comp;
+				this->_alloc_val = rbt._alloc_val;
 				this->_alloc = rbt._alloc;
 				return *this;
 			}
@@ -107,10 +111,10 @@ namespace ft {
 				node_ptr current_node = this->_root;
 				while (1) {
 					node_ptr* leaf = NULL;
-					if (this->_comp(new_node->data, current_node->data)) {
+					if (this->_comp(*(new_node->data), *(current_node->data))) {
 						std::cout << "Left tree" << std::endl;
 						leaf = &(current_node->left_child);
-					} else if (this->_comp(current_node->data, new_node->data)) {
+					} else if (this->_comp(*(current_node->data), *(new_node->data))) {
 						std::cout << "Right tree" << std::endl;
 						leaf = &(current_node->right_child);
 					} else {
@@ -164,8 +168,10 @@ namespace ft {
 				std::cout << "Node to switch with: " << E << std::endl;
 				node_ptr G = E->parent;
 
-				// Save the data
+				// Switch the data
+				value_type* temp = D->data;
 				D->data = E->data;
+				E->data = temp;
 				this->print_node(this->_root, true);
 				std::cout << "         " << std::endl;
 
@@ -410,14 +416,14 @@ namespace ft {
 				if (target == NULL)
 					return NULL;
 				// Not smaller or larget == equal
-				if ((!this->_comp(data, target->data)) && (!this->_comp(target->data, data)))
+				if ((!this->_comp(data, *(target->data))) && (!this->_comp(*(target->data), data)))
 					return target;
-				if (target->left_child != NULL && this->_comp(data, target->data)) {
+				if (target->left_child != NULL && this->_comp(data, *(target->data))) {
 					found = this->__find_node(target->left_child, data);
 					if (found != NULL)
 						return found;
 				}
-				if (target->right_child != NULL && this->_comp(target->data, data)) {
+				if (target->right_child != NULL && this->_comp(*(target->data), data)) {
 					found = this->__find_node(target->right_child, data);
 					if (found != NULL)
 						return found;
@@ -620,8 +626,7 @@ namespace ft {
 				rotate_right(x);
 				rotate_left(z);
 			}
-			node_ptr	create_node(value_type data) {
-
+			node_ptr	create_node(const value_type& data) {
 				node_ptr node = this->_alloc.allocate(1);
 				this->_alloc.construct(node, Node<value_type>());
 				//node_ptr node = new Node;
@@ -629,7 +634,8 @@ namespace ft {
 				node->right_child = NULL;
 				node->left_child = NULL;
 				node->parent = NULL;
-				node->data = data;
+				node->data = this->_alloc_val.allocate(1);
+				this->_alloc_val.construct(node->data, data);
 				this->_size++;
 				return node;
 			}
@@ -682,11 +688,13 @@ namespace ft {
 						target->parent->right_child = NULL;
 					}
 				}
+				this->_alloc_val.destroy(target->data);
+				this->_alloc_val.deallocate(target->data, 1);
 				this->_alloc.destroy(target);
 				this->_alloc.deallocate(target, 1);
 				this->_size--;
 			}
-			void	swap(RBTree<value_type, value_compare, allocator_type>& swp) {
+			void	swap(RBTree<value_type, value_compare, allocator_value>& swp) {
 				node_ptr temp_root = this->_root;
 				size_type temp_size = this->_size;
 				allocator_type temp_alloc = this->_alloc;
@@ -694,6 +702,7 @@ namespace ft {
 				this->_root = swp._root;
 				this->_size = swp._size;
 				this->_alloc = swp._alloc;
+				this->_alloc_val = swp._alloc_val;
 				this->_comp = swp._comp;
 				swp._root = temp_root;
 				swp._size = temp_size;

@@ -77,7 +77,7 @@ namespace ft {
 										);
 										map (const map& x);
 		// Destructor
-										~map();
+										~map() {}
 		// Assignment operator
 			map&						operator= (const map&x);
 		// Iterators

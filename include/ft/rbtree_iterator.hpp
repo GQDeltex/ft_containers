@@ -59,7 +59,7 @@ namespace ft {
 			reference	operator*() {
 				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
 					throw std::runtime_error("Cannot dereference iterator");
-				return this->_node->data;
+				return *(this->_node->data);
 			}
 			pointer		operator->() const {
 				return &(operator*());
@@ -128,7 +128,7 @@ namespace ft {
 				}
 				if (target->parent != NULL) {
 					while (target->parent != NULL) {
-						if (this->_comp(target->parent->data, target->data))
+						if (this->_comp(*(target->parent->data), *(target->data)))
 							target = target->parent;
 						else
 							break;
@@ -152,7 +152,7 @@ namespace ft {
 				}
 				if (target->parent != NULL) {
 					while (target->parent != NULL) {
-						if (this->_comp(target->data, target->parent->data))
+						if (this->_comp(*(target->data), *(target->parent->data)))
 							target = target->parent;
 						else
 							break;

@@ -35,9 +35,9 @@ namespace ft {
 			typedef size_t													size_type;
 
 		protected:
-			ft::RBTree<value_type, value_compare>	_tree;
-			value_compare							_comp;
-			allocator_type							_alloc;
+			ft::RBTree<value_type, value_compare, allocator_type>	_tree;
+			value_compare											_comp;
+			allocator_type											_alloc;
 
 		public:
 		// Constructors
@@ -45,7 +45,7 @@ namespace ft {
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
 										) {
-										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(comp, alloc);
 										this->_comp = comp;
 										this->_alloc = alloc;
 									}
@@ -57,7 +57,7 @@ namespace ft {
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
 										) {
-										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(comp, alloc);
 										for (;first != last;first++) {
 											this->_tree.insert(*first);
 										}
