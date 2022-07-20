@@ -149,7 +149,6 @@ namespace ft {
 										} catch (const std::exception& e) {
 											// Ignore
 										}
-										std::cout << "Done erasing" << std::endl;
 									}
 			size_type				erase(const value_type& val) {
 										try {
@@ -199,7 +198,7 @@ namespace ft {
 											if (this->_comp(*it, val) == false)
 												break;
 										}
-										return this->find(*it); //TODO
+										return this->find(*it);
 									}
 			iterator				upper_bound(const value_type& val) const {
 										const_iterator it = this->begin();
@@ -208,7 +207,7 @@ namespace ft {
 											if (this->_comp(val, *it) == true)
 												break;
 										}
-										return this->find(*it); //TODO
+										return this->find(*it);
 									}
 			ft::pair<
 				iterator,
