@@ -160,8 +160,8 @@ namespace ft {
 				std::cout << "2 Children" << std::endl;
 				// Step 4
 				node_ptr E = this->__find_leftmost(D->right_child);
-				std::cout << "Node is: " << D->data << std::endl;
-				std::cout << "Node to switch with: " << E->data << std::endl;
+				std::cout << "Node is: " << D << std::endl;
+				std::cout << "Node to switch with: " << E << std::endl;
 				node_ptr G = E->parent;
 
 				// Save the data
@@ -280,7 +280,7 @@ namespace ft {
 							distant = sibling->left_child;
 						}
 					}
-					std::cout << "Target: " << target->data << std::endl;
+					std::cout << "Target: " << target << std::endl;
 					std::cout << "Target color: " << target->color << std::endl;
 					std::cout << "Parent color: " << parent->color << std::endl;
 					if (sibling != NULL)
@@ -640,21 +640,21 @@ namespace ft {
 				}
 				if (target->left_child != NULL && recurse)
 					print_node(target->left_child, recurse);
-				std::cout << "Node: " << target->data << std::endl;
+				std::cout << "Node: " << target << std::endl;
 				std::cout << "       Color: " << target->color << std::endl;
 				std::cout << "      Parent: ";
 				if (target->parent != NULL)
-					std::cout << target->parent->data << std::endl;
+					std::cout << target->parent << std::endl;
 				else
 					std::cout << "-" << std::endl;
 				std::cout << "  Left Child: ";
 				if (target->left_child != NULL)
-					std::cout << target->left_child->data << std::endl;
+					std::cout << target->left_child << std::endl;
 				else
 					std::cout << "-" << std::endl;
 				std::cout << " Right Child: ";
 				if (target->right_child != NULL)
-					std::cout << target->right_child->data << std::endl;
+					std::cout << target->right_child << std::endl;
 				else
 					std::cout << "-" << std::endl;
 				if (target->right_child != NULL && recurse)
