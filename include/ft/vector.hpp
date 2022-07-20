@@ -142,8 +142,8 @@ namespace ft {
 			size_type				size(void) const {
 										return this->_data_size;
 									}
-			size_type				max_data_size(void) const {
-										return this->_alloc.max_data_size();
+			size_type				max_size(void) const {
+										return this->_alloc.max_size();
 									}
 			void					resize(
 										size_type n,
@@ -205,12 +205,14 @@ namespace ft {
 										size_type n
 									) {
 										if (n > this->_data_size)
-											throw std::runtime_error("Index > data_size");
+											throw std::out_of_range("Index > data_size");
 										return this->_space[n];
 									}
 			const_reference			at(
 										size_type n
 									) const {
+										if (n > this->_data_size)
+											throw std::out_of_range("Index > data_size");
 										return this->_space[n];
 									}
 			reference				front(void) {
