@@ -147,7 +147,7 @@ namespace ft {
 		// Modifiers
 			ft::pair<iterator, bool>	insert(const value_type& val) {
 											try {
-												this->_tree.insert(ft::pair<const key_type, mapped_type>(val.first, val.second));
+												this->_tree.insert(value_type(val.first, val.second));
 											} catch(const std::exception& e) {
 												return ft::pair<iterator,bool>(this->find(val.first), false);
 											}
@@ -216,21 +216,21 @@ namespace ft {
 										}
 		// Operations
 			iterator					find(const key_type& k) {
-											return iterator(this->_tree.find(ft::pair<const key_type, mapped_type>(k, mapped_type())));
+											return iterator(this->_tree.find(value_type(k, mapped_type())));
 										}
 			const_iterator				find(const key_type& k) const {
-											return iterator(this->_tree.find(ft::pair<const key_type, mapped_type>(k, mapped_type())));
+											return const_iterator(this->_tree.find(value_type(k, mapped_type())));
 										}
 			size_type					count(const key_type& k) const {
-											if (this->_tree.find(this->find(k)) == this->_tree.end())
+											if (this->find(k) == this->end())
 												return 0;
 											return 1;
 										}
 			iterator					lower_bound(const key_type& k) {
-											const_iterator it = this->begin();
-											const_iterator end = this->end();
+											iterator it = this->begin();
+											iterator end = this->end();
 											for(;it!=end;it++) {
-												if (this->_comp(*it, ft::make_pair(k, mapped_type())) == false)
+												if (this->_comp_key(it->first, k) == false)
 													break;
 											}
 											return it;
@@ -239,16 +239,16 @@ namespace ft {
 											const_iterator it = this->begin();
 											const_iterator end = this->end();
 											for(;it!=end;it++) {
-												if (this->_comp(*it, ft::make_pair(k, mapped_type())) == false)
+												if (this->_comp_key(it->first, k) == false)
 													break;
 											}
 											return it;
 										}
 			iterator					upper_bound(const key_type& k) {
-											const_iterator it = this->begin();
-											const_iterator end = this->end();
+											iterator it = this->begin();
+											iterator end = this->end();
 											for(;it!=end;it++) {
-												if (this->_comp(ft::make_pair(k, mapped_type()), *it) == true)
+												if (this->_comp_key(k, it->first) == true)
 													break;
 											}
 											return it;
@@ -257,7 +257,7 @@ namespace ft {
 											const_iterator it = this->begin();
 											const_iterator end = this->end();
 											for(;it!=end;it++) {
-												if (this->_comp(ft::make_pair(k, mapped_type()), *it) == true)
+												if (this->_comp_key(k, it->first) == true)
 													break;
 											}
 											return it;

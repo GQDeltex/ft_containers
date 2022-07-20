@@ -38,8 +38,8 @@ namespace ft {
 				this->_comp = comp;
 				this->_prev = NULL;
 			}
-			operator rbtree_iterator<T const>() const {
-				return rbtree_iterator<T const>((Node<value_type const>*)this->_node);
+			operator rbtree_iterator<T const, Comp>() const {
+				return rbtree_iterator<T const, Comp>((Node<value_type const>*)this->_node, this->_comp);
 			}
 			rbtree_iterator(const rbtree_iterator& rbi) {
 				*this = rbi;
