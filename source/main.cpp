@@ -10,6 +10,10 @@ void TestIsIntegral();
 void TestEnableIf();
 void TestStack();
 void TestPairs();
+void TestRBTree();
+void TestSet();
+void TestRBTreeIterator();
+void TestMap();
 
 int main(void) {
 	TestIterator();
@@ -19,6 +23,10 @@ int main(void) {
 	TestEnableIf();
 	TestStack();
 	TestPairs();
+	TestRBTree();
+	TestRBTreeIterator();
+	TestSet();
+	TestMap();
 	Test test;
 	test.summary();
 }

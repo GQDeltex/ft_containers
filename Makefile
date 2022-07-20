@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/06/21 16:01:56 by pstengl          ###   ########.fr        #
+#    Updated: 2022/07/20 11:40:24 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,11 @@ SRCFILES:=\
 	is_integral.cpp\
 	enable_if.cpp\
 	stack.cpp\
-	pairs.cpp
+	pairs.cpp\
+	rbtree.cpp\
+	rbtree_iterator.cpp\
+	set.cpp\
+	map.cpp
 
 # ------------------------------------------
 # Do not change anything beyond this point!

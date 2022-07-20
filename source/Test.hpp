@@ -2,6 +2,7 @@
 # define TEST_H
 
 # include <iostream>
+# include <cstdlib>
 
 class Test {
 	private:
@@ -26,6 +27,7 @@ class Test {
 				return true;
 			this->_failed++;
 			std::cout << desc << " -> NO!" << std::endl;
+			exit(1);
 			return false;
 		}
 		template<
@@ -35,6 +37,7 @@ class Test {
 				return true;
 			this->_failed++;
 			std::cout << desc << " -> NO!" << std::endl;
+			exit(1);
 			return false;
 		}
 		template<
@@ -44,6 +47,7 @@ class Test {
 				return true;
 			this->_failed++;
 			std::cout << desc << " -> NO!" << std::endl;
+			exit(1);
 			return false;
 		}
 		void summary(void) {

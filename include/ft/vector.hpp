@@ -204,8 +204,6 @@ namespace ft {
 			reference				at(
 										size_type n
 									) {
-										if (n < 0)
-											throw std::runtime_error("Index < 0");
 										if (n > this->_data_size)
 											throw std::runtime_error("Index > data_size");
 										return this->_space[n];

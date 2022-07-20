@@ -394,4 +394,12 @@ void TestVector() {
 		test.equal(it == lst.rend(), true);
 		test.equal(ref == test_str.rend(), true);
 	}
+	{
+		Test test("Create const_reverse_iterator");
+		std::string test_str("Hello World");
+		ft::vector<char> lst(test_str.begin(), test_str.end());
+		test.equal(lst.empty(), false);
+		ft::vector<char>::const_reverse_iterator it = lst.rbegin();
+		test.equal(*it, 'd', "Is last char 'd'");
+	}
 }

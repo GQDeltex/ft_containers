@@ -96,4 +96,14 @@ void TestIterator() {
 		it += 5;
 		test.equal(*it, ' ');
 	}
+	{
+		Test test("Conversion to const iterator");
+		std::string str = "Hello World";
+		ft::vector_iterator<char> it(&str[0]);
+		ft::vector_iterator<const char> cit(it);
+		ft::vector_iterator<const char> cit2;
+		cit2 = it;
+		test.equal(*it, *cit, "Pointing to the same");
+		test.equal(*it, *cit2, "Pointing to the same");
+	}
 }
