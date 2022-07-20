@@ -1,6 +1,7 @@
 #ifndef FT_SET_ITERATOR_H
 # define FT_SET_ITERATOR_H
 
+#include <ctime>
 # include <functional>
 # include <iterator>
 # include <stdexcept>
@@ -20,14 +21,13 @@ namespace ft {
 			typedef typename stditr::pointer			pointer;
 			typedef typename stditr::reference			reference;
 			typedef typename stditr::iterator_category	iterator_category;
-			typedef Comp				value_compare;
-			typedef Node<value_type>*	node_ptr;
+			typedef Comp								value_compare;
+			typedef Node<value_type>*					node_ptr;
 		protected:
 			node_ptr		_node;
 			node_ptr		_prev;
 			value_compare	_comp;
 		public:
-
 			rbtree_iterator(value_compare comp = value_compare()) {
 				this->_node = NULL;
 				this->_comp = comp;
@@ -52,17 +52,21 @@ namespace ft {
 			}
 			~rbtree_iterator() {}
 
-			friend bool	operator==(const rbtree_iterator& lhs, const rbtree_iterator& rhs) {
-				return lhs._node == rhs._node;
-			}
-
 			reference	operator*() {
 				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
 					throw std::runtime_error("Cannot dereference iterator");
 				return *(this->_node->data);
 			}
 			pointer		operator->() const {
-				return &(operator*());
+				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
+					throw std::runtime_error("Cannot dereference iterator");
+				return this->_node->data;
+			}
+			bool operator==(const rbtree_iterator<value_type, value_compare>& rhs) {
+				return this->_node == rhs._node;
+			}
+			bool operator!=(const rbtree_iterator<value_type, value_compare>& rhs) {
+				return this->_node != rhs._node;
 			}
 			rbtree_iterator&	operator++() {
 				if (this->_node == NULL && this->_node != (node_ptr)0xDEAD)
@@ -77,23 +81,16 @@ namespace ft {
 				return *this;
 			}
 			rbtree_iterator		operator++(int) {
-				if (this->_node == NULL && this->_node != (node_ptr)0xDEAD)
-					throw std::runtime_error("Cannot increment iterator");
-				ft::rbtree_iterator<value_type> temp = *this;
-				node_ptr target = this->__find_next_node(this->_node);
-				if (target == NULL) {
-					this->_prev = this->_node;
-					this->_node = (node_ptr)0xDEAD;
-					return temp;
-				}
-				this->_node = target;
+				ft::rbtree_iterator<value_type, value_compare> temp = *this;
+				++(*this);
 				return temp;
 			}
 			rbtree_iterator&	operator--() {
-				if (this->_node == NULL && this->node != (node_ptr)0xBEEF)
+				if (this->_node == NULL && this->_node != (node_ptr)0xBEEF)
 					throw std::runtime_error("Cannot decrement iterator");
 				node_ptr target = this->__find_previous_node(this->_node);
 				if (target == NULL) {
+					std::cout << "HIT ROCK BOTTOM!" << std::endl;
 					this->_prev = this->_node;
 					this->_node = (node_ptr)0xBEEF;
 					return *this;
@@ -102,16 +99,8 @@ namespace ft {
 				return *this;
 			}
 			rbtree_iterator		operator--(int) {
-				if (this->_node == NULL && this->_node != (node_ptr)0xBEEF)
-					throw std::runtime_error("Cannot decrement iterator");
-				ft::rbtree_iterator<value_type> temp = *this;
-				node_ptr target = this->__find_previous_node(this->_node);
-				if (target == NULL) {
-					this->_prev = this->_node;
-					this->_node = (node_ptr)0xBEEF;
-					return temp;
-				}
-				this->_node = target;
+				ft::rbtree_iterator<value_type, value_compare> temp = *this;
+				--(*this);
 				return temp;
 			}
 		private:
@@ -142,33 +131,21 @@ namespace ft {
 			node_ptr	__find_previous_node(node_ptr target) {
 				if (target == (node_ptr)0xDEAD)
 					return this->_prev;
-				node_ptr start = target;
 				if (target->left_child != NULL) {
 					target = target->left_child;
-					while(target->right_child != NULL) {
+					while(target->right_child != NULL)
 						target = target->right_child;
-					}
 					return target;
 				}
 				if (target->parent != NULL) {
-					while (target->parent != NULL) {
-						if (this->_comp(*(target->data), *(target->parent->data)))
-							target = target->parent;
-						else
-							break;
-					}
+					while (target->parent != NULL && this->_comp(*(target->data), *(target->parent->data)))
+						target = target->parent;
 					target = target->parent;
-					if (target != start)
-						return target;
+					return target;
 				}
 				return NULL;
 			}
 	};
-	template<
-		typename T
-	>bool operator!=(const rbtree_iterator<T>& lhs, const rbtree_iterator<T>& rhs) {
-		return !(lhs == rhs);
-	}
 }
 
 #endif

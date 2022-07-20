@@ -28,11 +28,6 @@ namespace ft {
 			typedef typename allocator_type::const_reference				const_reference;
 			typedef typename allocator_type::pointer						pointer;
 			typedef typename allocator_type::const_pointer					const_pointer;
-			typedef ft::rbtree_iterator<value_type>							iterator;
-			typedef ft::rbtree_iterator<const value_type>					const_iterator;
-			typedef ft::reverse_iterator<iterator>							reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
-			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 			typedef size_t													size_type;
 
 		private:
@@ -52,8 +47,15 @@ namespace ft {
 					}
 			};
 
+		public:
+			typedef ft::rbtree_iterator<value_type, value_compare>			iterator;
+			typedef ft::rbtree_iterator<const value_type, value_compare>	const_iterator;
+			typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
+
 		protected:
-			ft::RBTree<value_type, value_compare>	_tree;
+			ft::RBTree<value_type, value_compare, allocator_type>	_tree;
 			key_compare								_comp_key;
 			value_compare							_comp_val;
 			allocator_type							_alloc;
@@ -67,7 +69,7 @@ namespace ft {
 											this->_comp_key = comp;
 											this->_comp_val = value_compare(this->_comp_key);
 											this->_alloc = alloc;
-											this->_tree = ft::RBTree<value_type, value_compare>(this->_comp_val, this->_alloc);
+											this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(this->_comp_val, this->_alloc);
 										}
 										template <
 											class InputIterator
@@ -80,8 +82,8 @@ namespace ft {
 											this->_comp_key = comp;
 											this->_comp_val = value_compare(this->_comp_key);
 											this->_alloc = alloc;
-											this->_tree = ft::RBTree<value_type, value_compare>(this->_comp_val, this->_alloc);
-											for(;first != last;first++) {
+											this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(this->_comp_val, this->_alloc);
+											for(; first != last; first++) {
 												this->_tree.insert(*first);
 											}
 										}
@@ -92,7 +94,8 @@ namespace ft {
 										~map() {}
 		// Assignment operator
 			map&						operator= (const map&x) {
-											this->_comp = x._comp;
+											this->_comp_key = x._comp_key;
+											this->_comp_val = x._comp_val;
 											this->_alloc = x._alloc;
 											this->_tree = x._tree;
 											return *this;
@@ -144,22 +147,23 @@ namespace ft {
 		// Modifiers
 			ft::pair<iterator, bool>	insert(const value_type& val) {
 											try {
-												this->_tree.insert(val);
+												this->_tree.insert(ft::pair<const key_type, mapped_type>(val.first, val.second));
 											} catch(const std::exception& e) {
-												return ft::make_pair<iterator,bool>(this->find(val), true);
+												return ft::pair<iterator,bool>(this->find(val.first), false);
 											}
-											return ft::make_pair<iterator,bool>(this->find(val), false);
+											return ft::pair<iterator,bool>(this->find(val.first), true);
 										}
 			iterator					insert(
 											iterator position,
 											const value_type& val
 										) {
+											(void)position;
 											try {
 												this->_tree.insert(val);
 											} catch (const std::exception& e) {
 												//Ignore
 											}
-											return this->find(val);
+											return this->find(val.first);
 										}
 			template<
 				class InputIterator
@@ -212,13 +216,13 @@ namespace ft {
 										}
 		// Operations
 			iterator					find(const key_type& k) {
-											return iterator(this->_tree.find(ft::make_pair(k, mapped_type())));
+											return iterator(this->_tree.find(ft::pair<const key_type, mapped_type>(k, mapped_type())));
 										}
 			const_iterator				find(const key_type& k) const {
-											return const_iterator(this->_tree.find(ft::make_pair(k, mapped_type())));
+											return iterator(this->_tree.find(ft::pair<const key_type, mapped_type>(k, mapped_type())));
 										}
 			size_type					count(const key_type& k) const {
-											if (this->_tree.find(ft::make_pair(k, mapped_type())) == this->_tree.end())
+											if (this->_tree.find(this->find(k)) == this->_tree.end())
 												return 0;
 											return 1;
 										}
