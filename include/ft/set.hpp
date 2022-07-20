@@ -27,17 +27,17 @@ namespace ft {
 			typedef const reference											const_reference;
 			typedef typename allocator_type::pointer						pointer;
 			typedef const pointer											const_pointer;
-			typedef ft::rbtree_iterator<value_type>							iterator;
-			typedef ft::rbtree_iterator<const value_type>					const_iterator;
+			typedef ft::rbtree_iterator<value_type, value_compare>			iterator;
+			typedef ft::rbtree_iterator<const value_type, value_compare>	const_iterator;
 			typedef ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			typedef ptrdiff_t												difference_type;
 			typedef size_t													size_type;
 
 		protected:
-			ft::RBTree<value_type, value_compare>	_tree;
-			value_compare							_comp;
-			allocator_type							_alloc;
+			ft::RBTree<value_type, value_compare, allocator_type>	_tree;
+			value_compare											_comp;
+			allocator_type											_alloc;
 
 		public:
 		// Constructors
@@ -45,7 +45,7 @@ namespace ft {
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
 										) {
-										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(comp, alloc);
 										this->_comp = comp;
 										this->_alloc = alloc;
 									}
@@ -57,7 +57,7 @@ namespace ft {
 										const key_compare& comp = key_compare(),
 										const allocator_type& alloc = allocator_type()
 										) {
-										this->_tree = ft::RBTree<value_type, value_compare>(comp, alloc);
+										this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(comp, alloc);
 										for (;first != last;first++) {
 											this->_tree.insert(*first);
 										}
@@ -149,7 +149,6 @@ namespace ft {
 										} catch (const std::exception& e) {
 											// Ignore
 										}
-										std::cout << "Done erasing" << std::endl;
 									}
 			size_type				erase(const value_type& val) {
 										try {
@@ -199,7 +198,7 @@ namespace ft {
 											if (this->_comp(*it, val) == false)
 												break;
 										}
-										return this->find(*it); //TODO
+										return this->find(*it);
 									}
 			iterator				upper_bound(const value_type& val) const {
 										const_iterator it = this->begin();
@@ -208,7 +207,7 @@ namespace ft {
 											if (this->_comp(val, *it) == true)
 												break;
 										}
-										return this->find(*it); //TODO
+										return this->find(*it);
 									}
 			ft::pair<
 				iterator,

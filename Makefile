@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/07/02 09:05:55 by pstengl          ###   ########.fr        #
+#    Updated: 2022/07/20 11:40:24 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ SRCFILES:=\
 	pairs.cpp\
 	rbtree.cpp\
 	rbtree_iterator.cpp\
-	set.cpp
+	set.cpp\
+	map.cpp
 
 # ------------------------------------------
 # Do not change anything beyond this point!
