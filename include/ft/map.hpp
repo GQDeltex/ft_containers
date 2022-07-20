@@ -8,6 +8,8 @@
 # include "iterator_traits.hpp"
 # include "reverse_iterator.hpp"
 # include "rbtree_iterator.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 
 namespace ft {
 	template <
@@ -74,62 +76,204 @@ namespace ft {
 											InputIterator last,
 											const key_compare& comp = key_compare(),
 											const allocator_type& alloc = allocator_type()
-										);
-										map (const map& x);
+										) {
+											this->_comp_key = comp;
+											this->_comp_val = value_compare(this->_comp_key);
+											this->_alloc = alloc;
+											this->_tree = ft::RBTree<value_type, value_compare>(this->_comp_val, this->_alloc);
+											for(;first != last;first++) {
+												this->_tree.insert(*first);
+											}
+										}
+										map (const map& x) {
+											*this = x;
+										}
 		// Destructor
 										~map() {}
 		// Assignment operator
-			map&						operator= (const map&x);
+			map&						operator= (const map&x) {
+											this->_comp = x._comp;
+											this->_alloc = x._alloc;
+											this->_tree = x._tree;
+											return *this;
+										}
 		// Iterators
-			iterator					begin();
-			const_iterator				begin() const;
-			iterator					end();
-			const_iterator				end() const;
-			reverse_iterator			rbegin();
-			const_reverse_iterator		rbegin() const;
-			reverse_iterator			rend();
-			const_reverse_iterator		rend() const;
+			iterator					begin() {
+											return iterator(this->_tree.begin());
+										}
+			const_iterator				begin() const {
+											return const_iterator(this->_tree.begin());
+										}
+			iterator					end() {
+											return iterator(this->_tree.end());
+										}
+			const_iterator				end() const {
+											return const_iterator(this->_tree.end());
+										}
+			reverse_iterator			rbegin() {
+											return reverse_iterator(this->_tree.end());
+										}
+			const_reverse_iterator		rbegin() const {
+											return const_reverse_iterator(this->_tree.end());
+										}
+			reverse_iterator			rend() {
+											return reverse_iterator(this->_tree.begin());
+										}
+			const_reverse_iterator		rend() const {
+											return const_reverse_iterator(this->_tree.begin());
+										}
 		// Capacity
-			bool						empty() const;
-			size_type					size() const;
-			size_type					max_size() const;
+			bool						empty() const {
+											return this->size() == 0;
+										}
+			size_type					size() const {
+											return this->_tree.size();
+										}
+			size_type					max_size() const {
+											return this->_tree.max_size();
+										}
 		// Element Access
-			mapped_type&				operator[] (const key_type& k);
+			mapped_type&				operator[] (const key_type& k) {
+											try {
+												this->_tree.insert(ft::make_pair(k, mapped_type()));
+											} catch (const std::exception& e) {
+												//Ignore
+											}
+											return this->_tree.find(ft::make_pair(k, mapped_type()));
+										}
 		// Modifiers
-			ft::pair<iterator, bool>		insert(const value_type& val);
+			ft::pair<iterator, bool>	insert(const value_type& val) {
+											try {
+												this->_tree.insert(val);
+											} catch(const std::exception& e) {
+												return ft::make_pair<iterator,bool>(this->find(val), true);
+											}
+											return ft::make_pair<iterator,bool>(this->find(val), false);
+										}
 			iterator					insert(
 											iterator position,
 											const value_type& val
-										);
+										) {
+											try {
+												this->_tree.insert(val);
+											} catch (const std::exception& e) {
+												//Ignore
+											}
+											return this->find(val);
+										}
 			template<
 				class InputIterator
 			> void						insert(
 											InputIterator first,
-											InputIterator last
-										);
-			void						erase(iterator position);
-			size_type					erase(const key_type& k);
-			void						erase(iterator first, iterator last);
-			void						swap(map& x);
-			void						clear();
+											typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last
+										) {
+											for(;first!=last;first++) {
+												this->insert(*first);
+											}
+										}
+			void						erase(iterator position) {
+											try {
+												this->_tree.remove(*position);
+											} catch (const std::exception& e) {
+												//Ignore
+											}
+										}
+			size_type					erase(const key_type& k) {
+											try {
+												this->_tree.remove(ft::make_pair(k, mapped_type()));
+											} catch (const std::exception& e) {
+												return 0;
+											}
+											return 1;
+										}
+			void						erase(iterator first, iterator last) {
+											map temp(*this);
+											for(;first!=last;first++) {
+												try {
+													temp._tree.remove(*first);
+												} catch (const std::exception& e) {
+													// Ignore
+												}
+											}
+											*this = temp;
+										}
+			void						swap(map& x) {
+											this->_tree.swap(x._tree);
+										}
+			void						clear() {
+											this->erase(this->begin(), this->end());
+										}
 		// Observers
-			key_compare					key_comp() const;
-			value_compare				value_comp() const;
+			key_compare					key_comp() const {
+											return this->_comp_key;
+										}
+			value_compare				value_comp() const {
+											return this->_comp_val;
+										}
 		// Operations
-			iterator					find(const key_type& k);
-			const_iterator				find(const key_type& k) const;
-			size_type					count(const key_type& k) const;
-			iterator					lower_bound(const key_type& k);
-			const_iterator				lower_bound(const key_type& k) const;
-			iterator					upper_bound(const key_type& k);
-			const_iterator				upper_bound(const key_type& k) const;
-			ft::pair<iterator, iterator>	equal_range(const key_type& k);
+			iterator					find(const key_type& k) {
+											return iterator(this->_tree.find(ft::make_pair(k, mapped_type())));
+										}
+			const_iterator				find(const key_type& k) const {
+											return const_iterator(this->_tree.find(ft::make_pair(k, mapped_type())));
+										}
+			size_type					count(const key_type& k) const {
+											if (this->_tree.find(ft::make_pair(k, mapped_type())) == this->_tree.end())
+												return 0;
+											return 1;
+										}
+			iterator					lower_bound(const key_type& k) {
+											const_iterator it = this->begin();
+											const_iterator end = this->end();
+											for(;it!=end;it++) {
+												if (this->_comp(*it, ft::make_pair(k, mapped_type())) == false)
+													break;
+											}
+											return it;
+										}
+			const_iterator				lower_bound(const key_type& k) const {
+											const_iterator it = this->begin();
+											const_iterator end = this->end();
+											for(;it!=end;it++) {
+												if (this->_comp(*it, ft::make_pair(k, mapped_type())) == false)
+													break;
+											}
+											return it;
+										}
+			iterator					upper_bound(const key_type& k) {
+											const_iterator it = this->begin();
+											const_iterator end = this->end();
+											for(;it!=end;it++) {
+												if (this->_comp(ft::make_pair(k, mapped_type()), *it) == true)
+													break;
+											}
+											return it;
+										}
+			const_iterator				upper_bound(const key_type& k) const {
+											const_iterator it = this->begin();
+											const_iterator end = this->end();
+											for(;it!=end;it++) {
+												if (this->_comp(ft::make_pair(k, mapped_type()), *it) == true)
+													break;
+											}
+											return it;
+										}
+			ft::pair<
+				iterator,
+				iterator
+			>							equal_range(const key_type& k) {
+											return ft::make_pair(this->lower_bound(k), this->upper_bound(k));
+										}
 			ft::pair<
 				const_iterator,
 				const_iterator
-			>							equal_range(const key_type& k) const;
+			>							equal_range(const key_type& k) const {
+											return ft::make_pair(this->lower_bound(k), this->upper_bound(k));
+										}
 		// Allocator
-			allocator_type				get_allocator() const;
+			allocator_type				get_allocator() const {
+											return this->_alloc;
+										}
 	};
 }
 
