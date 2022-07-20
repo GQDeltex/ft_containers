@@ -1,13 +1,13 @@
 #ifndef FT_MAP_H
 # define FT_MAP_H
 
-#include <__functional_base>
 # include <cstddef>
 # include <memory>
 
 # include "pairs.hpp"
 # include "iterator_traits.hpp"
 # include "reverse_iterator.hpp"
+# include "rbtree_iterator.hpp"
 
 namespace ft {
 	template <
@@ -19,23 +19,8 @@ namespace ft {
 		public:
 			typedef Key														key_type;
 			typedef T														mapped_type;
-			typedef ft::pair<const key_type, mapped_type>						value_type;
-		private:
-			class value_compare : std::binary_function<value_type, value_type, bool> {
-				protected:
-					Compare	comp;
-					value_compare	(Compare c) : comp(c) {}
-				public:
-					typedef bool				result_type;
-					typedef value_type			first_argument_type;
-					typedef	value_type			second_arument_type;
-					result_type operator() (const value_type& x, const value_type& y) const {
-						return comp(x.first, y.first);
-					}
-			};
-		public:
+			typedef ft::pair<const key_type, mapped_type>					value_type;
 			typedef Compare													key_compare;
-			typedef value_compare											value_compare;
 			typedef Alloc													allocator_type;
 			typedef typename allocator_type::reference						reference;
 			typedef typename allocator_type::const_reference				const_reference;
@@ -44,15 +29,44 @@ namespace ft {
 			typedef ft::rbtree_iterator<value_type>							iterator;
 			typedef ft::rbtree_iterator<const value_type>					const_iterator;
 			typedef ft::reverse_iterator<iterator>							reverse_iterator;
-			typedef const reverse_iterator									const_reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 			typedef size_t													size_type;
 
+		private:
+			class value_compare : std::binary_function<value_type, value_type, bool> {
+				friend class map;
+				protected:
+					key_compare	comp;
+					// Constructor
+					value_compare(key_compare c): comp(c) {}
+				public:
+					value_compare(): comp(key_compare()) {}
+					typedef bool				result_type;
+					typedef value_type			first_argument_type;
+					typedef	value_type			second_argument_type;
+					result_type operator() (const first_argument_type& x, const second_argument_type& y) const {
+						return comp(x.first, y.first);
+					}
+			};
+
+		protected:
+			ft::RBTree<value_type, value_compare>	_tree;
+			key_compare								_comp_key;
+			value_compare							_comp_val;
+			allocator_type							_alloc;
+
+		public:
 		// Constructors
 										map (
 											const key_compare& comp = key_compare(),
 											const allocator_type& alloc = allocator_type()
-										);
+										) {
+											this->_comp_key = comp;
+											this->_comp_val = value_compare(this->_comp_key);
+											this->_alloc = alloc;
+											this->_tree = ft::RBTree<value_type, value_compare>(this->_comp_val, this->_alloc);
+										}
 										template <
 											class InputIterator
 										> map (
