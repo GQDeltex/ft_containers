@@ -56,17 +56,17 @@ void TestIterator() {
 		std::string str1 = "Hello World";
 		ft::vector_iterator<char> it1(&str1[0]);
 		ft::vector_iterator<char> it2 = it1;
-		test.equal(it1 == it2, true);
-		test.equal(it1 <= it2, true);
-		test.equal(it1 >= it2, true);
+		test.equal(it1 == it2, true, "it1 == it2");
+		test.equal(it1 <= it2, true, "it1 <= it2");
+		test.equal(it1 >= it2, true, "it1 >= it2");
 		it2++;
-		test.equal(it1 != it2, true);
-		test.equal(it1 >= it2, false);
-		test.equal(it1 <= it2, true);
-		test.equal(it1 < it2, true);
-		test.equal(it1 > it2, false);
+		test.equal(it1 != it2, true, "it1 != it2");
+		test.equal(it1 >= it2, false, "it1 NOT >= it2");
+		test.equal(it1 <= it2, true, "it1 <= it2");
+		test.equal(it1 < it2, true, "it1 < it2");
+		test.equal(it1 > it2, false, "it1 NOT > it2");
 		it2--;
-		test.equal(it1, it2);
+		test.equal(it1, it2, "Equal again");
 	}
 	{
 		Test test("Offset Dereference Operator");

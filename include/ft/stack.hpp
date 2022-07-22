@@ -53,6 +53,8 @@ namespace ft {
 									const ft::stack<T, Container>& lhs,
 									const ft::stack<T, Container>& rhs
 								) {
+									if (lhs.size() != rhs.size())
+										return false;
 									return ft::equal(lhs.c.begin(), lhs.c.end(), rhs.c.begin());
 								}
 			friend bool			operator< (

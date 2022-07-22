@@ -32,6 +32,9 @@ namespace ft {
 									vector_iterator(const vector_iterator& it) {
 										*this = it;
 									}
+			pointer					address() const {
+										return this->_ptr;
+									}
 									operator vector_iterator<T const>() const {
 										return vector_iterator<T const>(this->_ptr);
 									}
@@ -101,31 +104,38 @@ namespace ft {
 										temp -= n;
 										return temp;
 									}
-			friend vector_iterator	operator-(const difference_type& n, const vector_iterator<T>& it) {
+			friend vector_iterator	operator-(const difference_type& n, const vector_iterator& it) {
 										vector_iterator temp(it);
 										temp -= n;
 										return temp;
 									}
-			friend difference_type	operator-(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return lhs._ptr - rhs._ptr;
+			template <typename Iter>
+			difference_type			operator-(const vector_iterator<Iter>& rhs) const {
+										return (this->_ptr - rhs.address());
 									}
-			friend bool				operator==(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return (lhs._ptr == rhs._ptr);
+			template <typename Iter>
+			bool					operator==(const vector_iterator<Iter>& rhs) const {
+										return (this->_ptr == rhs.address());
 									}
-			friend bool				operator!=(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return !(lhs == rhs);
+			template <typename Iter>
+			bool					operator!=(const vector_iterator<Iter>& rhs) const {
+										return !(*this == rhs);
 									}
-			friend bool				operator<(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return (lhs._ptr < rhs._ptr);
+			template <typename Iter>
+			bool					operator<(const vector_iterator<Iter>& rhs) const {
+										return (this->_ptr < rhs.address());
 									}
-			friend bool				operator>(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return (rhs < lhs);
+			template <typename Iter>
+			bool					operator>(const vector_iterator<Iter>& rhs) const {
+										return (rhs < *this);
 									}
-			friend bool				operator<=(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return !(rhs < lhs);
+			template <typename Iter>
+			bool					operator<=(const vector_iterator<Iter>& rhs) const {
+										return !(rhs < *this);
 									}
-			friend bool				operator>=(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										return !(lhs < rhs);
+			template <typename Iter>
+			bool					operator>=(const vector_iterator<Iter>& rhs) const {
+										return !(*this < rhs);
 									}
 	};
 };
