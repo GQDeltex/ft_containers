@@ -33,13 +33,13 @@ namespace ft {
 				this->_comp = comp;
 				this->_prev = NULL;
 			}
-			rbtree_iterator(const node_ptr node, value_compare comp = value_compare()) {
+			rbtree_iterator(const node_ptr node, value_compare comp = value_compare(), const node_ptr prev=NULL) {
 				this->_node = node;
 				this->_comp = comp;
-				this->_prev = NULL;
+				this->_prev = prev;
 			}
 			operator rbtree_iterator<T const, Comp>() const {
-				return rbtree_iterator<T const, Comp>((Node<value_type const>*)this->_node, this->_comp);
+				return rbtree_iterator<T const, Comp>((Node<value_type const>*)this->_node, this->_comp, (Node<value_type const>*)this->_prev);
 			}
 			rbtree_iterator(const rbtree_iterator& rbi) {
 				*this = rbi;
@@ -51,6 +51,10 @@ namespace ft {
 				return *this;
 			}
 			~rbtree_iterator() {}
+
+			node_ptr	address() const {
+				return this->_node;
+			}
 
 			reference	operator*() const {
 				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
@@ -90,7 +94,6 @@ namespace ft {
 					throw std::runtime_error("Cannot decrement iterator");
 				node_ptr target = this->__find_previous_node(this->_node);
 				if (target == NULL) {
-					std::cout << "HIT ROCK BOTTOM!" << std::endl;
 					this->_prev = this->_node;
 					this->_node = (node_ptr)0xBEEF;
 					return *this;

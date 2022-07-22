@@ -97,7 +97,7 @@ namespace ft {
 			}
 			iterator	begin() const {
 				if (this->_root == NULL)
-					return iterator((node_ptr)0xBEEF);
+					return iterator((node_ptr)0xDEAD);
 				return iterator(this->__find_leftmost(this->_root));
 			}
 			iterator	end() const {

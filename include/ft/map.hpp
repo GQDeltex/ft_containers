@@ -85,7 +85,11 @@ namespace ft {
 											this->_alloc = alloc;
 											this->_tree = ft::RBTree<value_type, value_compare, allocator_type>(this->_comp_val, this->_alloc);
 											for(; first != last; first++) {
-												this->_tree.insert(*first);
+												try {
+													this->_tree.insert(*first);
+												} catch (const std::exception& e) {
+													// Ignore
+												}
 											}
 										}
 										map (const map& x) {
@@ -115,16 +119,16 @@ namespace ft {
 											return const_iterator(this->_tree.end());
 										}
 			reverse_iterator			rbegin() {
-											return reverse_iterator(this->_tree.end());
+											return reverse_iterator(this->end());
 										}
 			const_reverse_iterator		rbegin() const {
-											return const_reverse_iterator(this->_tree.end());
+											return const_reverse_iterator(this->end());
 										}
 			reverse_iterator			rend() {
-											return reverse_iterator(this->_tree.begin());
+											return reverse_iterator(this->begin());
 										}
 			const_reverse_iterator		rend() const {
-											return const_reverse_iterator(this->_tree.begin());
+											return const_reverse_iterator(this->begin());
 										}
 		// Capacity
 			bool						empty() const {

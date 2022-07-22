@@ -4,6 +4,7 @@
 # include <iterator>
 # include <exception>
 # include <stdexcept>
+# include <iostream>
 
 # include "iterator_traits.hpp"
 
@@ -38,7 +39,7 @@ namespace ft {
 			}
 			reference	operator*() const {
 				iterator_type temp(this->_itr);
-				temp--;
+				--temp;
 				return *(temp);
 			}
 			pointer	operator->() const {
