@@ -107,7 +107,6 @@ namespace ft {
 										return temp;
 									}
 			friend difference_type	operator-(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
-										std::cout << "VecItr: " << lhs._ptr - rhs._ptr << std::endl;
 										return lhs._ptr - rhs._ptr;
 									}
 			friend bool				operator==(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
