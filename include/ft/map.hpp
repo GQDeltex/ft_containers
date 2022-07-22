@@ -10,6 +10,7 @@
 # include "rbtree_iterator.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+# include "compare.hpp"
 
 namespace ft {
 	template <
@@ -277,6 +278,49 @@ namespace ft {
 		// Allocator
 			allocator_type				get_allocator() const {
 											return this->_alloc;
+										}
+			bool						operator==(const map& rhs) const {
+											if (this->size() != rhs.size())
+												return false;
+											return ft::equal(this->begin(), this->end(), rhs.begin());
+										}
+			bool						operator!=(const map& rhs) const {
+											return !(*this == rhs);
+										}
+			bool						operator<(const map& rhs) const {
+											const_iterator first1 = this->begin();
+											const_iterator last1 = this->end();
+											const_iterator first2 = rhs.begin();
+											const_iterator last2 = rhs.end();
+											while (first1 != last1) {
+												// Are we at the end?
+												if (first2 == last2)
+													return false;
+												// Is 2 smaller than 1
+												else if (this->_comp_val(*first2, *first1))
+													return false;
+												// Is 1 smaller than 2 (what we actually want to check)
+												else if (this->_comp_val(*first1, *first2))
+													return true;
+												// Is 2 smaller than 1 (value)
+												else if (first2->second < first1->second)
+													return false;
+												// Is 1 smaller than 2 (what we actually want to check) (value)
+												else if (first1->second < first2->second)
+													return true;
+												first1++;
+												first2++;
+											}
+											return (first2 != last2);
+										}
+			bool						operator>(const map& rhs) const {
+											return (rhs < *this);
+										}
+			bool						operator<=(const map& rhs) const {
+											return !(rhs < *this);
+										}
+			bool						operator>=(const map& rhs) const {
+											return !(*this < rhs);
 										}
 	};
 }
