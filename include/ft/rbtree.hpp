@@ -96,9 +96,13 @@ namespace ft {
 				return this->_alloc.max_size();
 			}
 			iterator	begin() const {
+				if (this->_root == NULL)
+					return iterator((node_ptr)0xBEEF);
 				return iterator(this->__find_leftmost(this->_root));
 			}
 			iterator	end() const {
+				if (this->_root == NULL)
+					return iterator((node_ptr)0xDEAD);
 				iterator it = iterator(this->__find_rightmost(this->_root));
 				it++;
 				return it;

@@ -142,7 +142,7 @@ namespace ft {
 											} catch (const std::exception& e) {
 												//Ignore
 											}
-											return this->_tree.find(ft::make_pair(k, mapped_type()));
+											return (this->_tree.find(ft::make_pair(k, mapped_type())))->second;
 										}
 		// Modifiers
 			ft::pair<iterator, bool>	insert(const value_type& val) {
