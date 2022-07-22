@@ -2,8 +2,9 @@
 # define FT_VECTOR_ITERATOR_H
 
 # include <exception>
-#include <iterator>
+# include <iterator>
 # include <stdexcept>
+# include <iostream>
 
 # include "iterator_traits.hpp"
 
@@ -46,7 +47,7 @@ namespace ft {
 			pointer					operator->() const {
 										return &(operator*());
 									}
-			vector_iterator			operator++() {
+			vector_iterator&		operator++() {
 										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot increment NULL Pointer");
 										this->_ptr++;
@@ -55,11 +56,11 @@ namespace ft {
 			vector_iterator			operator++(int) {
 										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot increment NULL Pointer");
-										ft::vector_iterator<T> temp = *this;
+										vector_iterator temp = *this;
 										this->_ptr++;
 										return temp;
 									}
-			vector_iterator			operator--() {
+			vector_iterator&		operator--() {
 										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot decrement NULL Pointer");
 										this->_ptr--;
@@ -68,7 +69,7 @@ namespace ft {
 			vector_iterator			operator--(int) {
 										if (this->_ptr == NULL)
 											throw std::runtime_error("Cannot decrement NULL Pointer");
-										ft::vector_iterator<T> temp = *this;
+										vector_iterator temp = *this;
 										this->_ptr--;
 										return temp;
 									}
@@ -77,35 +78,36 @@ namespace ft {
 											throw std::runtime_error("Cannot dereference NULL Pointer");
 										return *(this->_ptr + n);
 									}
-			vector_iterator			operator+=(int n) {
+			vector_iterator&		operator+=(const difference_type& n) {
 										this->_ptr += n;
 										return *this;
 									}
-			vector_iterator			operator-=(int n) {
+			vector_iterator&		operator-=(const difference_type& n) {
 										this->_ptr -= n;
 										return *this;
 									}
-			vector_iterator			operator+(const int&n) {
+			vector_iterator			operator+(const difference_type& n) const {
 										vector_iterator temp(*this);
-										temp._ptr += n;
+										temp += n;
 										return temp;
 									}
-			friend vector_iterator	operator+(const int&n, const vector_iterator<T>&it) {
+			friend vector_iterator	operator+(const difference_type& n, const vector_iterator& it) {
 										vector_iterator temp(it);
-										temp._ptr += n;
+										temp += n;
 										return temp;
 									}
-			vector_iterator			operator-(const int&n) {
+			vector_iterator			operator-(const difference_type& n) const {
 										vector_iterator temp(*this);
-										temp._ptr -= n;
+										temp -= n;
 										return temp;
 									}
-			friend vector_iterator	operator-(const int&n, const vector_iterator<T>&it) {
+			friend vector_iterator	operator-(const difference_type& n, const vector_iterator<T>& it) {
 										vector_iterator temp(it);
-										temp._ptr -= n;
+										temp -= n;
 										return temp;
 									}
-			friend difference_type	operator-(const vector_iterator<T>&lhs, const vector_iterator<T>&rhs) {
+			friend difference_type	operator-(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {
+										std::cout << "VecItr: " << lhs._ptr - rhs._ptr << std::endl;
 										return lhs._ptr - rhs._ptr;
 									}
 			friend bool				operator==(const vector_iterator<T>& lhs, const vector_iterator<T>& rhs) {

@@ -94,7 +94,8 @@ void TestReverseIterator() {
 		ft::reverse_iterator<std::string::iterator> it2 = 5 + it;
 		test.equal(*it1, 'o', "End plus 3 is 'o'");
 		test.equal(*it2, ' ', "End plus 5 is ' '");
-		test.equal(it2 - it1, (long)2);
+		std::cout << it2 - it1 << std::endl;
+		test.equal(it2 - it1, (long)2, "Difference is 2");
 	}
 	{
 		Test test("Compound Operators");

@@ -52,7 +52,7 @@ namespace ft {
 			}
 			~rbtree_iterator() {}
 
-			reference	operator*() {
+			reference	operator*() const {
 				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
 					throw std::runtime_error("Cannot dereference iterator");
 				return *(this->_node->data);
