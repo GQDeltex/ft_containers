@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/07/23 17:21:40 by pstengl          ###   ########.fr        #
+#    Updated: 2022/07/23 18:29:14 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -156,4 +156,4 @@ endif
 testext: norm fclean
 	mkdir -p $(BINARIES)
 	$(CC) $(CFLAGS) $(SOURCE)/external.cpp -o $(BINARIES)/$(NAME) $(LDFLAGS) $(LDLIBS)
-	$(BINARIES)/ft_containers 1234
+	time $(BINARIES)/ft_containers 1234
