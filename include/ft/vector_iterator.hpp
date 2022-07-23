@@ -44,11 +44,6 @@ namespace ft {
 			// Destructor
 			~vector_iterator() {}
 
-			// Address
-			pointer address() const {
-				return this->_ptr;
-			}
-
 			// Dereference Operators
 			reference operator*() const {
 				if (this->_ptr == NULL)
@@ -117,13 +112,13 @@ namespace ft {
 
 			template <typename Iter>
 			difference_type operator-(const vector_iterator<Iter>& rhs) const {
-				return (this->_ptr - rhs.address());
+				return (this->_ptr - rhs._ptr);
 			}
 
 			// Relational Operators
 			template <typename Iter>
 			bool operator==(const vector_iterator<Iter>& rhs) const {
-				return (this->_ptr == rhs.address());
+				return (this->_ptr == rhs._ptr);
 			}
 
 			template <typename Iter>
@@ -133,7 +128,7 @@ namespace ft {
 
 			template <typename Iter>
 			bool operator<(const vector_iterator<Iter>& rhs) const {
-				return (this->_ptr < rhs.address());
+				return (this->_ptr < rhs._ptr);
 			}
 
 			template <typename Iter>

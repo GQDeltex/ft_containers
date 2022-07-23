@@ -53,11 +53,6 @@ namespace ft {
 			// Destructor
 			~rbtree_iterator() {}
 
-			// Address
-			node_ptr address() const {
-				return this->_node;
-			}
-
 			// Dereference Operator
 			reference operator*() const {
 				if (this->_node == NULL || this->_node == (node_ptr)0xDEAD || this->_node == (node_ptr)0xBEEF)
