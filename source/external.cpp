@@ -17,7 +17,7 @@
 
 #include <stdlib.h>
 
-#define MAX_RAM 429496729
+#define MAX_RAM 2147483648
 #define BUFFER_SIZE 4096
 struct Buffer
 {
@@ -93,13 +93,13 @@ int main(int argc, char** argv) {
 
 	for (int i = 0; i < COUNT; ++i)
 	{
-		map_int.insert(ft::make_pair(rand(), rand()));
+		map_int.insert(ft::make_pair(rand() % COUNT, rand()));
 	}
 
 	int sum = 0;
 	for (int i = 0; i < 10000; i++)
 	{
-		int access = rand();
+		int access = rand() % COUNT;
 		sum += map_int[access];
 	}
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
