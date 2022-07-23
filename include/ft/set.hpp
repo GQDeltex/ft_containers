@@ -10,6 +10,7 @@
 # include "pairs.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+# include "compare.hpp"
 
 namespace ft {
 	template <
@@ -27,7 +28,7 @@ namespace ft {
 			typedef const reference											const_reference;
 			typedef typename allocator_type::pointer						pointer;
 			typedef const pointer											const_pointer;
-			typedef ft::rbtree_iterator<value_type, value_compare>			iterator;
+			typedef ft::rbtree_iterator<const value_type, value_compare>	iterator;
 			typedef ft::rbtree_iterator<const value_type, value_compare>	const_iterator;
 			typedef ft::reverse_iterator<iterator>							reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>					const_reverse_iterator;
@@ -191,33 +192,77 @@ namespace ft {
 											return 0;
 										return 1;
 									}
-			iterator				lower_bound(const value_type& val) const {
+			iterator				lower_bound(const value_type& val) {
+										iterator it = this->begin();
+										iterator end = this->end();
+										for(;it!=end;it++) {
+											if (this->_comp(*it, val) == false)
+												break;
+										}
+										return it;
+									}
+			const_iterator			lower_bound(const value_type& val) const {
 										const_iterator it = this->begin();
 										const_iterator end = this->end();
 										for(;it!=end;it++) {
 											if (this->_comp(*it, val) == false)
 												break;
 										}
-										return this->find(*it);
+										return it;
 									}
-			iterator				upper_bound(const value_type& val) const {
+			iterator				upper_bound(const value_type& val) {
+										iterator it = this->begin();
+										iterator end = this->end();
+										for(;it!=end;it++) {
+											if (this->_comp(val, *it) == true)
+												break;
+										}
+										return it;
+									}
+			const_iterator			upper_bound(const value_type& val) const {
 										const_iterator it = this->begin();
 										const_iterator end = this->end();
 										for(;it!=end;it++) {
 											if (this->_comp(val, *it) == true)
 												break;
 										}
-										return this->find(*it);
+										return it;
 									}
 			ft::pair<
 				iterator,
 				iterator
+			>						equal_range(const value_type& val) {
+										return ft::make_pair(this->lower_bound(val), this->upper_bound(val));
+									}
+			ft::pair<
+				const_iterator,
+				const_iterator
 			>						equal_range(const value_type& val) const {
 										return ft::make_pair(this->lower_bound(val), this->upper_bound(val));
 									}
 		// Allocator
 			allocator_type			get_allocator() const {
 										return this->_alloc;
+									}
+			bool					operator==(const set& rhs) const {
+										if (this->size() != rhs.size())
+											return false;
+										return ft::equal(this->begin(), this->end(), rhs.begin());
+									}
+			bool					operator!=(const set& rhs) const {
+										return !(*this == rhs);
+									}
+			bool					operator< (const set& rhs) const {
+										return ft::lexicographical_compare(this->begin(), this->end(), rhs.begin(), rhs.end(), this->_comp);
+									}
+			bool					operator> (const set& rhs) const {
+										return rhs < *this;
+									}
+			bool					operator<=(const set& rhs) const {
+										return !(rhs < *this);
+									}
+			bool					operator>=(const set& rhs) const {
+										return !(*this < rhs);
 									}
 	};
 }
