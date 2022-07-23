@@ -48,7 +48,7 @@ namespace ft {
 			) {
 				this->__init(alloc);
 				this->reserve(n);
-				for(size_type i = 0; i < n; i++) {
+				for (size_type i = 0; i < n; i++) {
 					this->push_back(val);
 				}
 			}
@@ -60,7 +60,7 @@ namespace ft {
 				const allocator_type& alloc = allocator_type()
 			) {
 				this->__init(alloc);
-				for(; first != last; first++) {
+				for (; first != last; first++) {
 					this->push_back(*first);
 				}
 			}
@@ -141,7 +141,7 @@ namespace ft {
 					this->_data_size = n;
 				} else if (this->_data_size < n) {
 					this->reserve(n);
-					for(size_type i = this->_data_size; i < n; i++) {
+					for (size_type i = this->_data_size; i < n; i++) {
 						this->push_back(val);
 					}
 				}
@@ -215,7 +215,7 @@ namespace ft {
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last
 			) {
 				this->clear();
-				for(; first != last; first++) {
+				for (; first != last; first++) {
 					this->push_back(*first);
 				}
 			}
@@ -225,7 +225,7 @@ namespace ft {
 				const value_type& val
 			) {
 				this->clear();
-				for(size_type i = 0; i < n; i++) {
+				for (size_type i = 0; i < n; i++) {
 					this->push_back(val);
 				}
 			}
@@ -257,7 +257,7 @@ namespace ft {
 					size_type pos = 0;
 					iterator it = this->begin();
 					// Where are we actually?
-					while(it != position && pos < this->_data_size) {
+					while (it != position && pos < this->_data_size) {
 						it++;
 						pos++;
 					}
@@ -266,7 +266,7 @@ namespace ft {
 						throw std::runtime_error("Not a valid pointer to this vector");
 					}
 					// Delete everything after where we want to insert
-					for(size_type i = pos; i < backup._data_size; i++) {
+					for (size_type i = pos; i < backup._data_size; i++) {
 						this->_alloc.destroy(this->_space + i);
 					}
 					// Update the _data_size to the last 'stable' element
@@ -274,7 +274,7 @@ namespace ft {
 					// Add the new element
 					this->push_back(val);
 					// Add back all the 'old' elements after that
-					for(size_type i = pos; i < backup._data_size; i++) {
+					for (size_type i = pos; i < backup._data_size; i++) {
 						this->push_back(backup[i]);
 					}
 					return iterator(this->_space + pos);
@@ -314,12 +314,12 @@ namespace ft {
 				size_type end_pos = 0;
 				iterator it = this->begin();
 				// Where are we actually?
-				while(it != first && start_pos < this->_data_size) {
+				while (it != first && start_pos < this->_data_size) {
 					it++;
 					start_pos++;
 				}
 				end_pos = start_pos;
-				while(it != last && end_pos <= this->_data_size) {
+				while (it != last && end_pos <= this->_data_size) {
 					it++;
 					end_pos++;
 				}
@@ -328,13 +328,13 @@ namespace ft {
 					throw std::runtime_error("Not a valid pointer to this vector");
 				}
 				// Delete everything after where we want to erase
-				for(size_type i = start_pos; i < end_pos; i++) {
+				for (size_type i = start_pos; i < end_pos; i++) {
 					this->_alloc.destroy(this->_space + i);
 				}
 				// Update the _data_size to the last 'stable' element
 				this->_data_size = start_pos;
 				// Add back all the 'old' elements after that
-				for(size_type i = end_pos; i < backup._data_size; i++) {
+				for (size_type i = end_pos; i < backup._data_size; i++) {
 					this->push_back(backup[i]);
 				}
 				return iterator(this->_space + start_pos);
@@ -353,7 +353,7 @@ namespace ft {
 			}
 
 			void clear(void) {
-				for(size_type i = 0; i < this->_data_size; i++) {
+				for (size_type i = 0; i < this->_data_size; i++) {
 					this->_alloc.destroy(this->_space + i);
 				}
 				this->_data_size = 0;
@@ -407,7 +407,7 @@ namespace ft {
 			}
 
 			value_type *__copy(value_type *dest, value_type *src, size_type len) {
-				for(size_type i = 0; i < len; i++) {
+				for (size_type i = 0; i < len; i++) {
 					this->_alloc.construct(dest+i, src[i]);
 				}
 				return (dest);

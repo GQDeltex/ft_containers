@@ -9,9 +9,8 @@
 # include "iterator_traits.hpp"
 
 namespace ft {
-	template <
-		typename T
-	> class vector_iterator: std::iterator<std::random_access_iterator_tag, T> {
+	template <typename T>
+	class vector_iterator: std::iterator<std::random_access_iterator_tag, T> {
 		public:
 			typedef T																						value_type;
 			typedef typename std::iterator<std::random_access_iterator_tag, value_type>::difference_type	difference_type;

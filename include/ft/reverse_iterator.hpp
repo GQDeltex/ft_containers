@@ -9,9 +9,8 @@
 # include "iterator_traits.hpp"
 
 namespace ft {
-	template <
-		typename Iterator
-	> class reverse_iterator {
+	template <typename Iterator>
+	class reverse_iterator {
 		public:
 			typedef Iterator														iterator_type;
 			typedef typename ft::iterator_traits<iterator_type>::iterator_category	iterator_category;

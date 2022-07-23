@@ -126,7 +126,7 @@ namespace ft {
 				node_ptr start = target;
 				if (target->right_child != NULL) {
 					target = target->right_child;
-					while(target->left_child != NULL) {
+					while (target->left_child != NULL) {
 						target = target->left_child;
 					}
 					return target;
@@ -150,7 +150,7 @@ namespace ft {
 					return this->_prev;
 				if (target->left_child != NULL) {
 					target = target->left_child;
-					while(target->right_child != NULL)
+					while (target->right_child != NULL)
 						target = target->right_child;
 					return target;
 				}
