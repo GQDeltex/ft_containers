@@ -42,6 +42,7 @@ namespace ft {
 			// Destructor
 			~reverse_iterator() {}
 
+
 			// Base
 			iterator_type base() const {
 				return this->_itr;
