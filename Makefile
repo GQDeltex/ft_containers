@@ -6,7 +6,7 @@
 #    By: pstengl <pstengl@student.42wolfsburg.      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/19 16:57:38 by pstengl           #+#    #+#              #
-#    Updated: 2022/07/20 11:40:24 by pstengl          ###   ########.fr        #
+#    Updated: 2022/07/23 17:21:40 by pstengl          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,10 @@ SRCFILES:=\
 	enable_if.cpp\
 	stack.cpp\
 	pairs.cpp\
-	rbtree.cpp\
 	rbtree_iterator.cpp\
 	set.cpp\
-	map.cpp
+	map.cpp\
+	#rbtree.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!

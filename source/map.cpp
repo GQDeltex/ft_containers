@@ -115,11 +115,11 @@ void TestMap() {
 		ft::map<int, int>::reverse_iterator end = mp.rend();
 		ft::map<int, int>::reverse_iterator it = begin;
 		for(;it!=end;it++) {
-			std::cout << "SET: " << *it << std::endl;
+			std::cout << "MAP: " << it->first << ":" << it->second << std::endl;
 		}
 		do {
 			it--;
-			std::cout << "SET: " << *it << std::endl;
+			std::cout << "MAP: " << it->first << ":" << it->second << std::endl;
 		} while (it != begin);
 
 	}

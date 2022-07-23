@@ -5,10 +5,8 @@
 # include "vector.hpp"
 
 namespace ft {
-	template <
-		class T,
-		class Container = ft::vector<T>
-	> class stack {
+	template <typename T, typename Container = ft::vector<T> >
+	class stack {
 		public:
 			typedef T			value_type;
 			typedef Container   container_type;
@@ -19,87 +17,66 @@ namespace ft {
 
 		public:
 			// Constructors
-								stack (
-									const container_type& ctnr = container_type()
-								) {
-									this->c = ctnr;
-								}
+			stack (const container_type& ctnr = container_type()): c(ctnr) {}
+
 			// empty
-			bool				empty() const {
-									return this->c.empty();
-								}
+			bool empty() const {
+				return this->c.empty();
+			}
+
 			// size
-			size_type			size() const {
-									return this->c.size();
-								}
+			size_type size() const {
+				return this->c.size();
+			}
+
 			// top
-			value_type&			top() {
-									return this->c.back();
-								}
-			const value_type&	top() const {
-									return this->c.back();
-								}
+			value_type& top() {
+				return this->c.back();
+			}
+
+			const value_type& top() const {
+				return this->c.back();
+			}
+
 			// push
-			void				push(
-									const value_type& val
-								) {
-									this->c.push_back(val);
-								}
+			void push(const value_type& val) {
+				this->c.push_back(val);
+			}
+
 			// pop
-			void				pop() {
-									this->c.pop_back();
-								}
-			friend bool			operator== (
-									const ft::stack<T, Container>& lhs,
-									const ft::stack<T, Container>& rhs
-								) {
-									if (lhs.size() != rhs.size())
-										return false;
-									return ft::equal(lhs.c.begin(), lhs.c.end(), rhs.c.begin());
-								}
-			friend bool			operator< (
-									const ft::stack<T, Container>& lhs,
-									const ft::stack<T, Container>& rhs
-								) {
-									return ft::lexicographical_compare(lhs.c.begin(), lhs.c.end(), rhs.c.begin(), rhs.c.end());
-								}
+			void pop() {
+				this->c.pop_back();
+			}
+
+			// Relational Operators
+			template <typename Type, typename Cont>
+			bool operator==(const ft::stack<Type, Cont>& rhs) const {
+				return this->c == rhs.c;
+			}
+
+			template <typename Type, typename Cont>
+			bool operator!=(const ft::stack<Type, Cont>& rhs) const {
+				return !(*this == rhs);
+			}
+
+			template <typename Type, typename Cont>
+			bool operator<(const ft::stack<Type, Cont>& rhs) const {
+				return this->c < rhs.c;
+			}
+
+			template <typename Type, typename Cont>
+			bool operator>(const ft::stack<Type, Cont>& rhs) const {
+				return rhs < *this;
+			}
+			template <typename Type, typename Cont>
+			bool operator<=(const ft::stack<Type, Cont>& rhs) const {
+				return !(rhs < *this);
+			}
+			template <typename Type, typename Cont>
+			bool operator>=(const ft::stack<Type, Cont>& rhs) const {
+				return !(*this < rhs);
+			}
 	};
-	template<
-		class T,
-		class Container
-	> bool			operator!= (
-						const ft::stack<T,Container>& lhs,
-						const ft::stack<T,Container>& rhs
-					) {
-						return !(lhs == rhs);
-					}
-	template<
-		class T,
-		class Container
-	>bool			operator> (
-						const ft::stack<T,Container>& lhs,
-						const ft::stack<T,Container>& rhs
-					) {
-						return rhs < lhs;
-					}
-	template<
-		class T,
-		class Container
-	>bool			operator<= (
-						const ft::stack<T,Container>& lhs,
-						const ft::stack<T,Container>& rhs
-					) {
-						return !(lhs > rhs);
-					}
-	template<
-		class T,
-		class Container
-	>bool			operator>= (
-						const ft::stack<T,Container>& lhs,
-						const ft::stack<T,Container>& rhs
-					) {
-						return !(lhs < rhs);
-					}
 }
 
 #endif

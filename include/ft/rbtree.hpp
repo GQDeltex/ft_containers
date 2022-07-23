@@ -1,5 +1,6 @@
 #ifndef FT_RBTREE_H
 # define FT_RBTREE_H
+
 # include "pairs.hpp"
 # include <cstddef>
 # include <iostream>
@@ -11,27 +12,23 @@
 #endif
 
 namespace ft {
+	template<typename T, typename Compare>
+	class rbtree_iterator;
 
-	template<
-		class T,
-		class Compare
-	> class rbtree_iterator;
-
-	template<
-		typename T
-	>struct Node {
-		T*			data;
-		char		color;
-		Node*		right_child;
-		Node*		left_child;
-		Node*		parent;
+	template<typename T>
+	struct Node {
+		T*		data;
+		char	color;
+		Node*	right_child;
+		Node*	left_child;
+		Node*	parent;
 	};
 
 	template <
-		class T,
-		class Compare = std::less<T>,
-		class Alloc = std::allocator<T>
-	>class RBTree {
+		typename T,
+		typename Compare = std::less<T>,
+		typename Alloc = std::allocator<T>
+	> class RBTree {
 		public:
 			typedef T											value_type;
 			typedef Alloc										allocator_value;
@@ -47,26 +44,10 @@ namespace ft {
 			size_type		_size;
 			allocator_type	_alloc;
 			allocator_value	_alloc_val;
-
-		private:
-			node_ptr	__copy_deep(node_ptr target) {
-				if (target == NULL)
-					return NULL;
-				node_ptr new_node = this->create_node(*(target->data));
-				this->_size--; // Fix runaway size
-				new_node->color = target->color;
-				new_node->left_child = __copy_deep(target->left_child);
-				if (new_node->left_child != NULL)
-					new_node->left_child->parent = new_node;
-				new_node->right_child = __copy_deep(target->right_child);
-				if (new_node->right_child != NULL)
-					new_node->right_child->parent = new_node;
-				return new_node;
-			}
+			node_ptr		_root;
 
 		public:
-			node_ptr			_root;
-
+			// Constructors
 			RBTree(
 				const value_compare& comp = value_compare(),
 				const allocator_value& alloc = allocator_value()
@@ -77,11 +58,14 @@ namespace ft {
 				this->_alloc_val = alloc;
 				this->_alloc = allocator_type();
 			}
+
 			RBTree(const RBTree& rbt) {
 				*this = rbt;
 			}
-			RBTree&	operator=(const RBTree& rbt) {
-				this->delete_node(this->_root, true);
+
+			// Assignment Operator
+			RBTree& operator=(const RBTree& rbt) {
+				this->__delete_node(this->_root, true);
 				this->_root = this->__copy_deep(rbt._root);
 				this->_size = rbt._size;
 				this->_comp = rbt._comp;
@@ -89,26 +73,39 @@ namespace ft {
 				this->_alloc = rbt._alloc;
 				return *this;
 			}
-			size_type	size() const {
+
+			// Destructor
+			~RBTree() {
+				this->__delete_node(this->_root, true);
+			}
+
+			// Size
+			size_type size() const {
 				return this->_size;
 			}
-			size_type	max_size() const {
+
+			size_type max_size() const {
 				return this->_alloc.max_size();
 			}
-			iterator	begin() const {
+
+			// Iterators
+			iterator begin() const {
 				if (this->_root == NULL)
 					return iterator((node_ptr)0xDEAD);
 				return iterator(this->__find_leftmost(this->_root));
 			}
-			iterator	end() const {
+
+			iterator end() const {
 				if (this->_root == NULL)
 					return iterator((node_ptr)0xDEAD);
 				iterator it = iterator(this->__find_rightmost(this->_root));
 				it++;
 				return it;
 			}
-			void	insert(value_type data) {
-				node_ptr new_node = create_node(data);
+
+			// Operations
+			void insert(value_type data) {
+				node_ptr new_node = this->__create_node(data);
 				if (this->_root == NULL) {
 					#if DEBUG
 						std::cout << "Is now root node" << std::endl;
@@ -131,7 +128,7 @@ namespace ft {
 						#endif
 						leaf = &(current_node->right_child);
 					} else {
-						delete_node(new_node);
+						this->__delete_node(new_node);
 						throw std::runtime_error("Node already exists");
 					}
 					if (*leaf == NULL) {
@@ -149,9 +146,112 @@ namespace ft {
 						continue;
 					}
 				}
-				this->maintain_insert(new_node);
+				this->__maintain_insert(new_node);
 			}
-			node_ptr	__bst_find_delete(node_ptr target) {
+
+			void remove(value_type data) {
+				#if DEBUG
+					std::cout << "Removing node" << std::endl;
+				#endif
+				node_ptr target = this->__find_node(this->_root, data);
+				if (target == NULL)
+					throw std::runtime_error("Cannot find Node");
+				// Do recursive BST delete (which results in the to be deleted
+				// node having a maximum of 1 children)
+				target = this->__bst_find_delete(target);
+				// target is root and has no children
+				if (target == this->_root && this->__num_children(target) == 0) {
+					#if DEBUG
+						std::cout << "target is root and has no children" << std::endl;
+					#endif
+					this->__delete_node(target);
+					this->_root = NULL;
+					return;
+				}
+				// target is black and has one child
+				if (this->__num_children(target) == 1) {
+					#if DEBUG
+						std::cout << "Target is black and has one child" << std::endl;
+					#endif
+					node_ptr parent = target->parent;
+					node_ptr child = NULL;
+					if (target->left_child != NULL)
+						child = target->left_child;
+					else
+						child = target->right_child;
+					child->color = 'b';
+					if (target == this->_root) {
+						this->_root = child;
+						child->parent = NULL;
+					} else {
+						if (target == parent->left_child)
+							parent->left_child = child;
+						else
+							parent->right_child = child;
+						child->parent = parent;
+					}
+					this->__delete_node(target);
+					return;
+				}
+				// target is red and has no children
+				if (target->color == 'r' && this->__num_children(target) == 0) {
+					#if DEBUG
+						std::cout << "Target is red and has no children" << std::endl;
+					#endif
+					this->__delete_node(target);
+					return;
+				}
+				// target is not root has no children and is black
+				if (target != this->_root && this->__num_children(target) == 0 && target->color == 'b') {
+					#if DEBUG
+						std::cout << "target is not root and has no children and is black" << std::endl;
+					#endif
+					this->__maintain_remove(target);
+					this->__delete_node(target);
+					return;
+				}
+			}
+
+			iterator find(value_type data) const {
+				node_ptr target = this->__find_node(this->_root, data);
+				if (target == NULL)
+					return iterator(this->end());
+				return iterator(target);
+			}
+
+			void swap(RBTree<value_type, value_compare, allocator_value>& swp) {
+				node_ptr temp_root = this->_root;
+				size_type temp_size = this->_size;
+				allocator_type temp_alloc = this->_alloc;
+				value_compare temp_comp = this->_comp;
+				this->_root = swp._root;
+				this->_size = swp._size;
+				this->_alloc = swp._alloc;
+				this->_alloc_val = swp._alloc_val;
+				this->_comp = swp._comp;
+				swp._root = temp_root;
+				swp._size = temp_size;
+				swp._alloc = temp_alloc;
+				swp._comp = temp_comp;
+			}
+
+		private:
+			node_ptr __copy_deep(node_ptr target) {
+				if (target == NULL)
+					return NULL;
+				node_ptr new_node = this->__create_node(*(target->data));
+				this->_size--; // Fix runaway size
+				new_node->color = target->color;
+				new_node->left_child = __copy_deep(target->left_child);
+				if (new_node->left_child != NULL)
+					new_node->left_child->parent = new_node;
+				new_node->right_child = __copy_deep(target->right_child);
+				if (new_node->right_child != NULL)
+					new_node->right_child->parent = new_node;
+				return new_node;
+			}
+
+			node_ptr __bst_find_delete(node_ptr target) {
 				#if DEBUG
 					std::cout << "BST DELETE" << std::endl;
 				#endif
@@ -178,7 +278,7 @@ namespace ft {
 				value_type* temp = D->data;
 				D->data = E->data;
 				E->data = temp;
-				this->print_node(this->_root, true);
+				this->__print_node(this->_root, true);
 				#if DEBUG
 					std::cout << "         " << std::endl;
 				#endif
@@ -195,12 +295,11 @@ namespace ft {
 					G->right_child = F;
 				if (F != NULL)
 					F->parent = G;
-
-				this->print_node(this->_root, true);
-
+				this->__print_node(this->_root, true);
 				return E;
 			}
-			node_ptr	__find_leftmost(node_ptr target) const {
+
+			node_ptr __find_leftmost(node_ptr target) const {
 				if (target == NULL)
 					return target;
 				if (target->left_child != NULL) {
@@ -208,7 +307,8 @@ namespace ft {
 				}
 				return target;
 			}
-			node_ptr	__find_rightmost(node_ptr target) const {
+
+			node_ptr __find_rightmost(node_ptr target) const {
 				if (target == NULL)
 					return target;
 				if (target->right_child != NULL) {
@@ -216,69 +316,8 @@ namespace ft {
 				}
 				return target;
 			}
-			void	remove(value_type data) {
-				#if DEBUG
-					std::cout << "Removing node" << std::endl;
-				#endif
-				node_ptr target = this->__find_node(this->_root, data);
-				if (target == NULL)
-					throw std::runtime_error("Cannot find Node");
-				// Do recursive BST delete (which results in the to be deleted
-				// node having a maximum of 1 children)
-				target = this->__bst_find_delete(target);
-				// target is root and has no children
-				if (target == this->_root && this->__num_children(target) == 0) {
-					#if DEBUG
-						std::cout << "target is root and has no children" << std::endl;
-					#endif
-					delete_node(target);
-					this->_root = NULL;
-					return;
-				}
-				// target is black and has one child
-				if (this->__num_children(target) == 1) {
-					#if DEBUG
-						std::cout << "Target is black and has one child" << std::endl;
-					#endif
-					node_ptr parent = target->parent;
-					node_ptr child = NULL;
-					if (target->left_child != NULL)
-						child = target->left_child;
-					else
-						child = target->right_child;
-					child->color = 'b';
-					if (target == this->_root) {
-						this->_root = child;
-						child->parent = NULL;
-					} else {
-						if (target == parent->left_child)
-							parent->left_child = child;
-						else
-							parent->right_child = child;
-						child->parent = parent;
-					}
-					delete_node(target);
-					return;
-				}
-				// target is red and has no children
-				if (target->color == 'r' && this->__num_children(target) == 0) {
-					#if DEBUG
-						std::cout << "Target is red and has no children" << std::endl;
-					#endif
-					delete_node(target);
-					return;
-				}
-				// target is not root has no children and is black
-				if (target != this->_root && this->__num_children(target) == 0 && target->color == 'b') {
-					#if DEBUG
-						std::cout << "target is not root and has no children and is black" << std::endl;
-					#endif
-					this->maintain_remove(target);
-					delete_node(target);
-					return;
-				}
-			}
-			void	maintain_remove(node_ptr target) {
+
+			void __maintain_remove(node_ptr target) {
 				#if DEBUG
 					std::cout << "Maintaining tree after removal" << std::endl;
 				#endif
@@ -286,11 +325,11 @@ namespace ft {
 					#if DEBUG
 						std::cout << "--> Looping <--" << std::endl;
 					#endif
-					this->print_node(target);
+					this->__print_node(target);
 					#if DEBUG
 						std::cout << "---------------" << std::endl;
 					#endif
-					this->print_node(this->_root, true);
+					this->__print_node(this->_root, true);
 					#if DEBUG
 						std::cout << "-->         <--" << std::endl;
 					#endif
@@ -365,9 +404,9 @@ namespace ft {
 						#endif
 						// dir-rotation
 						if (target == parent->left_child)
-							rotate_left(parent);
+							this->__rotate_left(parent);
 						else
-							rotate_right(parent);
+							this->__rotate_right(parent);
 						// Invert color of parent
 						if (parent->color == 'r')
 							parent->color = 'b';
@@ -415,9 +454,9 @@ namespace ft {
 						#endif
 						// not-dir rotation
 						if (target == parent->left_child)
-							rotate_right(sibling);
+							this->__rotate_right(sibling);
 						else
-							rotate_left(sibling);
+							this->__rotate_left(sibling);
 						// Invert color of sibling
 						if (sibling->color == 'r')
 							sibling->color = 'b';
@@ -441,9 +480,9 @@ namespace ft {
 						#endif
 						// dir-rotation around parent
 						if (target == parent->left_child)
-							rotate_left(parent);
+							this->__rotate_left(parent);
 						else
-							rotate_right(parent);
+							this->__rotate_right(parent);
 						sibling->color = parent->color;
 						parent->color = 'b';
 						distant->color = 'b';
@@ -453,12 +492,13 @@ namespace ft {
 				#if DEBUG
 					std::cout << "--> Done balancing <--" << std::endl;
 				#endif
-				this->print_node(this->_root, true);
+				this->__print_node(this->_root, true);
 				#if DEBUG
 					std::cout << "-->                <--" << std::endl;
 				#endif
 			}
-			short	__num_children(node_ptr target) {
+
+			short __num_children(node_ptr target) {
 				short result = 0;
 				if (target->right_child != NULL)
 					result++;
@@ -466,13 +506,8 @@ namespace ft {
 					result++;
 				return result;
 			}
-			iterator	find(value_type data) const {
-				node_ptr target = this->__find_node(this->_root, data);
-				if (target == NULL)
-					return iterator(this->end());
-				return iterator(target);
-			}
-			node_ptr	__find_node(node_ptr target, value_type data) const {
+
+			node_ptr __find_node(node_ptr target, value_type data) const {
 				node_ptr found = NULL;
 				if (target == NULL)
 					return NULL;
@@ -491,7 +526,8 @@ namespace ft {
 				}
 				return found;
 			}
-			void	maintain_insert(node_ptr target) {
+
+			void __maintain_insert(node_ptr target) {
 				#if DEBUG
 					std::cout << "Maintaining Red-Black constraint" << std::endl;
 				#endif
@@ -500,7 +536,7 @@ namespace ft {
 					#if DEBUG
 						std::cout << "--> Start Loop <--" << std::endl;
 					#endif
-					this->print_node(this->_root, true);
+					this->__print_node(this->_root, true);
 					#if DEBUG
 						std::cout << "-->            <--" << std::endl;
 					#endif
@@ -565,7 +601,7 @@ namespace ft {
 						#if DEBUG
 							std::cout << "E3 lc" << std::endl;
 						#endif
-						rotate_left(parent);
+						this->__rotate_left(parent);
 						target = parent;
 						continue;
 					}
@@ -573,7 +609,7 @@ namespace ft {
 						#if DEBUG
 							std::cout << "E3 rc" << std::endl;
 						#endif
-						rotate_right(parent);
+						this->__rotate_right(parent);
 						target = parent;
 						continue;
 					}
@@ -584,7 +620,7 @@ namespace ft {
 						#if DEBUG
 							std::cout << "E4 lc" << std::endl;
 						#endif
-						rotate_right(grand);
+						this->__rotate_right(grand);
 						// Invert grandparent color
 						if (grand->color == 'r')
 							grand->color = 'b';
@@ -601,7 +637,7 @@ namespace ft {
 						#if DEBUG
 							std::cout << "E4 rc" << std::endl;
 						#endif
-						rotate_left(grand);
+						this->__rotate_left(grand);
 						// Invert grandparent color
 						if (grand->color == 'r')
 							grand->color = 'b';
@@ -618,12 +654,13 @@ namespace ft {
 				#if DEBUG
 					std::cout << "--> Done balancing <--" << std::endl;
 				#endif
-				this->print_node(this->_root, true);
+				this->__print_node(this->_root, true);
 				#if DEBUG
 					std::cout << "-->                <--" << std::endl;
 				#endif
 			}
-			void	rotate_left(node_ptr target) {
+
+			void __rotate_left(node_ptr target) {
 				#if DEBUG
 					std::cout << "Rotate Left" << std::endl;
 				#endif
@@ -670,7 +707,7 @@ namespace ft {
 				x->parent = y;
 				y->left_child = x;
 			}
-			void	rotate_right(node_ptr target) {
+			void __rotate_right(node_ptr target) {
 				#if DEBUG
 					std::cout << "Rotate Right" << std::endl;
 				#endif
@@ -715,35 +752,8 @@ namespace ft {
 				y->parent = x;
 				x->right_child = y;
 			}
-			void rotate_left_right(node_ptr target) {
-				#if DEBUG
-					std::cout << "Rotate Left-Right" << std::endl;
-				#endif
-				if (target->left_child == NULL)
-					throw std::runtime_error("Cannot rotate left-right with no left child");
-				if (target->left_child->right_child == NULL)
-					throw std::runtime_error("Cannot rotate left-right with no right child-child");
-				node_ptr z = target;
-				node_ptr x = target->left_child;
 
-				rotate_left(x);
-				rotate_right(z);
-			}
-			void rotate_right_left(node_ptr target) {
-				#if DEBUG
-					std::cout << "Rotate Right-Left" << std::endl;
-				#endif
-				if (target->right_child == NULL)
-					throw std::runtime_error("Cannot rotate right_left with no right child");
-				if (target->right_child->left_child == NULL)
-					throw std::runtime_error("Cannot rotate right-left with no left child-child");
-				node_ptr z = target;
-				node_ptr x = target->right_child;
-
-				rotate_right(x);
-				rotate_left(z);
-			}
-			node_ptr	create_node(const value_type& data) {
+			node_ptr __create_node(const value_type& data) {
 				node_ptr node = this->_alloc.allocate(1);
 				this->_alloc.construct(node, Node<value_type>());
 				//node_ptr node = new Node;
@@ -756,7 +766,8 @@ namespace ft {
 				this->_size++;
 				return node;
 			}
-			void print_node(node_ptr target, bool recurse=false) {
+
+			void __print_node(node_ptr target, bool recurse=false) {
 				(void)target;
 				(void)recurse;
 				#if DEBUG
@@ -765,7 +776,7 @@ namespace ft {
 						return;
 					}
 					if (target->left_child != NULL && recurse)
-						print_node(target->left_child, recurse);
+						this->__print_node(target->left_child, recurse);
 					std::cout << "Node: " << *(target->data) << std::endl;
 					std::cout << "       Color: " << target->color << std::endl;
 					std::cout << "      Parent: ";
@@ -784,29 +795,30 @@ namespace ft {
 					else
 						std::cout << "-" << std::endl;
 					if (target->right_child != NULL && recurse)
-					print_node(target->right_child, recurse);
+					this->__print_node(target->right_child, recurse);
 				#endif
 			}
-			void	delete_node(node_ptr target, bool recurse = false) {
+
+			void __delete_node(node_ptr target, bool recurse = false) {
 				if (target == NULL)
 					return;
 				if (!recurse) {
 					#if DEBUG
 						std::cout << "Deleting Node" << std::endl;
 					#endif
-					this->print_node(target);
+					this->__print_node(target);
 					#if DEBUG
 						std::cout << "----" << std::endl;
 					#endif
-					this->print_node(this->_root, true);
+					this->__print_node(this->_root, true);
 					#if DEBUG
 						std::cout << "----" << std::endl;
 					#endif
 				}
 				if (target->left_child != NULL && recurse)
-					delete_node(target->left_child, recurse);
+					this->__delete_node(target->left_child, recurse);
 				if (target->right_child != NULL && recurse)
-					delete_node(target->right_child, recurse);
+					this->__delete_node(target->right_child, recurse);
 				if (target->parent != NULL) {
 					if (target->parent->left_child == target) {
 						target->parent->left_child = NULL;
@@ -820,24 +832,6 @@ namespace ft {
 				this->_alloc.destroy(target);
 				this->_alloc.deallocate(target, 1);
 				this->_size--;
-			}
-			void	swap(RBTree<value_type, value_compare, allocator_value>& swp) {
-				node_ptr temp_root = this->_root;
-				size_type temp_size = this->_size;
-				allocator_type temp_alloc = this->_alloc;
-				value_compare temp_comp = this->_comp;
-				this->_root = swp._root;
-				this->_size = swp._size;
-				this->_alloc = swp._alloc;
-				this->_alloc_val = swp._alloc_val;
-				this->_comp = swp._comp;
-				swp._root = temp_root;
-				swp._size = temp_size;
-				swp._alloc = temp_alloc;
-				swp._comp = temp_comp;
-			}
-			~RBTree() {
-				this->delete_node(this->_root, true);
 			}
 	};
 }
